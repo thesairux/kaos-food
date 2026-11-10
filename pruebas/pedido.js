@@ -131,6 +131,16 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
     ok(caben.every(Boolean), 'la promo ' + (i + 1) + ' tapa todo el marco, sin que asome la anterior');
   }
 
+  // redes en el pie
+  await p.locator('.pie').scrollIntoViewIfNeeded(); await p.waitForTimeout(300);
+  const redes = await p.$$eval('.pie .red-boton, .pie .wsp-sucursal',
+    x => x.filter(a => !a.hidden).map(a => a.innerText.replace(/\s+/g, ' ').trim() + ' → ' + a.href));
+  ok(redes.length === 3
+    && /WhatsApp .*wa\.me\/56934829829/.test(redes[0])
+    && /Instagram @kaos_food .*instagram\.com\/kaos_food\//.test(redes[1])
+    && /Facebook .*facebook\.com\/100090883010536\//.test(redes[2]),
+    'el pie tiene WhatsApp, Instagram y Facebook: ' + redes.join(' · '));
+
   console.log('6) Fuera de horario');
   const c2 = await b.newContext({ viewport: { width: 1280, height: 900 }, timezoneId: 'America/Santiago' });
   await c2.clock.setFixedTime(new Date('2026-11-09T10:00:00Z'));   // lunes 07:00 en Chile: cerrado (abre 09:30)

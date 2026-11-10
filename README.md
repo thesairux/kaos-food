@@ -71,6 +71,8 @@ logo redondo del local.
 
 ## Pendiente de confirmar con el local
 
+- **Redes**: Instagram (@kaos_food) y Facebook salen como botones en el pie, junto al de WhatsApp. Se
+  cambian en el panel, en «Local y WhatsApp».
 - **Formas de pago**: el menú no las dice. Quedaron Efectivo y Transferencia (`negocio.pagosRetiro`). Si acepta
   tarjeta, se agrega ahí o en el panel, en «Local y WhatsApp».
 - **Dirección**: el menú dice «José Joaquín Latorre (frente a pasaje verona)», sin número ni ciudad. La ciudad
@@ -84,8 +86,6 @@ logo redondo del local.
 - **Horario**: 09:30 a 00:30 todos los días, como dice el menú. Está confirmado (`"horarioConfirmado": true`):
   fuera de horario los productos dicen «Cerrado» y no se pueden agregar. Si algún día cierran, se marca en
   `diasCerrados` o se cambia ese día a `"cerrado"`.
-- **Redes sociales**: el menú solo trae un enlace de Facebook sin nombre de usuario y «kaos food». Falta el
-  Instagram y el enlace real de Facebook (`negocio.instagram` y `negocio.facebook`, o en el panel).
 - **Descripciones cortadas**: 13 productos tenían la descripción cortada por el «…» del menú online (los combos
   1, 2 y 5 al 9, el pollo a la plancha, los cuatro «mojojojo» y la ensalada césar). Se completaron con lo que se
   alcanzaba a leer; conviene que el local las revise.

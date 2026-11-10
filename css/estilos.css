@@ -584,21 +584,22 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .pie-wsp { display: grid; gap: 10px; }
 .pie-wsp-titulo { font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--acento-claro); }
 .pie-wsp-fila, .pie-wsp-botones { display: flex; flex-wrap: wrap; gap: 12px; }
-/* Instagram al lado de los WhatsApp */
-.ig-boton {
+/* Instagram y Facebook, al lado de los WhatsApp */
+.red-boton {
   display: inline-flex; align-items: center; gap: 12px; min-height: 58px; padding: 10px 16px 10px 12px;
   background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .2); color: var(--blanco); text-decoration: none;
   transition: border-color .2s, transform .2s;
 }
-.ig-boton:hover { border-color: #e1306c; transform: translateY(-2px); }
-.ig-boton > .icono:first-child {
-  flex: none; width: 38px; height: 38px; padding: 8px; border-radius: 50%;
-  background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888);
-}
-.ig-boton span { display: grid; gap: 1px; }
-.ig-boton b { font-size: .98rem; }
-.ig-boton small { font-size: .82rem; opacity: .8; }
-.ig-boton > .icono:last-child { width: 16px; height: 16px; margin-left: auto; padding-left: 6px; box-sizing: content-box; opacity: .85; }
+.red-boton:hover { transform: translateY(-2px); }
+.red-boton--ig:hover { border-color: #e1306c; }
+.red-boton--fb:hover { border-color: #1877f2; }
+.red-boton > .icono:first-child { flex: none; width: 38px; height: 38px; padding: 8px; border-radius: 50%; }
+.red-boton--ig > .icono:first-child { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); }
+.red-boton--fb > .icono:first-child { padding: 6px; background: #1877f2; }
+.red-boton span { display: grid; gap: 1px; }
+.red-boton b { font-size: .98rem; }
+.red-boton small { font-size: .82rem; opacity: .8; }
+.red-boton > .icono:last-child { width: 16px; height: 16px; margin-left: auto; padding-left: 6px; box-sizing: content-box; opacity: .85; }
 /* firma */
 .pie-firma { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .1); text-align: center; font-size: .82rem; color: #8d8692; }
 .pie-firma a { color: #d9d3dc; font-weight: 700; text-decoration: none; }
@@ -817,7 +818,7 @@ html.editando .brillo[contenteditable] { -webkit-text-fill-color: currentColor; 
   .carta-otra-texto { flex-basis: calc(100% - 74px); }
   .carta-otra .boton--wsp { width: 100%; }
   .pasos-lista li { padding: 26px 22px 28px; }
-  .pie-wsp, .wsp-sucursal, .ig-boton { width: 100%; }
+  .pie-wsp, .pie-wsp-botones, .wsp-sucursal, .red-boton { width: 100%; }
   .bloque-cab { padding: 20px 16px 14px; }
   .bloque-cab h3 { font-size: 2.1rem; }
   .filas { padding: 0; }
