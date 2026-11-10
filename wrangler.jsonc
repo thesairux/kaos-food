@@ -1,0 +1,21 @@
+// Configuración para Cloudflare Workers (proyecto con dirección .workers.dev).
+// Si usas Cloudflare Pages (.pages.dev), este archivo no se usa: Pages usa functions/ directamente.
+{
+  "name": "asiansushi",
+  "main": "worker.js",
+  "compatibility_date": "2025-09-01",
+
+  // Arma dist/ (solo los archivos de la página) antes de publicar
+  "build": { "command": "sh herramientas/construir.sh" },
+  "assets": { "directory": "./dist", "binding": "ASSETS" },
+
+  // No borra las variables que pongas en Cloudflare (Settings → Variables and Secrets) al publicar
+  "keep_vars": true,
+  "observability": { "enabled": true }
+
+  // Estadísticas: crea una base D1 en Cloudflare (Storage & Databases → D1), copia su «Database ID»,
+  // borra las dos barras // de las 3 líneas de abajo, pega el ID y sube el cambio a GitHub.
+  // ,"d1_databases": [
+  //   { "binding": "DB", "database_name": "asiansushi-estadisticas", "database_id": "PEGA-AQUI-EL-ID" }
+  // ]
+}

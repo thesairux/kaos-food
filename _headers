@@ -1,0 +1,15 @@
+# Cabeceras de la página en Cloudflare Pages
+/carta.js
+  Cache-Control: no-cache
+
+/admin
+  X-Robots-Tag: noindex, nofollow
+
+/admin.html
+  X-Robots-Tag: noindex, nofollow
+
+/img/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/fotos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
