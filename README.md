@@ -13,6 +13,9 @@ batidos, y waffles y postres. Las 44 fotos salen del mismo PDF.
 El pedido va **solo por WhatsApp**: no hay cuentas, correo ni pago online. El total es referencial: el local
 confirma disponibilidad y total al responder.
 
+El local no reparte desde la página: el delivery va por **Uber Eats** y **PedidosYa**, con sus botones en
+Ubicación y dentro del pedido.
+
 La página funciona sin servidor (también abriendo `index.html` directo en el navegador). Se puede publicar en
 **Vercel** o en **Cloudflare** con los mismos archivos: los servidores (panel, asistente y estadísticas) están en
 `functions/api/`; en Vercel los atiende `api/` (un adaptador corto) y en Cloudflare se usan directo.
@@ -73,8 +76,10 @@ logo redondo del local.
   (La Serena) la confirmó el local. Si hay número de calle, agrégalo en `negocio.direccion` para que el mapa
   apunte justo.
 - **Solo retiro**: el reparto a domicilio va por apps, así que la página no ofrece delivery
-  (`"soloRetiro": true` en `negocio`). Si algún día reparten directo, saca esa línea y carga los
-  `sectoresDelivery` con su valor.
+  (`"soloRetiro": true` en `negocio`). Para quien quiera delivery están los botones de **Uber Eats** y
+  **PedidosYa** (`appsDelivery`), que salen en Ubicación, dentro del pedido y en el asistente. Se editan en el
+  panel, en «Local y WhatsApp → Apps de delivery»; el enlace tiene que empezar con `https://`. Si algún día
+  reparten directo, saca `soloRetiro` y carga los `sectoresDelivery` con su valor.
 - **Horario**: 09:30 a 00:30 todos los días, como dice el menú. Está confirmado (`"horarioConfirmado": true`):
   fuera de horario los productos dicen «Cerrado» y no se pueden agregar. Si algún día cierran, se marca en
   `diasCerrados` o se cambia ese día a `"cerrado"`.
@@ -316,6 +321,9 @@ La sección con `"promos": true` (o con «promo» en el nombre) es la que el pan
   Se editan en el panel, en «Local y WhatsApp».
 - **Formas de pago**: `"pagosDelivery": ["Efectivo", "Transferencia", "Edenred"]` (al recibir) y
   `"pagosRetiro": ["Efectivo", "Transferencia", "Tarjeta", "Edenred"]` (al retirar).
+- **Solo retiro**: `"soloRetiro": true` en `negocio` saca el delivery de la página; todos los pedidos son
+  para retirar. Se acompaña de `"appsDelivery": [{ "nombre": "Uber Eats", "url": "https://…" }, …]`, que salen
+  como botones en Ubicación y en el pedido (solo direcciones `https://`).
 - **Delivery por sectores**: `"sectoresDelivery": [{ "nombre": "Centro", "detalle": "…", "precio": 2500 }, …]`. Al
   pedir delivery el cliente elige su sector; el valor se suma al total y va en el mensaje.
 - **Productos de un día**: `"dias": ["lunes"]` en un producto: solo se puede pedir ese día (los otros días dice

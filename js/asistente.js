@@ -136,9 +136,16 @@
 
   /* ---------- pintar la conversación ---------- */
   function formato(s) {
+    /* Los enlaces con texto se guardan aparte: si no, el autoenlace de las direcciones sueltas
+       volvería a entrar dentro del href que se acaba de armar. */
+    var guardados = [];
     var h = esc(s)
       .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
-      .replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function (_, t, u) {
+        return "\u0000" + (guardados.push('<a href="' + u + '" target="_blank" rel="noopener">' + t + "</a>") - 1) + "\u0000";
+      })
+      .replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')
+      .replace(/\u0000(\d+)\u0000/g, function (_, i) { return guardados[+i]; });
     return h.split(/\n/).map(function (l) {
       return /^\s*[-•*]\s+/.test(l) ? '<span class="asis-item">' + l.replace(/^\s*[-•*]\s+/, "") + "</span>" : l;
     }).join("<br>").replace(/<br>(<span class="asis-item">)/g, "$1").replace(/(<\/span>)<br>/g, "$1");
@@ -407,8 +414,12 @@
           opciones: [OP.demora, OP.pagos, OP.pedir] };
       }
       if (N.soloRetiro === true) {
+        var apps = (N.appsDelivery || []).filter(function (x) { return x && x.nombre && /^https:\/\//i.test(String(x.url || "")); });
         return { texto: "Por aquí los pedidos son para **retirar en el local** 🛍️ Te esperamos en " + (N.direccion || "el local") +
-          (N.ciudad ? ", " + N.ciudad : "") + ".\n\nSi repartimos a domicilio por alguna app, pregúntanos por WhatsApp.",
+            (N.ciudad ? ", " + N.ciudad : "") + "." +
+            (apps.length
+              ? "\n\nSi lo quieres a domicilio 🛵 pídenos por " + listaY(apps.map(function (x) { return "[" + x.nombre + "](" + x.url + ")"; })) + "."
+              : "\n\nSi repartimos a domicilio por alguna app, pregúntanos por WhatsApp."),
           opciones: [OP.ubicacion, OP.horario, OP.pedir] };
       }
       return { texto: "Consulta el delivery por WhatsApp y te contamos al tiro.", wsp: true };

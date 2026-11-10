@@ -54,6 +54,7 @@ async function api() {
     opciones: [{ id: 'soya', nombre: 'Soya' }, { id: 'teriyaki', nombre: 'Teriyaki' }]
   }]);
   mala.negocio.facebook = 'javascript:alert(1)'; mala.negocio.mapa = 'javascript:alert(2)';
+  mala.negocio.appsDelivery = [{ nombre: 'Mala', url: 'javascript:alert(3)' }, { nombre: 'Buena', url: 'https://apps.example/kaos' }];
   mala.tema = { color: '#00ff00', colorDestacado: '#0000ff' };
   let r = await publicar(mala);
   ok(r.status === 200, 'publicar una carta con valores peligrosos responde 200');
@@ -61,6 +62,8 @@ async function api() {
   ok(pp.unidad === undefined && pp.rolls === undefined && pp.foto === undefined, 'se descartan unidad con HTML, rolls que no es número y foto data:');
   ok(ps.min === 0 && ps.max === 50, 'min/max quedan como números acotados (' + ps.min + ', ' + ps.max + ')');
   ok(P.negocio.facebook === undefined && P.negocio.mapa === undefined, 'se descartan enlaces javascript:');
+  ok(P.negocio.appsDelivery.length === 1 && P.negocio.appsDelivery[0].url === 'https://apps.example/kaos',
+    'de las apps de delivery solo queda la de https');
   ok(JSON.stringify(P.tema) === JSON.stringify(O.tema), 'el tema sigue siendo el publicado');
 
   // __proto__ para cambiar el nombre

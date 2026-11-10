@@ -149,6 +149,13 @@ function limpiarCarta(site) {
   const n = objeto(site.negocio) ? site.negocio : (site.negocio = {});
   ["facebook", "mapa"].forEach(k => { if (n[k] != null && !httpsOk(n[k])) delete n[k]; });
   lista(n.sucursales).forEach(x => { if (objeto(x) && x.mapa != null && !httpsOk(x.mapa)) delete x.mapa; });
+  // apps de delivery: se quedan solo las que traen nombre y una dirección https
+  if (n.appsDelivery != null) {
+    n.appsDelivery = lista(n.appsDelivery)
+      .filter(x => objeto(x) && typeof x.nombre === "string" && x.nombre.trim() && httpsOk(x.url))
+      .map(x => ({ nombre: x.nombre.trim().slice(0, 40), url: x.url.trim() }));
+    if (!n.appsDelivery.length) delete n.appsDelivery;
+  }
   site.secciones.forEach(sec => lista(sec && sec.categorias).forEach(cat => lista(cat && cat.productos).forEach(p => {
     if (!objeto(p)) return;
     if (p.unidad != null && !(typeof p.unidad === "string" && /^[\p{L} ]{1,20}$/u.test(p.unidad))) delete p.unidad;

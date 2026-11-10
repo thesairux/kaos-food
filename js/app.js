@@ -28,6 +28,16 @@
   /* La carta la escribe el panel: lo que no es texto de confianza se limpia antes de usarlo. */
   // enlaces: solo https (javascript:, data: y otros esquemas no se usan)
   function enlaceSeguro(u) { u = String(u == null ? "" : u).trim(); return /^https:\/\//i.test(u) ? u : ""; }
+  /* Apps de delivery del local ("appsDelivery" en carta.js): solo las que traen nombre y dirección https. */
+  function appsDelivery() {
+    return (N.appsDelivery || []).map(function (a) {
+      return a && a.nombre ? { nombre: unaLinea(a.nombre, 40), url: enlaceSeguro(a.url) } : null;
+    }).filter(function (a) { return a && a.nombre && a.url; });
+  }
+  function botonApp(a) {
+    return '<a class="app-delivery" href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
+      esc(a.nombre) + icono("flecha") + "</a>";
+  }
   // texto de una línea (p. ej. datos de Photon): sin caracteres de control ni saltos de línea
   function unaLinea(t, max) {
     return String(t == null ? "" : t).replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ").replace(/\s{2,}/g, " ").trim().slice(0, max || 160);
@@ -446,6 +456,13 @@
       pieWsp.innerHTML = numeros.map(function (s) {
         return botonWsp(s, "wsp-sucursal", "<span><b>" + esc(s.nombre) + "</b><small>" + esc(s.whatsappVisible || "+" + s.whatsapp) + "</small></span>" + icono("flecha"));
       }).join("");
+    }
+    // apps de delivery ("appsDelivery" en carta.js): el local reparte por ahí, no desde esta página
+    var apps = appsDelivery();
+    var cajaApps = $("[data-apps-delivery]");
+    if (cajaApps) {
+      cajaApps.hidden = !apps.length;
+      if (apps.length) $("[data-apps-delivery-botones]").innerHTML = apps.map(botonApp).join("");
     }
     // lo que no tiene datos (dirección, horario, Instagram) no se muestra
     $$("[data-si]").forEach(function (el) { el.hidden = !datos[el.getAttribute("data-si")]; });
@@ -1239,6 +1256,12 @@
         ? "<b>Retiras en " + esc(direccionCompleta()) + "</b>" + (CON_HORARIO ? "<span>" + esc(horarioCorto()) + (HORARIO_ACTIVO ? "" : " (por confirmar)") + "</span>" : "")
         : "<b>Retiro en el local</b><span>Te confirmamos la dirección y la hora de retiro por WhatsApp.</span>") +
         (enlaceSeguro(N.mapa) ? '<a href="' + esc(enlaceSeguro(N.mapa)) + '" target="_blank" rel="noopener">Ver cómo llegar</a>' : "") + "</div>";
+      /* El local no reparte desde la página: si alguien quiere delivery, va por las apps. */
+      var appsPedido = appsDelivery();
+      if (appsPedido.length) {
+        html += '<p class="apps-pedido"><span>¿Prefieres delivery? Pídenos por</span>' +
+          appsPedido.map(botonApp).join("") + "</p>";
+      }
     } else {
       var zonas = sectores();
       if (zonas.length) {

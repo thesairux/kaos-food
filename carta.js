@@ -10,6 +10,9 @@
   - "tema": colores de la marca. "color" es el principal (botones, detalles) y "colorDestacado" el de
     los títulos destacados. Van en formato #rrggbb. Si quedan vacíos, se usan el rojo y el amarillo de la plantilla.
   - soloRetiro: con true la página no ofrece delivery y todos los pedidos son para retirar en el local.
+  - appsDelivery: las apps donde sí hay delivery, ej:
+      [{ "nombre": "Uber Eats", "url": "https://..." }]. Salen como botones en Ubicación y en el pedido.
+      Las direcciones tienen que empezar con https://
     Quítalo (o ponlo en false) cuando el local reparta a domicilio y agrega los "sectoresDelivery".
   - Horario: "13:00-22:00" o "cerrado". Para dos turnos: "12:00-15:30, 19:00-23:00".
     Si "horario" queda en null, la página no muestra abierto/cerrado y siempre deja pedir.
@@ -18,7 +21,7 @@
   - diasCerrados: fechas en que no se atiende aunque el horario diga abierto. Ej: ["2026-12-25"].
   - "textos": los títulos y textos fijos de la página (portada, carta, pasos, pie).
   - Lo que quede vacío ("") no se muestra: por ejemplo, sin "direccion" no aparece la sección Ubicación.
-  - "secciones" son los botones grandes de la carta (Combos, Sandwiches, Bebidas…) y cada una tiene
+  - "secciones" son los botones grandes de la carta (Promos, Sushi, Hamburguesas…) y cada una tiene
     sus "categorias" (si hay más de una, aparecen como botones chicos).
   - Producto agotado: agrega "disponible": false
   - Producto en la portada (promo destacada): agrega "destacado": true y una "foto".
@@ -68,6 +71,16 @@ window.CARTA = {
     "pagosRetiro": [
       "Efectivo",
       "Transferencia"
+    ],
+    "appsDelivery": [
+      {
+        "nombre": "Uber Eats",
+        "url": "https://www.ubereats.com/cl/store/kaos-food/hDNtRKLVTPmLlzImMUkVSg"
+      },
+      {
+        "nombre": "PedidosYa",
+        "url": "https://www.pedidosya.cl/restaurantes/la-serena/kaos-food-ce9059b7-7c51-4a59-affd-37785d16c88a-menu"
+      }
     ]
   },
   "tema": {
@@ -115,7 +128,7 @@ window.CARTA = {
         },
         {
           "titulo": "Retiras en el local",
-          "texto": "Te esperamos en José Joaquín Latorre, frente a pasaje Verona, La Serena. Abierto todos los días de 09:30 a 00:30."
+          "texto": "Te esperamos en José Joaquín Latorre, frente a pasaje Verona, La Serena. Abierto todos los días de 09:30 a 00:30. ¿Prefieres delivery? Pídenos por Uber Eats o PedidosYa."
         },
         {
           "titulo": "Envía por WhatsApp",

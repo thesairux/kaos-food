@@ -643,6 +643,7 @@ function withDefaults(site) {
   if (!Array.isArray(s.personalizacion)) s.personalizacion = [];
   if (!Array.isArray(s.cupones)) s.cupones = [];
   if (!Array.isArray(s.negocio.sectoresDelivery)) s.negocio.sectoresDelivery = [];
+  if (!Array.isArray(s.negocio.appsDelivery)) s.negocio.appsDelivery = [];
   s.cupones.forEach(c => { ["dias", "aplica"].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; }); });
   s.personalizacion.forEach(g => { if (!Array.isArray(g.opciones)) g.opciones = []; });
   const t = s.textos && typeof s.textos === "object" ? s.textos : {};
@@ -1510,6 +1511,12 @@ const GROUPS = [
       field("Enlace de Google Maps", "negocio.mapa", { type: "url", hint: "Se abre con «Ver cómo llegar»" }) +
       field("Búsqueda para el mapa de la página", "negocio.mapaBusqueda", { hint: "Nombre del local y dirección, como en Google Maps" }) +
       field("Datos para transferencia", "negocio.datosTransferencia", { area: true, rows: 4, hint: "Se muestran cuando el cliente elige pagar con transferencia", ph: "Banco…\nCuenta…\nRUT…" }) +
+      `<div class="f">Apps de delivery<small>Si el reparto va por apps, salen como botones en la página y en el pedido. La dirección tiene que empezar con https://</small></div>` +
+      state.negocio.appsDelivery.map((x, i, l) => `<div class="item">
+        <div class="item-head"><strong data-vacio="App nueva">${esc(x.nombre || "App nueva")}</strong>${tools("negocio.appsDelivery", i, l.length, "app")}</div>
+        <div class="dos">${field("Nombre", `negocio.appsDelivery.${i}.nombre`, { ph: "Uber Eats" })}${field("Enlace", `negocio.appsDelivery.${i}.url`, { type: "url", ph: "https://..." })}</div>
+      </div>`).join("") +
+      `<div class="adds"><button class="add" type="button" data-action="add-app">${SVG.plus}Agregar app</button></div>` +
       `<div class="f">Sectores de delivery<small>El cliente elige su sector al pedir delivery y el valor se suma al total.</small></div>` +
       state.negocio.sectoresDelivery.map((x, i, l) => `<div class="item">
         <div class="item-head"><strong data-vacio="Sector nuevo">${esc(x.nombre || "Sector nuevo")}</strong>${tools("negocio.sectoresDelivery", i, l.length, "sector")}</div>
@@ -1721,6 +1728,8 @@ groupsEl.addEventListener("click", e => {
     return;
   } else if (a === "add-sector") {
     state.negocio.sectoresDelivery.push({ nombre: "", detalle: "", precio: "" });
+  } else if (a === "add-app") {
+    state.negocio.appsDelivery.push({ nombre: "", url: "" });
   } else if (a === "add-date") {
     state.diasCerrados.push("");
   } else if (a === "del-date") {
@@ -1813,6 +1822,10 @@ function cleanSite(vista) {
     return y;
   }).filter(x => vista || (x.nombre && typeof x.precio === "number"));
   if (!n.sectoresDelivery.length) delete n.sectoresDelivery;
+  n.appsDelivery = (n.appsDelivery || [])
+    .map(x => ({ nombre: String(x.nombre || "").trim(), url: String(x.url || "").trim() }))
+    .filter(x => vista || (x.nombre && /^https:\/\//i.test(x.url)));
+  if (!n.appsDelivery.length) delete n.appsDelivery;
   n.instagram = String(n.instagram || "").trim().replace(/^@/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/.*$/, "");
   delete n.valorDelivery; delete n.notaDelivery;   // el valor del delivery se confirma por WhatsApp
   if (!n.datosTransferencia) n.datosTransferencia = null;

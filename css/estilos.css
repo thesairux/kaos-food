@@ -216,13 +216,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   border: 1px solid rgba(255, 255, 255, .3); top: -46px; right: -40px;
 }
 .destacado { position: relative; background: #000; box-shadow: 0 30px 60px rgba(0, 0, 0, .45); }
+/* Las fotos llenan todo el marco («cover»): son fotos de plato, no productos recortados sobre blanco.
+   Con «contain» una foto vertical dejaba huecos a los lados y por ahí asomaba la promo anterior. */
 .destacado-foto { position: relative; aspect-ratio: 4 / 4.1; overflow: hidden; }
 .destacado-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* las fotos de esta carta son de producto sobre blanco: se ven enteras, con el recuadro del precio debajo
-   (no encima, para que no tape el plato) */
-.destacado-foto { background: var(--blanco); aspect-ratio: 1000 / 800; }
-.destacado-foto img { object-fit: contain; object-position: center; padding: 40px 10px 4px; }
-.destacado-foto::after { background: linear-gradient(180deg, rgba(0, 0, 0, .38) 0%, transparent 16%) !important; }
 /* la foto nueva aparece con un fundido sobre la anterior; mientras carga, un brillo suave en vez de negro */
 .destacado-foto.sin-foto { background: radial-gradient(circle at 50% 45%, #3a1517 0%, #141217 70%); }
 .destacado-foto.sin-foto img { object-fit: contain; padding: 14% 28% 26%; }
@@ -231,7 +228,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .destacado-foto.esperando { background: linear-gradient(100deg, #141217 30%, #2a252f 50%, #141217 70%) 0 0 / 220% 100%; animation: cargando 1.3s linear infinite; }
 @keyframes cargando { from { background-position: 100% 0; } to { background-position: -120% 0; } }
 .destacado-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, transparent 38%); }
-.destacado-foto.esperando { background: linear-gradient(100deg, #efedeb 30%, #faf9f8 50%, #efedeb 70%) 0 0 / 220% 100%; }
 .destacado-frase {
   position: absolute; z-index: 1; left: 22px; top: 50px; font: 800 2.05rem/.95 var(--titulo); text-transform: uppercase;
   text-shadow: 0 2px 14px rgba(0, 0, 0, .5);
@@ -275,6 +271,22 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .destacado-precio { font-weight: 700; font-size: 1.55rem; letter-spacing: -.02em; }
 .destacado-panel .agregar { background: var(--principal); color: var(--blanco); padding: 10px 12px 10px 16px; min-height: 44px; }
 .destacado-panel .agregar .mas { border-color: rgba(255, 255, 255, .7); color: var(--blanco); }
+
+/* apps de delivery: el local no reparte desde la página, el pedido a domicilio va por estas apps */
+.apps-delivery { margin-top: 22px; }
+.apps-delivery-titulo { display: block; margin-bottom: 10px; font-size: .9rem; color: var(--suave); }
+.apps-delivery-botones, .apps-pedido { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.apps-pedido { margin: 10px 0 0; }
+.apps-pedido > span { flex-basis: 100%; font-size: .85rem; color: var(--suave); }
+.app-delivery {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px;
+  border: 1.5px solid var(--acento-borde); border-radius: 999px; background: var(--acento-fondo);
+  color: var(--principal); font-weight: 700; font-size: .92rem; text-decoration: none;
+  transition: background .2s, border-color .2s, box-shadow .2s;
+}
+.app-delivery:hover { background: var(--blanco); border-color: var(--acento); box-shadow: 0 0 0 2px rgb(var(--acento-rgb) / .15); }
+.app-delivery:focus-visible { outline: 2px solid var(--principal); outline-offset: 2px; }
+.app-delivery .icono { width: 16px; height: 16px; }
 
 /* ---------- carta ---------- */
 .carta {

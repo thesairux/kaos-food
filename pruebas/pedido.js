@@ -86,10 +86,34 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   console.log('4) Solo retiro: la página no ofrece delivery');
   ok(await p.locator('input[name="modo"]').count() === 0, 'no se pregunta retiro o delivery: todos los pedidos son para retirar');
   ok(await p.locator('[data-campo="direccion"], input[name="sector"]').count() === 0, 'no pide dirección de entrega ni sector');
-  ok(!/delivery|despacho a domicilio/i.test(await p.locator('[data-pedido]').innerText()), 'el carrito no habla de delivery');
+  const appsCarrito = await p.$$eval('.apps-pedido .app-delivery', x => x.map(a => a.innerText.trim() + '|' + a.href + '|' + a.target));
+  ok(appsCarrito.length === 2
+    && appsCarrito[0].startsWith('Uber Eats|https://www.ubereats.com/')
+    && appsCarrito[1].startsWith('PedidosYa|https://www.pedidosya.cl/')
+    && appsCarrito.every(x => x.endsWith('|_blank')),
+    'pero sí ofrece las apps para quien quiera delivery: ' + appsCarrito.join(' · '));
   ok(await pie() === 'Enviar pedido por WhatsApp', 'queda listo para enviar: ' + await pie());
 
-  console.log('5) Fuera de horario');
+  console.log('5) Apps de delivery y promos de la portada');
+  await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+  const appsUbic = await p.$$eval('[data-apps-delivery] .app-delivery', x => x.map(a => a.innerText.trim() + '|' + a.href));
+  ok(appsUbic.length === 2 && appsUbic[0].startsWith('Uber Eats|https://') && appsUbic[1].startsWith('PedidosYa|https://'),
+    'en Ubicación también están las apps: ' + appsUbic.join(' · '));
+  ok(!(await p.locator('[data-apps-delivery]').isHidden()), 'el bloque de apps se muestra');
+  // las promos llenan el marco: con «contain» una foto vertical dejaba ver la promo anterior a los lados
+  const fit = await p.$$eval('.destacado-foto img', x => x.map(i => getComputedStyle(i).objectFit));
+  ok(fit.length > 0 && fit.every(f => f === 'cover'), 'las fotos de las promos llenan el marco (' + fit.join(', ') + ')');
+  await p.locator('[data-pausa]').click();
+  for (let i = 0; i < 4; i++) {
+    await p.locator('[data-ir="' + i + '"]').click(); await p.waitForTimeout(600);
+    const caben = await p.$$eval('.destacado-foto img', (x, _) => x.map(i => {
+      const c = i.parentNode.getBoundingClientRect(), r = i.getBoundingClientRect();
+      return Math.round(r.width) >= Math.round(c.width) && Math.round(r.height) >= Math.round(c.height);
+    }));
+    ok(caben.every(Boolean), 'la promo ' + (i + 1) + ' tapa todo el marco, sin que asome la anterior');
+  }
+
+  console.log('6) Fuera de horario');
   const c2 = await b.newContext({ viewport: { width: 1280, height: 900 }, timezoneId: 'America/Santiago' });
   await c2.clock.setFixedTime(new Date('2026-11-09T10:00:00Z'));   // lunes 07:00 en Chile: cerrado (abre 09:30)
   const q = await c2.newPage(); vigilar(q, 'cerrado');
@@ -98,7 +122,7 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok(await q.locator('[data-lista] .estado-pill', { hasText: /cerrado/i }).count() > 0 && !(await q.locator('[data-lista] .agregar').count()), 'y los productos dicen «Cerrado»');
   await c2.close();
 
-  console.log('6) Celular');
+  console.log('7) Celular');
   const m = await ctx.newPage(); vigilar(m, 'celular');
   await m.setViewportSize({ width: 390, height: 844 });
   await m.goto(BASE + '/'); await m.waitForTimeout(800);
@@ -108,7 +132,7 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok(Math.abs(cab2 - nav2) <= 2, 'en el celular también (' + cab2 + ' y ' + nav2 + ')');
   await m.screenshot({ path: require('path').join(require('os').tmpdir(), 'kaos-celular.png') });
 
-  console.log('7) El asistente no habla de sushi');
+  console.log('8) El asistente no habla de sushi');
   await m.locator('[data-asis-abrir]').first().click(); await m.waitForTimeout(600);
   ok(await m.locator('[data-asis-saludo]').count() === 0, 'no hay burbuja de saludo: solo el botón «¿Te ayudo?»');
   const chat = await m.locator('[data-asis-cuerpo]').innerText();
@@ -117,6 +141,10 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   const veg = await m.$$eval('[data-asis-cuerpo] .asis-prod', x => x.map(y => y.innerText.split('\n')[0].trim()));
   ok(veg.length > 0 && !veg.some(n => /carne|churrasco|mechada|lomit|pollo|hamburgues|vienesa|tocino|chorrillana/i.test(n)),
     'lo que ofrece como vegetariano no trae carne: ' + veg.join(', '));
+  await m.fill('[data-asis-texto]', '¿hacen delivery?'); await m.press('[data-asis-texto]', 'Enter'); await m.waitForTimeout(900);
+  const appsChat = await m.$$eval('[data-asis-cuerpo] > *:last-child a', x => x.map(a => a.innerText.trim() + '|' + a.href));
+  ok(appsChat.length === 2 && appsChat[0].startsWith('Uber Eats|https://') && appsChat[1].startsWith('PedidosYa|https://'),
+    'si preguntan por delivery, el chat pasa las apps como enlaces: ' + appsChat.join(' · '));
 
   ok(!llamadas.length, 'la página no llama a ningún servidor de pedidos' + (llamadas.length ? ': ' + llamadas.join(', ') : ''));
   ok(!errores.length, 'sin errores en la consola' + (errores.length ? ': ' + errores.join(' | ') : ''));
