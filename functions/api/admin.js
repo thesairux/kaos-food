@@ -9,7 +9,7 @@
     ADMIN_PASSWORD  (obligatoria, como «Secret») contraseña de la cuenta principal del panel, de 12 caracteres
                     o más. No hay contraseña de fábrica, para que cada cliente que use esta plantilla tenga la suya.
     GITHUB_REPO     "usuario/repositorio" de la página en GitHub (obligatoria en Cloudflare; Vercel lo sabe solo).
-    ADMIN_USER      (opcional) usuario de la cuenta principal. Si no existe: asiansushi
+    ADMIN_USER      (opcional) usuario de la cuenta principal. Si no existe: kaosfood
     GITHUB_BRANCH   (opcional) rama donde se guardan los cambios. Si no existe: la rama publicada, o main
   Para las estadísticas: en Cloudflare una base D1 con el nombre DB; en Vercel, Upstash for Redis (Storage).
 */
@@ -19,7 +19,7 @@ import { hayBase, leer as leerEstadisticas } from "../../lib/estadisticas-db.js"
 // Las variables del proyecto llegan con cada pedido; aquí quedan a mano para las funciones de abajo.
 let ENV = {};
 
-const DEFAULT_USER = "asiansushi";
+const DEFAULT_USER = "kaosfood";
 const CONTENT_FILE = "carta.js";
 const MAX_PHOTO_BYTES = 3.5 * 1024 * 1024;
 const MAX_SITE_CHARS = 400000;
@@ -53,7 +53,7 @@ function token() {
 }
 function plataforma() { return ENV.PLATAFORMA || "cloudflare"; }
 function repo() {
-  const full = (ENV.GITHUB_REPO || "thesairux/asiansushi").trim();
+  const full = (ENV.GITHUB_REPO || "thesairux/kaos-food").trim();
   return { full, branch: (ENV.GITHUB_BRANCH || ENV.CF_PAGES_BRANCH || "main").trim() };
 }
 async function gh(path, opts = {}) {

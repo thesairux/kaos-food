@@ -77,7 +77,7 @@ function archivo(pathname) {
 }
 
 const ENV = {
-  GITHUB_TOKEN: "ghp_prueba", ADMIN_PASSWORD: "clave-de-prueba-larga", GITHUB_REPO: "prueba/asiansushi", GITHUB_BRANCH: "main", CF_PAGES: "1",
+  GITHUB_TOKEN: "ghp_prueba", ADMIN_PASSWORD: "clave-de-prueba-larga", GITHUB_REPO: "prueba/kaos-food", GITHUB_BRANCH: "main", CF_PAGES: "1",
   ASSETS: { fetch: async u => { const f = archivo(new URL(String(u)).pathname); return f ? new Response(fs.readFileSync(f)) : new Response("no", { status: 404 }); } }
 };
 if (process.env.ANTHROPIC_API_KEY) ENV.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;

@@ -18,7 +18,7 @@ const usuario = 'prueba' + Date.now().toString(36);
   };
 
   console.log('1) El dueño crea una cuenta');
-  await entrar('asiansushi', 'clave-de-prueba-larga');
+  await entrar('kaosfood', 'clave-de-prueba-larga');
   await p.click('#btn-cuenta'); await p.waitForSelector('#crear-cuenta');
   await p.fill('#nc-usuario', usuario); await p.fill('#nc-clave', 'corta'); await p.click('#crear-cuenta button[type=submit]');
   ok(/al menos 12/.test(await p.locator('#crear-cuenta .cuenta-msg').innerText()), 'pide contraseñas de 12 caracteres o más');
@@ -51,11 +51,11 @@ const usuario = 'prueba' + Date.now().toString(36);
   ok((await api({ action: 'cuenta', user: usuario, pass: 'clave-de-prueba-1' })).status === 401, 'la contraseña vieja ya no entra');
   await p.fill('#pass', 'clave-nueva-2345'); await p.click('#login-btn'); await p.waitForSelector('#editor:not([hidden])');
   ok(true, 'entra con la contraseña nueva');
-  ok((await api({ action: 'recuperar', usuario: 'asiansushi', codigo: 'x', nueva: 'clave-nueva-2345' })).d.error === 'principal', 'la cuenta principal no se recupera con código (es la de Vercel)');
+  ok((await api({ action: 'recuperar', usuario: 'kaosfood', codigo: 'x', nueva: 'clave-nueva-2345' })).d.error === 'principal', 'la cuenta principal no se recupera con código (es la de Vercel)');
   await p.click('#logout');
 
   console.log('4) El dueño quita la cuenta');
-  await entrar('asiansushi', 'clave-de-prueba-larga');
+  await entrar('kaosfood', 'clave-de-prueba-larga');
   await p.click('#btn-cuenta'); await p.waitForSelector(`[data-c-borrar="${usuario}"]`);
   await p.click(`[data-c-borrar="${usuario}"]`); await p.click(`[data-c-borrar="${usuario}"]`);
   await p.waitForSelector(`[data-cuenta="${usuario}"]`, { state: 'detached' });
@@ -63,17 +63,17 @@ const usuario = 'prueba' + Date.now().toString(36);
   await p.click('#cuenta-cerrar');
 
   console.log('5) Analítica');
-  const antes = (await api({ action: 'estadisticas', user: 'asiansushi', pass: 'clave-de-prueba-larga', dias: 1 })).d.dias[0];
+  const antes = (await api({ action: 'estadisticas', user: 'kaosfood', pass: 'clave-de-prueba-larga', dias: 1 })).d.dias[0];
   const cli = await (await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, timezoneId: 'America/Santiago' })).newPage();
   await cli.clock.setFixedTime(new Date('2026-11-09T15:00:00-03:00'));   // un lunes con el local abierto
   await cli.goto(BASE + '/'); await cli.waitForTimeout(400);
-  await cli.evaluate(() => document.querySelector('[data-agregar="tabla-40"]').click()); await cli.waitForTimeout(300);
+  await cli.evaluate(() => document.querySelector('[data-agregar="combo-1"]').click()); await cli.waitForTimeout(300);
   await cli.reload(); await cli.waitForTimeout(400);   // la misma visita no se cuenta dos veces
   await cli.close();
-  const despues = (await api({ action: 'estadisticas', user: 'asiansushi', pass: 'clave-de-prueba-larga', dias: 1 })).d;
+  const despues = (await api({ action: 'estadisticas', user: 'kaosfood', pass: 'clave-de-prueba-larga', dias: 1 })).d;
   const hoy = despues.dias[0];
   ok((hoy.visita || 0) - (antes.visita || 0) === 1, 'cuenta una visita por sesión');
-  ok((hoy.agregar || 0) - (antes.agregar || 0) === 1 && despues.agr['tabla-40'] >= 1, 'cuenta lo agregado al pedido y qué producto');
+  ok((hoy.agregar || 0) - (antes.agregar || 0) === 1 && despues.agr['combo-1'] >= 1, 'cuenta lo agregado al pedido y qué producto');
   ok((await fetch(BASE + '/api/estadisticas', { method: 'POST', body: JSON.stringify({ e: 'agregar', p: 'no-existe' }) })).status === 400, 'no acepta productos que no están en la carta');
   ok((await api({ action: 'estadisticas', user: 'x', pass: 'y' })).status === 401, 'las estadísticas piden contraseña');
   await p.click('#btn-stats'); await p.waitForSelector('.st-embudo');

@@ -14,7 +14,7 @@ const O = cartaDe(ORIGINAL);
 async function api() {
   console.log('1) API del panel');
   const PASS = 'clave-de-prueba-larga';
-  const ENV = { GITHUB_TOKEN: 'ghp_prueba', ADMIN_PASSWORD: PASS, GITHUB_REPO: 'prueba/asiansushi', GITHUB_BRANCH: 'main' };
+  const ENV = { GITHUB_TOKEN: 'ghp_prueba', ADMIN_PASSWORD: PASS, GITHUB_REPO: 'prueba/kaos-food', GITHUB_BRANCH: 'main' };
   let publicadoAhora = ORIGINAL, respuestaContenido = null, publicado = null;
   const json = (d, st = 200) => new Response(JSON.stringify(d), { status: st, headers: { 'Content-Type': 'application/json' } });
   global.fetch = async (url, o = {}) => {
@@ -40,15 +40,19 @@ async function api() {
     const t = await r.text();
     return { status: r.status, data: t ? JSON.parse(t) : null };
   };
-  const publicar = site => llamar({ user: 'asiansushi', pass: PASS, action: 'publish', site, photos: [] });
+  const publicar = site => llamar({ user: 'kaosfood', pass: PASS, action: 'publish', site, photos: [] });
 
   // carta con todo lo que la auditoría encontró
   const mala = JSON.parse(JSON.stringify(O));
   const prod = mala.secciones[0].categorias[0].productos[0];
   prod.unidad = '<img src=x onerror="window.__x=1">'; prod.rolls = '<b>2</b>';
   prod.foto = 'data:image/svg+xml,<svg/><!--");position:fixed;z:"-->';
-  const salsa = mala.personalizacion.find(g => g.id === 'salsa-incluida');
-  salsa.min = '<img src=x onerror="window.__y=1">'; salsa.max = '9999';
+  // grupo de prueba: la carta del local puede no usar personalización
+  mala.personalizacion = (mala.personalizacion || []).concat([{
+    id: 'salsa-incluida', nombre: 'Salsa incluida', tipo: 'elegir',
+    min: '<img src=x onerror="window.__y=1">', max: '9999',
+    opciones: [{ id: 'soya', nombre: 'Soya' }, { id: 'teriyaki', nombre: 'Teriyaki' }]
+  }]);
   mala.negocio.facebook = 'javascript:alert(1)'; mala.negocio.mapa = 'javascript:alert(2)';
   mala.tema = { color: '#00ff00', colorDestacado: '#0000ff' };
   let r = await publicar(mala);
@@ -80,7 +84,7 @@ async function api() {
   ok(r.status === 400 && r.data.error === 'datos', 'carta de más de 900 KB (en bytes) → 400 «datos»');
 
   // origen y tipo
-  r = await llamar({ user: 'asiansushi', pass: PASS, action: 'login' }, { 'sec-fetch-site': 'cross-site', origin: 'https://otro.example' });
+  r = await llamar({ user: 'kaosfood', pass: PASS, action: 'login' }, { 'sec-fetch-site': 'cross-site', origin: 'https://otro.example' });
   ok(r.status === 403, 'petición desde otro sitio → 403');
   for (const nombre of ['asistente', 'estadisticas']) {
     const m = await import(pathToFileURL(path.join(RAIZ, 'functions', 'api', nombre + '.js')).href);
@@ -88,18 +92,18 @@ async function api() {
     const rr = await (m.onRequestPost || m.onRequest)({ request, env: { ANTHROPIC_API_KEY: 'x', DB: { prepare() {} } }, waitUntil() {} });
     ok(rr.status === 403, '/api/' + nombre + ' desde otro sitio → 403');
   }
-  r = await llamar({ user: 'asiansushi', pass: PASS, action: 'login' }, { 'content-type': 'text/plain' });
+  r = await llamar({ user: 'kaosfood', pass: PASS, action: 'login' }, { 'content-type': 'text/plain' });
   ok(r.status === 415, 'cuerpo text/plain → 415');
-  r = await llamar({ user: 'asiansushi', pass: PASS, action: 'login' }, { origin: 'https://sitio.example', 'sec-fetch-site': 'same-origin' });
+  r = await llamar({ user: 'kaosfood', pass: PASS, action: 'login' }, { origin: 'https://sitio.example', 'sec-fetch-site': 'same-origin' });
   ok(r.status === 200, 'desde la misma página → 200');
 
   // límite de intentos por IP
-  const res = await Promise.all(Array.from({ length: 25 }, (_, i) => llamar({ user: 'asiansushi', pass: 'mala-' + i }, {}, '10.9.9.9')));
+  const res = await Promise.all(Array.from({ length: 25 }, (_, i) => llamar({ user: 'kaosfood', pass: 'mala-' + i }, {}, '10.9.9.9')));
   ok(res.filter(x => x.status === 429).length === 5 && res.filter(x => x.status === 401).length === 20, 'después de 20 intentos desde una IP → 429');
   ENV.ADMIN_PASSWORD = 'corta';
 
   // contraseña principal corta
-  r = await llamar({ user: 'asiansushi', pass: 'corta', action: 'login' });
+  r = await llamar({ user: 'kaosfood', pass: 'corta', action: 'login' });
   ok(r.status === 500 && r.data.error === 'clave-principal-corta', 'contraseña principal de menos de 12 caracteres → el panel no funciona');
   ENV.ADMIN_PASSWORD = PASS;
 }
@@ -111,7 +115,12 @@ async function pagina(b) {
   const prod = mala.secciones[0].categorias[0].productos[0];
   Object.assign(prod, { personalizar: ['salsa-incluida'], rolls: 2, unidad: '<img src=x onerror="window.__x1=1">',
     foto: 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'10\'/><!--");position:fixed;inset:0;z-index:99;x:url("-->' });
-  mala.personalizacion.find(g => g.id === 'salsa-incluida').min = '<img src=x onerror="window.__x2=1">';
+  // grupo de prueba: la carta del local puede no usar personalización
+  mala.personalizacion = (mala.personalizacion || []).concat([{
+    id: 'salsa-incluida', nombre: 'Salsa incluida', tipo: 'elegir',
+    min: '<img src=x onerror="window.__x2=1">', max: 1,
+    opciones: [{ id: 'soya', nombre: 'Soya' }, { id: 'teriyaki', nombre: 'Teriyaki' }]
+  }]);
   mala.negocio.facebook = 'javascript:window.__x3=1';
   const js = 'window.CARTA = ' + JSON.stringify(mala) + ';';
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
@@ -134,13 +143,15 @@ async function pagina(b) {
 async function panel(b) {
   console.log('3) Panel');
   const mala = JSON.parse(JSON.stringify(O));
-  mala.personalizacion[0].nombre = 'Grupo<img src=x onerror="window.__p=1">';
+  // grupo de prueba: la carta del local puede no usar personalización
+  mala.personalizacion = [{ id: 'prueba-grupo', nombre: 'Grupo<img src=x onerror="window.__p=1">',
+    tipo: 'elegir', min: 1, max: 1, opciones: [{ id: 'a', nombre: 'A' }] }].concat(mala.personalizacion || []);
   const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } });
   await ctx.route(BASE + '/api/admin', r => r.request().method() === 'POST'
     ? r.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true, site: mala }) }) : r.continue());
   const p = await ctx.newPage();
   await p.goto(BASE + '/admin');
-  await p.fill('#user', 'asiansushi'); await p.fill('#pass', 'clave-de-prueba-larga'); await p.click('#login-btn');
+  await p.fill('#user', 'kaosfood'); await p.fill('#pass', 'clave-de-prueba-larga'); await p.click('#login-btn');
   await p.waitForSelector('#editor:not([hidden])'); await p.waitForTimeout(800);
   ok(await p.evaluate(() => window.__p) === undefined, 'el nombre de grupo con HTML no se ejecuta al entrar');
   ok((await p.locator('#groups [data-group="armado"] summary small').textContent()).includes('<img'), 'el resumen lo muestra como texto');

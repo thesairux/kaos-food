@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#121014">
 <meta name="color-scheme" content="dark">
-<title>Panel de Asian Sushi Ovalle</title>
+<title>Panel de Kaos Food</title>
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -505,9 +505,9 @@ details.mas > div{display:grid;gap:.85rem;padding-top:.5rem}
 const DIAS = [["lunes", "Lunes"], ["martes", "Martes"], ["miercoles", "Miércoles"], ["jueves", "Jueves"], ["viernes", "Viernes"], ["sabado", "Sábado"], ["domingo", "Domingo"]];
 /* Textos fijos de la página: si faltan en carta.js, se usan estos */
 const TEXTOS = {
-  portada: { titulo: "Sushi, burgers", destacado: "y más", bajada: "" },
+  portada: { titulo: "¿Tienes", destacado: "hambre?", bajada: "" },
   carta: { titulo: "Elige tu", destacado: "antojo", bajada: "" },
-  arma: { titulo: "Arma tu", destacado: "roll" },
+  arma: { titulo: "Arma tu", destacado: "pedido" },
   pasos: { titulo: "Haz tu pedido", destacado: "en 3 pasos.", lista: [{ titulo: "", texto: "" }, { titulo: "", texto: "" }, { titulo: "", texto: "" }] },
   ubicacion: { titulo: "Te esperamos" },
   antojo: { titulo: "¿Qué se te", destacado: "antoja hoy?" },
@@ -758,7 +758,7 @@ function pintarStats(d) {
         <li>Conéctala a este proyecto (Vercel agrega las claves solo).</li>
         <li>Ve a <b>Deployments</b> y toca <b>Redeploy</b>. Desde ahí se empiezan a contar las visitas.</li></ol>`
       : `<p class="st-nota">Para guardar las visitas y los pedidos, la página necesita una base de datos gratuita de Cloudflare (D1). Se hace una sola vez:</p>
-      <ol class="st-pasos"><li>En Cloudflare, abre <b>Storage &amp; Databases → D1</b> y crea una base de datos (por ejemplo «asiansushi-estadisticas»).</li>
+      <ol class="st-pasos"><li>En Cloudflare, abre <b>Storage &amp; Databases → D1</b> y crea una base de datos (por ejemplo «kaosfood-estadisticas»).</li>
         <li>Abre tu proyecto de Pages: <b>Settings → Bindings → Add → D1 database</b>.</li>
         <li>En el nombre de la variable escribe <b>DB</b> (así, en mayúsculas) y elige la base que creaste.</li>
         <li>Ve a <b>Deployments</b> y vuelve a publicar el último (<b>Retry deployment</b>). Desde ahí se empiezan a contar las visitas.</li></ol>
@@ -1206,8 +1206,8 @@ function productHTML(p, base, i, len, cat, promo) {
     ${promo ? "" : diasHTML(p, base)}`;
   return `<div class="item" data-producto="${esc(p.id)}">
     <div class="item-head"><strong data-vacio="${vacio}">${esc(p.nombre || vacio)}</strong>${tools(base.replace(/\.\d+$/, ""), i, len, promo ? "promo" : "producto")}</div>
-    <div class="dos">${field("Nombre", `${base}.nombre`)}${field("Precio", `${base}.precio`, { num: "entero", ph: "14500", hint: "Sin punto ni $" })}</div>
-    ${field(promo ? "Qué trae" : "Descripción", `${base}.detalle`, { area: true, rows: 3, hint: promo ? "Ej: 30 piezas: 10 California, 10 Hosomaki…" : "Si son varias variedades, una por línea" })}
+    <div class="dos">${field("Nombre", `${base}.nombre`)}${field("Precio", `${base}.precio`, { num: "entero", ph: "7000", hint: "Sin punto ni $" })}</div>
+    ${field(promo ? "Qué trae" : "Descripción", `${base}.detalle`, { area: true, rows: 3, hint: promo ? "Ej: Un completo, papas medianas y bebida" : "Si son varias variedades, una por línea" })}
     ${field("Nota destacada", `${base}.nota`, { ph: promo ? "Ej: Válida solo esta semana" : "Ej: Válido por tiempo limitado" })}
     ${promo ? diasHTML(p, base) : ""}
     ${foto}
@@ -1513,7 +1513,7 @@ const GROUPS = [
       `<div class="f">Sectores de delivery<small>El cliente elige su sector al pedir delivery y el valor se suma al total.</small></div>` +
       state.negocio.sectoresDelivery.map((x, i, l) => `<div class="item">
         <div class="item-head"><strong data-vacio="Sector nuevo">${esc(x.nombre || "Sector nuevo")}</strong>${tools("negocio.sectoresDelivery", i, l.length, "sector")}</div>
-        <div class="dos">${field("Sector", `negocio.sectoresDelivery.${i}.nombre`, { ph: "Ovalle" })}${field("Valor del delivery", `negocio.sectoresDelivery.${i}.precio`, { num: "entero", ph: "2500", hint: "Sin punto ni $" })}</div>
+        <div class="dos">${field("Sector", `negocio.sectoresDelivery.${i}.nombre`, { ph: "La Serena" })}${field("Valor del delivery", `negocio.sectoresDelivery.${i}.precio`, { num: "entero", ph: "2500", hint: "Sin punto ni $" })}</div>
         ${field("Qué incluye", `negocio.sectoresDelivery.${i}.detalle`, { ph: "Ej: Puertas del Sol, Santa Antonia…" })}
       </div>`).join("") +
       `<div class="adds"><button class="add" type="button" data-action="add-sector">${SVG.plus}Agregar sector</button></div>` },

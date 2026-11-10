@@ -1,16 +1,17 @@
-# Asian Sushi Ovalle: página web
+# Kaos Food: página web
 
-Página de pedidos de **Asian Sushi Ovalle** (Sergio Peralta 758, Ovalle · +56 9 5883 6237 · @asiansushiovalle),
-hecha con la plantilla de páginas de pedidos de altiroweb.cl: portada con promos destacadas, carta con buscador
-y fotos, «Arma tu roll», gohan y sushiburger con sus ingredientes, y envío del pedido ordenado por WhatsApp, con
-retiro o delivery.
+Página de pedidos de **Kaos Food** (José Joaquín Latorre, frente a pasaje Verona, La Serena · +56 9 3482 9829 ·
+kaosfood.ls@gmail.com), hecha con la plantilla de páginas de pedidos de altiroweb.cl: portada con promos
+destacadas, carta con buscador y fotos, asistente que responde con la carta, y envío del pedido ordenado por
+WhatsApp para retirar en el local.
 
-La carta es la del menú en PDF del local (14 páginas): tablas, tablas especiales y veggie, entrantes, creación de la
-casa, rolls premium, gohan y sushiburger, arma tu roll (con arroz, sin arroz y hosomaki) y extras. Las fotos salen
-del mismo PDF, recortadas y mejoradas.
+La carta es la del menú online del local en PDF (58 páginas): 165 productos en 12 secciones — combos, colaciones,
+sándwiches (ave, carne mechada, churrasco, hamburguesa y lomito), completos y as, «arma tu…», papas fritas,
+chorrillanas, para picar (hand roll, empanadas, ensaladas y agregados), promos con lata, bebidas, jugos y
+batidos, y waffles y postres. Las 44 fotos salen del mismo PDF.
 
 El pedido va **solo por WhatsApp**: no hay cuentas, correo ni pago online. El total es referencial: el local
-confirma disponibilidad, delivery y total al responder.
+confirma disponibilidad y total al responder.
 
 La página funciona sin servidor (también abriendo `index.html` directo en el navegador). Se puede publicar en
 **Vercel** o en **Cloudflare** con los mismos archivos: los servidores (panel, asistente y estadísticas) están en
@@ -48,53 +49,59 @@ deja fuera las cuentas (`privado/`) y las pruebas; y como solo se publica `dist/
 ### Si Cloudflare lo creó como Worker (dirección `.workers.dev`)
 
 Cloudflare a veces crea el proyecto como **Worker** en vez de Pages. También funciona: `wrangler.jsonc` y `worker.js`
-lo dejan listo con el nombre `asiansushi`.
+lo dejan listo con el nombre `kaos-food`.
 - En el Worker, **Settings → Build**: *Build command* `sh herramientas/construir.sh` y *Deploy command*
   `npx wrangler deploy` (lo normal). Cada cambio en GitHub (también los del panel) vuelve a publicar solo.
 - Las variables van igual en **Settings → Variables and Secrets** del Worker. `keep_vars` evita que se borren al publicar.
 - Estadísticas: crea la base D1, copia su *Database ID* y pégalo en `wrangler.jsonc` (las líneas de `d1_databases`
   están comentadas, con instrucciones). En un Worker la base se conecta ahí, no en el panel de Cloudflare.
-- Si el nombre de tu Worker no es `asiansushi`, cámbialo en `"name"` de `wrangler.jsonc`.
+- Si el nombre de tu Worker no es `kaos-food`, cámbialo en `"name"` de `wrangler.jsonc`.
 
 `herramientas/construir.sh` arma `dist/` solo con los archivos de la página: los servidores (`functions/`, `lib/`),
 las cuentas (`privado/`), las pruebas, las herramientas y este README no se publican. `_headers` pone las cabeceras
 (la carta sin caché y el panel fuera de Google). Cloudflare sirve `/admin` desde `admin.html` solo.
 
 Antes de publicar, revisa en `carta.js` → `negocio` el WhatsApp, la dirección, el mapa, las redes y los datos de
-transferencia. El logo (`img/logo-asian.webp`), `favicon.ico`, `img/icono-192.png` e `img/icono-180.png` salen del
+transferencia. El logo (`img/logo-kaos.webp`), `favicon.ico`, `img/icono-192.png` e `img/icono-180.png` salen del
 logo redondo del local.
 
 ## Pendiente de confirmar con el local
 
-- **Formas de pago**: el menú no las dice. Quedaron Efectivo y Transferencia, al retirar y al recibir
-  (`negocio.pagosRetiro` y `negocio.pagosDelivery`). Si acepta tarjeta o Edenred, se agregan ahí.
-- **Delivery**: cargado del afiche «Delivery Ovalle y alrededores»: Ovalle $2.500, extremo norte $3.000 y extremo
-  sur $4.000. Se cambian en el panel, en «Local y WhatsApp».
-- **Horario**: lunes a jueves 13:30-23:00, viernes y sábado 14:30-00:00 (medianoche), domingo 12:30-22:00. Está confirmado
-  (`"horarioConfirmado": true`): fuera de horario los productos dicen «Cerrado» y no se pueden agregar. Arriba no sale aviso de abierto o cerrado.
-  Con `false` el horario solo se muestra como referencia.
-- **Modificaciones en las tablas**: el menú dice «máximo 2 modificaciones, cada una con costo adicional», sin el
-  valor. Está como nota en cada grupo de tablas; el cliente las escribe en la nota del producto.
-- **Salsas incluidas en las tablas**: dice «soya o teriyaki» (3, 4 o 5 salsas según la tabla); el cliente lo
-  anota. En los rolls, nigiris, sashimi, gohan y arma tu roll (1 salsa) el cliente elige soya o teriyaki.
-- **Ingrediente extra y rebosar ($990 cada uno)**: no van sueltos en «Extras»; se eligen dentro de cada producto.
-  «Ingrediente extra» (hasta 3, de los ingredientes secundarios) está en los rolls premium, el gohan, la sushi
-  burger y los tres «Arma tu roll». «Rebosar el ingrediente base» (tempura o panko) está en los tres «Arma tu
-  roll»; el gohan y la sushi burger ya traen «rebosado o frío» sin costo. Confirmar si el ingrediente extra
-  también puede ser una proteína (grupos `ingrediente-extra` y `rebosar` en `personalizacion`).
-- **Fotos**: el hosomaki y las salsas van sin foto (el hosomaki muestra el logo hasta tener una foto del local).
-  Las cuatro «balls» usan la misma foto.
-- Datos para transferencia y Facebook (se agregan en el panel).
+- **Formas de pago**: el menú no las dice. Quedaron Efectivo y Transferencia (`negocio.pagosRetiro`). Si acepta
+  tarjeta, se agrega ahí o en el panel, en «Local y WhatsApp».
+- **Dirección**: el menú dice «José Joaquín Latorre (frente a pasaje verona)», sin número ni ciudad. La ciudad
+  (La Serena) la confirmó el local. Si hay número de calle, agrégalo en `negocio.direccion` para que el mapa
+  apunte justo.
+- **Solo retiro**: el reparto a domicilio va por apps, así que la página no ofrece delivery
+  (`"soloRetiro": true` en `negocio`). Si algún día reparten directo, saca esa línea y carga los
+  `sectoresDelivery` con su valor.
+- **Horario**: 09:30 a 00:30 todos los días, como dice el menú. Está confirmado (`"horarioConfirmado": true`):
+  fuera de horario los productos dicen «Cerrado» y no se pueden agregar. Si algún día cierran, se marca en
+  `diasCerrados` o se cambia ese día a `"cerrado"`.
+- **Redes sociales**: el menú solo trae un enlace de Facebook sin nombre de usuario y «kaos food». Falta el
+  Instagram y el enlace real de Facebook (`negocio.instagram` y `negocio.facebook`, o en el panel).
+- **Descripciones cortadas**: 13 productos tenían la descripción cortada por el «…» del menú online (los combos
+  1, 2 y 5 al 9, el pollo a la plancha, los cuatro «mojojojo» y la ensalada césar). Se completaron con lo que se
+  alcanzaba a leer; conviene que el local las revise.
+- **«Limón Soda 2 L»**: en el menú su descripción decía «bebida de 600 ml», que contradice el nombre. Se quitó.
+- **«Mini empanadas gyozas»**: en el menú decía «giosas». Se escribió «gyozas» por lo que dice la descripción
+  (rellenas de verduras, con salsa de soya o teriyaki).
+- **Sushi**: el menú tiene una sección «Sushi» con los títulos «Rolls premium» y «Promoción 30 cortes», pero sin
+  ningún producto. No se cargó. Los dos hand rolls sí están, en «Para picar».
+- **Fotos**: 45 de los 165 productos tienen foto (son las que traía el menú). Los demás se muestran en lista o
+  con el logo. Las chorrillanas de 2 y 6 personas comparten foto, porque en el menú es la misma.
+- **«Arma tu…»**: los cuatro dicen «4 ingredientes y 2 salsas», pero el menú no lista cuáles. Por ahora el
+  cliente los escribe en la nota del producto. Con la lista se pueden dejar como opciones para elegir
+  (`personalizacion` en `carta.js`, o «Opciones para elegir» en el panel).
 
 ## Dirección y pruebas
 
-**Dirección**: con delivery, el cliente elige su sector y escribe su dirección a mano (calle, número, villa o
-población y depto). No hay GPS, mapa ni sugerencias automáticas: la dirección llega tal cual en el mensaje de WhatsApp.
+**Dirección**: todos los pedidos son para retirar en el local, así que la página no pide dirección de entrega.
 
 **Pruebas** (necesitan Playwright): `node pruebas/servidor.js` levanta la página y el panel con GitHub simulado
-(«Publicar» no guarda nada). Con eso corriendo, `node pruebas/pedido.js` arma pedidos de retiro y delivery y revisa
-el enlace y el mensaje de WhatsApp de cada sucursal, y `node pruebas/panel.js` revisa Stock, Promos y Publicar, y `node pruebas/cuentas.js` las cuentas, la recuperación y
-la analítica. El servidor de prueba arma `dist/` y ejecuta `functions/api/` como Cloudflare, con GitHub y la base D1
+(«Publicar» no guarda nada). Con eso corriendo, `node pruebas/pedido.js` arma un pedido y revisa el enlace y el
+mensaje de WhatsApp, que la página no ofrezca delivery y que el asistente no hable de sushi; `node pruebas/panel.js`
+revisa Stock, Promos y Publicar, y `node pruebas/cuentas.js` las cuentas, la recuperación y la analítica. El servidor de prueba arma `dist/` y ejecuta `functions/api/` como Cloudflare, con GitHub y la base D1
 simulados (la D1 con SQLite de Node; necesita Node 22 o más nuevo). `node pruebas/seguridad.js` revisa los arreglos
 de la auditoría de seguridad (carta con HTML, enlaces `javascript:`, `__proto__`, carta ilegible, otros sitios,
 límite de intentos, contraseña corta). El servidor de prueba solo escucha en este equipo (127.0.0.1) y usa la
@@ -102,21 +109,23 @@ contraseña de prueba `clave-de-prueba-larga`.
 
 ## Asistente (chat de abajo a la derecha)
 
-Abajo a la derecha aparece el **asistente**: un botón con el logo y, la primera vez, un saludo («¡Hola! 👋 ¿Te ayudo a
-elegir tu sushi?»). Al tocarlo se abre un chat que contesta sobre la carta, precios, horario, delivery, formas de pago y
-dirección, recomienda tablas según cuántas personas son y muestra los productos con su botón **Agregar** (respeta el
-stock, los días y el horario igual que la carta). No toma pedidos: el cliente igual envía su pedido por WhatsApp.
+Abajo a la derecha aparece el **asistente**: un botón con el logo que dice «¿Te ayudo?». Al tocarlo se abre un chat
+que contesta sobre la carta, precios, horario, formas de pago y dirección, recomienda según cuántas personas son y
+muestra los productos con su botón **Agregar** (respeta el stock, los días y el horario igual que la carta). No toma
+pedidos: el cliente igual envía su pedido por WhatsApp.
 
 Opciones del chat (botones bajo cada respuesta, y el botón ☰ junto al cuadro de texto para verlas todas):
-- **Ayúdame a pedir**: en 3 pasos (¿para cuántos?, ¿qué les gusta?, recomendación) y después sumar entrantes,
-  bebidas y salsas.
-- **Ver la carta** por sección, **Lo más pedido**, **Arma tu roll** (con sus ingredientes), **Veggie**, **Algo
-  económico** (con tope de precio), **Entrantes**, **Bebidas** y **Salsas**.
+- **Ayúdame a pedir**: en 3 pasos (¿para cuántos?, ¿qué les gusta? —pollo, carne, completos o papas—, recomendación)
+  y después sumar para picar y bebidas.
+- **Ver la carta** por sección, **Lo más pedido**, **Arma lo tuyo**, **Papas fritas**, **Algo económico** (con tope
+  de precio), **Para picar** y **Bebidas**.
 - **Mi pedido**: lo que lleva el cliente con el total y el botón para abrirlo y enviarlo.
-- **Delivery**, **Horario**, **Formas de pago**, **Ubicación**, **Cupones**, **¿Cómo pido?**, **¿Cuánto demora?**,
+- **Horario**, **Formas de pago**, **Ubicación**, **Cupones**, **¿Cómo pido?**, **¿Cuánto demora?**,
   **Hablar con alguien** (WhatsApp) y **Empezar de nuevo**.
-- Escribiendo también entiende: cambios de ingredientes, picante, boleta o factura, reservas, alergias, reclamos,
-  «somos 4», «algo de 10 lucas» y la búsqueda por producto o ingrediente.
+- Escribiendo también entiende: el nombre de una sección («para picar», «bebidas»), qué lleva un producto
+  («¿qué lleva el combo 6?»), cambios de ingredientes, picante, vegetariano, boleta o factura, reservas, alergias,
+  reclamos, «somos 4», «algo de 10 lucas» y la búsqueda por producto o ingrediente.
+- Como el local es solo retiro, si preguntan por delivery el chat responde que los pedidos son para retirar.
 
 Todos esos botones responden con la carta, sin gastar IA. Con IA, además sugiere respuestas según la conversación.
 
@@ -127,7 +136,7 @@ Todos esos botones responden con la carta, sin gastar IA. Con IA, además sugier
   `claude-haiku-5-5` (rápido y económico); se cambia con `ASISTENTE_MODELO`. Cada persona puede mandar hasta 25
   mensajes cada 10 minutos. Para revisar, abre **tu-pagina.pages.dev/api/asistente**: dice si la clave está puesta.
 - **Sin clave** (o abriendo `index.html` directo): el chat igual funciona en *modo básico*: responde con la carta
-  (horario, delivery, pagos, dirección, recomendaciones, piezas por persona, «algo barato», búsqueda por ingrediente)
+  (horario, pagos, dirección, recomendaciones, «algo barato», búsqueda por producto o ingrediente)
   y lo que no sabe lo manda al WhatsApp.
 
 Archivos: `js/asistente.js` (el chat y el modo básico), `functions/api/asistente.js` (el servidor de la IA; la clave nunca llega
@@ -135,7 +144,7 @@ al navegador) y los estilos al final de `css/estilos.css`. En el panel `/admin` 
 
 ## Panel de administración
 
-Entra a **tu-pagina.pages.dev/admin**. La **cuenta principal** es el usuario `asiansushi` (se cambia con `ADMIN_USER`)
+Entra a **tu-pagina.pages.dev/admin**. La **cuenta principal** es el usuario `kaosfood` (se cambia con `ADMIN_USER`)
 con la contraseña que pongas en `ADMIN_PASSWORD`: es la llave maestra del panel. El panel no aparece en ningún menú
 de la página ni en Google.
 
@@ -170,7 +179,7 @@ los confirma. Ventas pagadas online necesitarían una integración con un medio 
 proyecto y **Redeploy**.
 
 **Activarla en Cloudflare (una vez):** **Storage & Databases → D1 → Create** (plan gratuito; por ejemplo
-«asiansushi-estadisticas»). Luego, en tu proyecto de Pages, **Settings → Bindings → Add → D1 database**, con el nombre
+«kaosfood-estadisticas»). Luego, en tu proyecto de Pages, **Settings → Bindings → Add → D1 database**, con el nombre
 de variable **`DB`** y esa base, y vuelve a publicar. La tabla se crea sola. Sin eso, la página funciona igual y el
 panel explica cómo activarla. No se guarda nada de las personas (ni IP, ni nombre, ni
 dirección): solo cuentas por día, que duran unos 13 meses. Las visitas del panel no se cuentan.
@@ -210,7 +219,7 @@ En **Vercel**: *Settings → Environment Variables*. En **Cloudflare**: tu proye
 | `GITHUB_TOKEN` | Obligatoria (*Secret*). Clave de GitHub (*fine-grained token*) con permiso *Contents: Read and write* solo sobre este repositorio. Solo la usa el servidor; nunca llega al navegador. |
 | `ADMIN_PASSWORD` | Obligatoria (*Secret*). Contraseña de la cuenta principal del panel, **de 12 caracteres o más** (mejor 16 al azar); con menos, el panel no funciona. No hay contraseña de fábrica. |
 | `GITHUB_REPO` | `usuario/repositorio` de la página en GitHub. Obligatoria en Cloudflare (no lo informa solo); en Vercel solo si no lo detecta. |
-| `ADMIN_USER` | Opcional. Usuario de la cuenta principal (si no está: `asiansushi`). |
+| `ADMIN_USER` | Opcional. Usuario de la cuenta principal (si no está: `kaosfood`). |
 | `ANTHROPIC_API_KEY` | Opcional (*Secret*). Clave de la API de Claude para que el asistente responda con IA. Sin ella responde en modo básico. |
 | `GITHUB_BRANCH` | Opcional. Rama donde guarda el panel (si no está: la rama que publicó Cloudflare, o `main`). |
 | Enlace **`DB`** (Cloudflare, en *Bindings*) | Opcional. La base D1 de las estadísticas en Cloudflare. |
@@ -247,7 +256,7 @@ las cuentas usan 30.000 vueltas de PBKDF2 (~4 ms). Con el plan pagado de Workers
 ## Cómo está armada la carta (`carta.js`)
 
 ```
-secciones            → botones grandes de la carta: Promos, Sushi, Hamburguesas…
+secciones            → botones grandes de la carta: Combos, Sandwiches, Bebidas…
   categorias         → si una sección tiene más de una, aparecen como botones chicos (Bebidas, Jugos…)
     productos        → cada producto con su precio
 personalizacion      → grupos que el cliente elige: punto de la carne, agregados, proteína de cada roll…
@@ -283,8 +292,8 @@ La sección con `"promos": true` (o con «promo» en el nombre) es la que el pan
   Con `"gratis": 1` en una opción, la primera no se cobra y cada repetida sí (envoltura en palta o en queso).
 - Para usar un grupo: `"personalizar": ["punto", "agregados"]` en la categoría (vale para todos sus productos)
   o en un producto (reemplaza al de la categoría; por ejemplo el pollo crispy solo lleva `["agregados"]`).
-- La sección **Arma tu roll** de la página aparece sola si hay una categoría con grupos `porRoll`;
-  si el local no vende sushi, desaparece junto con su enlace del menú.
+- La sección **Arma tu pedido** de la página aparece sola si hay una categoría con grupos `porRoll`;
+  en esta carta no hay ninguna, así que está oculta junto con su enlace del menú.
 
 **Cupones** (`cupones`)
 - Cada cupón tiene un `"codigo"` (lo que escribe el cliente), un `"nombre"` (cómo se muestra), un `"tipo"`
@@ -307,7 +316,7 @@ La sección con `"promos": true` (o con «promo» en el nombre) es la que el pan
   Se editan en el panel, en «Local y WhatsApp».
 - **Formas de pago**: `"pagosDelivery": ["Efectivo", "Transferencia", "Edenred"]` (al recibir) y
   `"pagosRetiro": ["Efectivo", "Transferencia", "Tarjeta", "Edenred"]` (al retirar).
-- **Delivery por sectores**: `"sectoresDelivery": [{ "nombre": "Ovalle", "detalle": "…", "precio": 2500 }, …]`. Al
+- **Delivery por sectores**: `"sectoresDelivery": [{ "nombre": "Centro", "detalle": "…", "precio": 2500 }, …]`. Al
   pedir delivery el cliente elige su sector; el valor se suma al total y va en el mensaje.
 - **Productos de un día**: `"dias": ["lunes"]` en un producto: solo se puede pedir ese día (los otros días dice
   «Solo los lunes») y en la portada aparece solo ese día. `"unidad": "Sushiburger"` cambia «Roll 1, Roll 2…» por
@@ -327,7 +336,7 @@ Si la carta deja de aparecer, lo más probable es que falte o sobre una coma en 
 
 ## Archivos
 
-- `index.html`: estructura de la página y textos fijos (portada, arma tu roll, cómo pedir, ubicación).
+- `index.html`: estructura de la página y textos fijos (portada, arma tu pedido, cómo pedir, ubicación).
 - `carta.js`: datos del local, colores, horario, productos, precios y opciones para elegir.
 - `css/estilos.css`: diseño (computador y celular). Los colores se cambian desde `carta.js` → `tema`.
 - `js/app.js`: carta, buscador, pedido, horario de apertura y mensaje de WhatsApp.

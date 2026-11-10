@@ -1,7 +1,7 @@
 /* Asistente de la página: el chat de abajo a la derecha.
    Con la IA configurada (ANTHROPIC_API_KEY en las variables del proyecto, ver functions/api/asistente.js) responde con IA usando la carta.
-   Sin ella, o abriendo index.html directo, responde solo con la carta: horario, delivery, pagos,
-   recomendaciones, piezas por persona y búsqueda de productos. */
+   Sin ella, o abriendo index.html directo, responde solo con la carta: horario, ubicación, pagos,
+   recomendaciones y búsqueda de productos. */
 (function () {
   "use strict";
 
@@ -10,7 +10,6 @@
   var C = P.datos();
   var N = C.negocio || {};
   var GUARDADO = "asistente-v1";
-  var VISTO = "asistente-saludo";
   var API = "/api/asistente";
   var modoIA = location.protocol !== "file:";
   var mensajes = [];   // { role, content, productos }
@@ -77,10 +76,6 @@
   var raiz = document.createElement("div");
   raiz.className = "asis";
   raiz.innerHTML =
-    '<div class="asis-saludo" data-asis-saludo hidden>' +
-      '<button class="asis-saludo-x" type="button" data-asis-saludo-x aria-label="Cerrar saludo">' + icono("cerrar") + "</button>" +
-      '<button class="asis-saludo-txt" type="button" data-asis-abrir><b>¡Hola! 👋</b> ¿Te ayudo con tu pedido?</button>' +
-    "</div>" +
     '<button class="asis-boton" type="button" data-asis-abrir aria-expanded="false" aria-controls="asis-panel">' +
       '<img src="img/logo-kaos.webp" width="600" height="600" alt="">' +
       '<span class="asis-boton-txt">¿Te ayudo?</span>' +
@@ -106,7 +101,6 @@
   var panel = $(".asis-panel", raiz);
   var cuerpo = $("[data-asis-cuerpo]", raiz);
   var entrada = $("[data-asis-texto]", raiz);
-  var saludo = $("[data-asis-saludo]", raiz);
 
   function pintarEstado() {
     var e = P.estado();
@@ -115,8 +109,6 @@
   }
 
   function abrirChat() {
-    saludo.hidden = true;
-    guardar(VISTO, true);
     pintarEstado();
     panel.hidden = false;
     raiz.classList.add("asis--abierto");
@@ -262,10 +254,6 @@
     return lista.filter(function (x) { return x.p.disponible !== false && P.disponibleHoy(x.p); });
   }
   function esExtra(x) { return /extra|salsa|bebest|bebida/.test(t(x.sec.nombre + " " + x.cat.nombre)); }
-  function piezas(x) {
-    var m = /(\d+)\s*piezas\.?$/.exec(t(x.p.nombre)) || /^(\d+)\s*piezas/.exec(t(x.p.nota || ""));
-    return m ? +m[1] : 0;
-  }
   function textoEstado() {
     var e = P.estado();
     if (e.sinHorario) return "";
@@ -281,8 +269,11 @@
     "quiero", "algo", "cual", "cuales", "como", "cuanto", "cuesta", "vale", "precio", "es", "son", "al", "del", "en", "lo", "le", "se", "si", "no", "favor",
     "hola", "porfa", "pf", "dame", "ver", "busco", "rico", "rica", "ustedes", "venden", "puedo", "pedir", "ese", "esa", "este", "esta", "mas"];
   function buscar(q) {
-    var palabras = t(q).replace(/[^a-z0-9ñ ]/g, " ").split(/\s+/).filter(function (w) { return w.length > 2 && VACIAS.indexOf(w) < 0; })
-      .map(function (w) { return w.replace(/(es|s)$/, "").slice(0, 7); }).filter(function (w) { return w.length > 2; });
+    /* Los números cuentan («combo 6»), aunque sean de una cifra. */
+    var palabras = t(q).replace(/[^a-z0-9ñ ]/g, " ").split(/\s+/)
+      .filter(function (w) { return w && VACIAS.indexOf(w) < 0 && (w.length > 2 || /^\d+$/.test(w)); })
+      .map(function (w) { return /^\d+$/.test(w) ? w : w.replace(/(es|s)$/, "").slice(0, 7); })
+      .filter(function (w) { return w.length > 2 || /^\d+$/.test(w); });
     if (!palabras.length) return [];
     return disponibles(P.productos()).map(function (x) {
       var nombre = t(x.p.nombre + " " + x.cat.nombre);
@@ -376,13 +367,6 @@
     return responderLocal(a);
   }
 
-  function opcionesGrupo(re) {
-    var vistos = {};
-    (C.personalizacion || []).filter(function (g) { return re.test(g.id); }).forEach(function (g) {
-      (g.opciones || []).forEach(function (o) { if (o.disponible !== false) vistos[o.nombre] = vistos[o.nombre] || (o.precio ? " (+" + P.plata(o.precio) + ")" : ""); });
-    });
-    return Object.keys(vistos).map(function (k) { return k + vistos[k]; });
-  }
   function deCategoria(re) { return disponibles(P.productos()).filter(function (x) { return re.test(t(x.cat.id + " " + x.cat.nombre)); }); }
 
   function responderLocal(texto) {
@@ -393,21 +377,18 @@
     var personas = /(\d+)\s*(personas?|pers|pax|amig|adult|de nosotros)/.exec(q) || /somos\s*(\d+)/.exec(q) || /para\s*(\d+)\b/.exec(q);
     if (personas) {
       var n = Math.max(1, Math.min(30, +personas[1]));
-      var meta = n * 12;
-      var veggie = /veg/.test(q);
-      var tablas = todos.filter(function (x) { return piezas(x) >= 20 && /tabla/.test(t(x.sec.nombre)) && /veg/.test(t(x.cat.nombre + x.p.nombre)) === veggie; })
-        .sort(function (a, b) { return Math.abs(piezas(a) - meta) - Math.abs(piezas(b) - meta); });
-      var alcanza = tablas.some(function (x) { return piezas(x) >= meta - 8; });
-      if (tablas.length) {
-        return { texto: "Para " + n + (n === 1 ? " persona" : " personas") + " calculamos unas **" + meta + " piezas** (10 a 15 por persona). Te recomiendo:" +
-          (alcanza ? "" : "\n\nNinguna tabla llega sola a esa cantidad: puedes sumar dos o agregar entrantes.") + avisoCerrado(), productos: ids(tablas, 3),
-          opciones: sinNulos([opSeccion(/entrant/, "🥟 Sumar entrantes"), OP.bebidas, OP.pedido]) };
+      var recomendadas = recomendarPara(n, "todo");
+      if (recomendadas.length) {
+        return { texto: "Para " + n + (n === 1 ? " persona" : " personas") + " te recomiendo:" +
+          (n > 3 ? "\n\nPara grupos conviene una chorrillana para compartir y sumar papas." : "") + avisoCerrado(),
+          productos: ids(recomendadas, 3),
+          opciones: sinNulos([opSeccion(/picar/, "🥟 Sumar para picar"), OP.bebidas, OP.pedido]) };
       }
     }
     if (/mi pedido|que llevo|cuanto llevo|carrito|mi carro|cuanto va|cuanto es el total|ver pedido/.test(q)) return responderAccion("pedido");
     if (/^(la )?(carta|menu)$|ver (la )?(carta|menu)|que (tienen|venden|hay)( para comer)?\??$|secciones/.test(q)) return responderAccion("carta");
     if (/ayuda(me)? a (pedir|elegir)|no se que pedir|arma(me)? (un|el|mi) pedido|quiero pedir|hacer un pedido$/.test(q)) return responderAccion("pedir");
-    if (/^(menu|opciones|ayuda|que (mas )?puedes hacer|que sabes)/.test(q)) return responderAccion("menu");
+    if (/^(menu|opciones|ayuda)\s*\??$|^que (mas )?puedes hacer|^que sabes/.test(q)) return responderAccion("menu");
     if (/horari|abre|abiert|cierra|atiend|hora |a que hora|que hora|abren|domingo|feriado/.test(q + " ")) {
       var h = P.horario();
       return { texto: [textoEstado(), h ? "Nuestro horario es: " + h.replace(/ · /g, "\n- ").replace(/^/, "\n- ") : "Escríbenos por WhatsApp para confirmar el horario."].filter(Boolean).join("\n"),
@@ -450,10 +431,10 @@
     if (/reserv|mesa|comer (ahi|alla|en el local)|salon|para servir/.test(q)) {
       return { texto: "Eso mejor consúltalo directo con el local por WhatsApp 🙌 Desde aquí puedes armar tu pedido para retirar.", wsp: true, opciones: [OP.ubicacion, OP.pedir] };
     }
-    if (/cupon|descuento|codigo|promocion/.test(q) && !/promo(s)? del|tabla/.test(q)) {
+    if (/cupon|descuento|codigo|promocion/.test(q) && !/promo(s)? del/.test(q)) {
       var cup = (C.cupones || []).filter(function (c) { return c && c.activo !== false && c.visible !== false; });
       if (cup.length) return { texto: "Tenemos estos cupones:\n" + cup.map(function (c) { return "- **" + c.codigo + "**: " + (c.nombre || (c.tipo === "monto" ? P.plata(c.valor) : c.valor + "%") + " de descuento"); }).join("\n") + "\nLo aplicas en «Mi pedido».", opciones: [OP.pedido, OP.pedir] };
-      return { texto: "Por ahora no tenemos cupones activos, pero mira nuestras tablas destacadas 😉", productos: ids(todos.filter(function (x) { return x.p.destacado; }), 3) };
+      return { texto: "Por ahora no tenemos cupones activos, pero mira nuestras promos destacadas 😉", productos: ids(todos.filter(function (x) { return x.p.destacado; }), 3) };
     }
     if (/humano|persona real|hablar con|alguien|telefono|numero|llamar|whatsapp|wsp|wasap|reclamo|problema|cancelar|anular|trabaj|empleo/.test(q) && !/como (pido|compro)/.test(q)) {
       return { texto: "¡Claro! Escríbenos directo por WhatsApp" + (N.whatsappVisible ? " al **" + N.whatsappVisible + "**" : "") + " y te atiende alguien del local 🙌", wsp: true };
@@ -462,34 +443,44 @@
       return { texto: "Es fácil:\n- Toca **Agregar** en lo que quieras (aquí mismo o en la carta).\n- Abre **Mi pedido** y elige cómo pagas.\n- Toca **Enviar pedido por WhatsApp** y el local te confirma el total.",
         opciones: [OP.pedir, OP.pagos, OP.ubicacion] };
     }
-    if (/modific|cambiar|cambio|sacar|quitar|sin (palta|queso|cebollin|pepino|sesamo|nori)|reemplaz/.test(q)) {
-      var notaMod = ((C.secciones[seccion(/tabla/)] || { categorias: [] }).categorias[0] || {}).nota || "";
-      return { texto: "Sí se puede 👍 Escribe el cambio en la **nota del producto** al agregarlo (por ejemplo «sin cebollín»)." +
-        (/modific/.test(t(notaMod)) ? "\n\nEn las tablas: se permiten máximo 2 modificaciones y cada una tiene costo adicional; el local te confirma el valor." : "") +
-        "\n\nSi quieres algo totalmente a tu gusto, arma tu propio roll:", productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.ingredientes, OP.pedir] };
+    if (/modific|cambiar|cambio|sacar|quitar|sin (palta|queso|tomate|cebolla|lechuga|mayo|aji)|reemplaz/.test(q)) {
+      return { texto: "Sí se puede 👍 Escribe el cambio en la **nota del producto** al agregarlo (por ejemplo «sin tomate»). El local te confirma si tiene costo." +
+        (iArma >= 0 ? "\n\nY si lo quieres totalmente a tu gusto, ármalo tú:" : ""),
+        productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.pedir, OP.carta] };
     }
-    if (/ingredient|relleno|proteina|envoltura|que (lleva|trae)n? (los|el) roll|bases?\b/.test(q) && !/tabla|gohan|burger/.test(q)) {
-      var env = opcionesGrupo(/^ar-envoltura$/), base = opcionesGrupo(/^ar-base$/), sec2 = opcionesGrupo(/^ar-secundarios/);
-      if (base.length) {
-        return { texto: "Para armar tu roll eliges:\n- **Envoltura**: " + env.join(", ") + "\n- **Ingrediente base**: " + base.join(", ") + "\n- **Secundarios**: " + sec2.join(", ") +
-          "\n\nLa base se puede rebosar en tempura o panko (+" + P.plata(990) + ").", productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.papas, OP.pedido] };
+    if (/ingredient|que (lleva|trae)n?|de que (es|son)/.test(q)) {
+      /* Lo que lleva cada cosa está en el detalle de la carta: se busca por el nombre que escribió. */
+      var conDetalle = buscar(texto).filter(function (x) { return x.p.detalle; });
+      if (conDetalle.length) {
+        return { texto: conDetalle.slice(0, 3).map(function (x) { return "**" + x.p.nombre + "**: " + x.p.detalle; }).join("\n") + avisoCerrado(),
+          productos: ids(conDetalle, 3), opciones: [OP.carta, OP.pedido] };
       }
     }
-    if (/arma(r)? (tu|mi|un|el|mis)? ?roll|arma tu|a mi gusto|personaliz|hosomaki|sin arroz/.test(q) && iArma >= 0) {
-      return { texto: "Puedes armar tu roll como más te guste 🍱\n- **Con arroz**: 1 envoltura + 1 base + 2 secundarios.\n- **Sin arroz**: 1 envoltura + 1 base + 4 secundarios.\n- **Hosomaki**: nori + 1 base + 1 secundario.\n\nToca **Elegir** y vas escogiendo cada ingrediente." + avisoCerrado(),
-        productos: ids(deSeccion(iArma), 3), opciones: [OP.ingredientes, OP.papas, OP.pedido] };
+    if (/arma(r)? (tu|mi|un|el|mis)?|a mi gusto|personaliz/.test(q) && iArma >= 0) {
+      /* Lo que se puede armar sale de la carta misma (nombre y detalle de cada producto). */
+      var armables = deSeccion(iArma);
+      return { texto: "Puedes armarlo como más te guste 👌\n" + armables.map(function (x) {
+          return "- **" + x.p.nombre + "**" + (x.p.detalle ? ": " + x.p.detalle.replace(/\.$/, "") : "") + " — " + P.plata(x.p.precio);
+        }).join("\n") + "\n\nToca **Agregar** y escribe en la nota lo que quieres que lleve." + avisoCerrado(),
+        productos: ids(armables, 4), opciones: [OP.carta, OP.pedido] };
     }
     if (/veg|vegetar|sin carne|sin pescado|sin proteina/.test(q)) {
-      var veg = todos.filter(function (x) { return /veg|avocado|seta/.test(t(x.p.nombre + " " + x.cat.nombre)); });
-      return { texto: "Tenemos opciones veggie 🥑 También puedes armar tu roll con champiñón de base y secundarios vegetales (palta, palmito, pepino…)." + avisoCerrado(),
-        productos: ids(veg.concat(iArma >= 0 ? deSeccion(iArma) : []), 4), opciones: [OP.ingredientes, { t: "🥑 Veggie para 2", q: "para 2 personas veggie" }, OP.pedido] };
+      /* Sin carne: se descarta todo lo que nombre una proteína, en el nombre o en el detalle. */
+      var CARNES = /carne|churrasco|mechada|lomit|\blomo\b|pollo|\bave\b|hamburgues|vienesa|vianesa|salchich|tocino|longaniza|chorrillana|nugget|jamon|camaron|cerdo|mongolian|chapsui|saltado|luco|\bas\b|combo/;
+      var veg = todos.filter(function (x) {
+        var txt = t(x.p.nombre + " " + (x.p.detalle || "") + " " + x.cat.nombre);
+        return !CARNES.test(txt) && /veg|champinon|palta|queso|papa|ensalada|fruta|waffle|jugo/.test(txt);
+      });
+      return { texto: (veg.length ? "Esto es lo más vegetariano que tenemos 🥑" : "No tenemos un menú vegetariano aparte 🥑") +
+          " Si quieres algo sin carne, ármalo a tu gusto o escríbelo en la nota del producto." + avisoCerrado(),
+        productos: ids(veg.concat(iArma >= 0 ? deSeccion(iArma) : []), 4), opciones: [OP.carta, OP.pedido] };
     }
     if (/alergi|celiac|gluten|lactosa|intoleran|embaraz/.test(q)) {
       return { texto: "Para alergias, intolerancias o embarazo es mejor confirmarlo directo con el local, así te dicen exactamente qué lleva cada preparación.", wsp: "Hola, tengo una consulta por alergias: " };
     }
-    if (/picant|spicy|aji|wasabi/.test(q)) {
-      var pic = todos.filter(function (x) { return /spicy|picant|aji|wasabi/.test(t(x.p.nombre + " " + (x.p.detalle || ""))); });
-      return { texto: pic.length ? "¿Te gusta el picante? 🌶️ Mira estas opciones:" : "No tenemos platos picantes como tal, pero puedes agregar salsa spicy, ají verde o wasabi 🌶️", productos: ids(pic, 4), opciones: sinNulos([opSeccion(/salsa/, "🥫 Salsas extra"), OP.pedir]) };
+    if (/picant|spicy|aji\b/.test(q)) {
+      var pic = todos.filter(function (x) { return /spicy|picant|aji\b/.test(t(x.p.nombre + " " + (x.p.detalle || ""))); });
+      return { texto: pic.length ? "¿Te gusta el picante? 🌶️ Mira estas opciones:" : "No tenemos platos picantes como tal 🌶️ Pídelo en la nota del producto y el local te dice si puede.", productos: ids(pic, 4), opciones: sinNulos([opSeccion(/salsa/, "🥫 Salsas extra"), OP.pedir]) };
     }
     if (/bebid|bebest|jugo|coca|gaseosa|agua|tomar/.test(q)) {
       var beb = deCategoria(/bebest|bebida/);
@@ -497,7 +488,7 @@
     }
     if (/salsa|soya|teriyaki|jengibre|acevichad/.test(q)) {
       var sal = deCategoria(/salsa/);
-      if (sal.length) return { texto: "Cada tabla y roll ya trae su salsa (soya o teriyaki). Si quieres más, tenemos estas salsas extra (te muestro 6 de " + sal.length + "):", productos: ids(sal, 6), ir: seccion(/extra/), opciones: [OP.bebidas, OP.pedido] };
+      if (sal.length) return { texto: "Estas son las salsas que tenemos (te muestro 6 de " + sal.length + "):", productos: ids(sal, 6), ir: seccion(/salsa|extra/), opciones: [OP.bebidas, OP.pedido] };
     }
     if (/entrant|aperitiv|para picar|picoteo|para compartir/.test(q) && iEntr >= 0) return responderAccion("sec:" + iEntr);
     if (/barat|economic|menos de|presupuesto|luca|poca plata/.test(q)) {
@@ -548,7 +539,6 @@
     if (!b) return;
     if (b.hasAttribute("data-asis-abrir")) { if (panel.hidden) abrirChat(); else cerrarChat(); }
     else if (b.hasAttribute("data-asis-cerrar")) cerrarChat();
-    else if (b.hasAttribute("data-asis-saludo-x")) { saludo.hidden = true; guardar(VISTO, true); }
     else if (b.hasAttribute("data-asis-op")) usarOp(b.getAttribute("data-asis-op"), b.textContent);
     // «Ver … en la carta» y «Ver mi pedido»: el chat se cierra en el celular para que se vea
     else if ((b.hasAttribute("data-asis-ir") || b.hasAttribute("data-abrir-pedido")) && window.matchMedia("(max-width: 640px)").matches) cerrarChat();
@@ -566,5 +556,4 @@
   setInterval(function () { if (!panel.hidden && !ocupado) pintarEstado(); }, 60000);
 
   mensajes = (leer(GUARDADO) || []).filter(function (m) { return m && m.content; });
-  if (!leer(VISTO)) setTimeout(function () { if (panel.hidden) saludo.hidden = false; }, 3500);
 })();

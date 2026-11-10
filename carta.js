@@ -18,7 +18,7 @@
   - diasCerrados: fechas en que no se atiende aunque el horario diga abierto. Ej: ["2026-12-25"].
   - "textos": los títulos y textos fijos de la página (portada, carta, pasos, pie).
   - Lo que quede vacío ("") no se muestra: por ejemplo, sin "direccion" no aparece la sección Ubicación.
-  - "secciones" son los botones grandes de la carta (Promos, Sushi, Hamburguesas…) y cada una tiene
+  - "secciones" son los botones grandes de la carta (Combos, Sandwiches, Bebidas…) y cada una tiene
     sus "categorias" (si hay más de una, aparecen como botones chicos).
   - Producto agotado: agrega "disponible": false
   - Producto en la portada (promo destacada): agrega "destacado": true y una "foto".
