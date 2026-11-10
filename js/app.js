@@ -94,12 +94,16 @@
   var RUTA_CAT = {};
   var CATS = {};
   var CON_HORARIO = false;
+  var SOLO_RETIRO = false;
   var HORARIO_ACTIVO = false;
   /* Toma los datos de carta.js, o los que manda el panel en la vista previa. "ruta" dice dónde está
      cada texto dentro de los datos, para que el panel sepa qué se editó. */
   function usarCarta(datos) {
     C = datos;
     N = C.negocio || {};
+    /* "soloRetiro": true en carta.js => la página no ofrece delivery (ej: el reparto va por apps). */
+    SOLO_RETIRO = N.soloRetiro === true;
+    if (SOLO_RETIRO && pedido) pedido.modo = "retiro";   /* en la vista previa del panel el pedido ya existe */
     if (window.aplicarTema) window.aplicarTema(C);
     PRODUCTOS = {};
     GRUPOS = {};
@@ -505,7 +509,7 @@
   var carrusel = { lista: [], i: 0, pausado: false, timer: null, ms: 6000, turno: 0 };
   // las fotos de las promos se bajan de antemano, para que al cambiar no quede el cuadro en negro
   var fotosPromo = {};
-  var LOGO_PROMO = "img/logo-asian.webp";   // promo sin foto: se muestra con el logo
+  var LOGO_PROMO = "img/logo-kaos.webp";   // promo sin foto: se muestra con el logo
   function fotoPromo(p) { return p.foto || LOGO_PROMO; }
   function precargarPromos() {
     carrusel.lista.forEach(function (p) {
@@ -663,7 +667,7 @@
       ? '<div class="tarjeta-foto"><img class="carga" src="' + esc(p.foto) + '"' +
         (chica ? ' srcset="' + esc(chica) + " 600w, " + esc(p.foto) + ' 1000w" sizes="(max-width: 380px) calc(100vw - 56px), (max-width: 640px) calc(50vw - 33px), 300px"' : "") +
         ' alt="Foto de ' + esc(p.nombre) + '" width="1000" height="725" loading="lazy"></div>'
-      : '<div class="tarjeta-foto tarjeta-foto--vacia"><img src="img/logo-asian.webp" alt="" width="600" height="600" loading="lazy"></div>';
+      : '<div class="tarjeta-foto tarjeta-foto--vacia"><img src="img/logo-kaos.webp" alt="" width="600" height="600" loading="lazy"></div>';
     return '<li class="tarjeta' + (p.disponible === false ? " fila--agotada" : "") + '"' + marcaProducto(p) + ">" + foto +
       '<div class="tarjeta-cuerpo"><h4 class="fila-nombre"' + rutaDe(p, "nombre") + ">" + esc(p.nombre) + "</h4>" + detalleLista(p) + notaProducto(p) +
       '<div class="tarjeta-pie"><span class="precio">' + precioLista(p) + "</span>" + botonAgregar(p, "tarjeta") + "</div></div></li>";
@@ -724,7 +728,7 @@
     if (!g || typeof g !== "object") return;
     ["nombre", "direccion", "pago", "sucursal", "sector"].forEach(function (k) { if (typeof g[k] === "string") pedido[k] = k === "direccion" ? unaLinea(g[k]) : g[k]; });
     if (typeof g.cupon === "string") pedido.cupon = codigo(g.cupon);
-    if (g.modo === "delivery") pedido.modo = "delivery";
+    if (!SOLO_RETIRO && g.modo === "delivery") pedido.modo = "delivery";
     if (Array.isArray(g.items)) {
       pedido.items = g.items.filter(function (it) {
         return it && PRODUCTOS[it.id] && it.cant > 0 && it.conf && typeof it.conf === "object";
@@ -1218,10 +1222,13 @@
         }).join("") +
         '</div><span class="campo-ayuda" data-ayuda="sucursal"></span></fieldset>';
     }
-    html += '<fieldset class="campo"><legend class="campo-titulo">¿Retiras o te lo llevamos?</legend><div class="dos">' +
-        '<label class="radio-tarjeta' + (pedido.modo === "retiro" ? " sel" : "") + '"><input type="radio" name="modo" value="retiro"' + (pedido.modo === "retiro" ? " checked" : "") + "> Retiro en el local</label>" +
-        '<label class="radio-tarjeta' + (pedido.modo === "delivery" ? " sel" : "") + '"><input type="radio" name="modo" value="delivery"' + (pedido.modo === "delivery" ? " checked" : "") + "> Delivery" + (sectores().length ? " · desde " + plata(Math.min.apply(null, sectores().map(function (s) { return s.precio; }))) : "") + "</label>" +
-      "</div></fieldset>";
+    /* Con "soloRetiro" no se pregunta nada: todos los pedidos son para retirar en el local. */
+    if (!SOLO_RETIRO) {
+      html += '<fieldset class="campo"><legend class="campo-titulo">¿Retiras o te lo llevamos?</legend><div class="dos">' +
+          '<label class="radio-tarjeta' + (pedido.modo === "retiro" ? " sel" : "") + '"><input type="radio" name="modo" value="retiro"' + (pedido.modo === "retiro" ? " checked" : "") + "> Retiro en el local</label>" +
+          '<label class="radio-tarjeta' + (pedido.modo === "delivery" ? " sel" : "") + '"><input type="radio" name="modo" value="delivery"' + (pedido.modo === "delivery" ? " checked" : "") + "> Delivery" + (sectores().length ? " · desde " + plata(Math.min.apply(null, sectores().map(function (s) { return s.precio; }))) : "") + "</label>" +
+        "</div></fieldset>";
+    }
     var suc = sucursalElegida();
     if (pedido.modo === "retiro" && suc) {
       html += '<div class="retiro-info"><b>Retiras en la sucursal ' + esc(suc.nombre) + "</b>" +

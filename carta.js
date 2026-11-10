@@ -9,6 +9,8 @@
   - Los precios van sin punto ni signo: 14500 (no "$14.500").
   - "tema": colores de la marca. "color" es el principal (botones, detalles) y "colorDestacado" el de
     los títulos destacados. Van en formato #rrggbb. Si quedan vacíos, se usan el rojo y el amarillo de la plantilla.
+  - soloRetiro: con true la página no ofrece delivery y todos los pedidos son para retirar en el local.
+    Quítalo (o ponlo en false) cuando el local reparta a domicilio y agrega los "sectoresDelivery".
   - Horario: "13:00-22:00" o "cerrado". Para dos turnos: "12:00-15:30, 19:00-23:00".
     Si "horario" queda en null, la página no muestra abierto/cerrado y siempre deja pedir.
   - horarioConfirmado: con false el horario solo se muestra como referencia ("por confirmar"):
@@ -47,74 +49,52 @@
 */
 window.CARTA = {
   "negocio": {
-    "nombre": "Asian Sushi Ovalle",
-    "whatsapp": "56958836237",
-    "whatsappVisible": "+56 9 5883 6237",
+    "nombre": "Kaos Food",
+    "whatsapp": "56934829829",
+    "whatsappVisible": "+56 9 3482 9829",
     "facebook": "",
-    "instagram": "asiansushiovalle",
-    "direccion": "Sergio Peralta 758",
+    "instagram": "",
+    "direccion": "José Joaquín Latorre, frente a pasaje Verona",
     "sector": "",
-    "ciudad": "Ovalle",
-    "region": "",
-    "mapa": "https://www.google.com/maps/search/?api=1&query=Sergio+Peralta+758%2C+Ovalle",
-    "mapaBusqueda": "Sergio Peralta 758, Ovalle, Chile",
+    "ciudad": "La Serena",
+    "region": "Coquimbo",
+    "mapa": "https://www.google.com/maps/search/?api=1&query=Kaos+Food%2C+Jos%C3%A9+Joaqu%C3%ADn+Latorre%2C+La+Serena",
+    "mapaBusqueda": "Kaos Food, José Joaquín Latorre, La Serena, Chile",
     "datosTransferencia": "",
     "sucursales": [],
-    "sectoresDelivery": [
-      {
-        "nombre": "Ovalle",
-        "detalle": "Sector parte alta hasta el Hospital y sector parte baja hasta Los Peñones",
-        "precio": 2500
-      },
-      {
-        "nombre": "Extremo norte",
-        "detalle": "Puertas del Sol, Santa Antonia, Altos de Tuquí, Aires de Tuquí y Huamalata",
-        "precio": 3000
-      },
-      {
-        "nombre": "Extremo sur",
-        "detalle": "Las Brisas, Los Leíces y La Chimba hasta la escuela",
-        "precio": 4000
-      }
-    ],
-    "mapaCentro": {
-      "lat": -30.6016,
-      "lng": -71.1996
-    },
-    "pagosDelivery": [
-      "Efectivo",
-      "Transferencia"
-    ],
+    "soloRetiro": true,
+    "sectoresDelivery": [],
+    "pagosDelivery": [],
     "pagosRetiro": [
       "Efectivo",
       "Transferencia"
     ]
   },
   "tema": {
-    "color": "#d73b37",
-    "colorDestacado": "#ff9a6b"
+    "color": "#17797c",
+    "colorDestacado": "#ffb020"
   },
   "horario": {
-    "lunes": "13:30-23:00",
-    "martes": "13:30-23:00",
-    "miercoles": "13:30-23:00",
-    "jueves": "13:30-23:00",
-    "viernes": "14:30-00:00",
-    "sabado": "14:30-00:00",
-    "domingo": "12:30-22:00"
+    "lunes": "09:30-00:30",
+    "martes": "09:30-00:30",
+    "miercoles": "09:30-00:30",
+    "jueves": "09:30-00:30",
+    "viernes": "09:30-00:30",
+    "sabado": "09:30-00:30",
+    "domingo": "09:30-00:30"
   },
   "horarioConfirmado": true,
   "diasCerrados": [],
   "textos": {
     "portada": {
-      "titulo": "¿Pedimos",
-      "destacado": "sushi?",
-      "bajada": "Tablas, rolls premium, gohan y más. Pide para retiro o delivery y envía tu pedido por WhatsApp."
+      "titulo": "¿Tienes",
+      "destacado": "hambre?",
+      "bajada": "Sándwiches, completos, papas fritas, colaciones, chorrillanas y jugos naturales. Arma tu pedido y envíalo por WhatsApp."
     },
     "carta": {
       "titulo": "Elige tu",
       "destacado": "antojo",
-      "bajada": "Tablas, entrantes, creaciones de la casa, rolls premium, gohan, sushiburger y arma tu roll. Suma lo que quieras al pedido."
+      "bajada": "Combos, sándwiches, completos, papas fritas, chorrillanas, empanadas, jugos naturales y batidos. Suma lo que quieras al pedido."
     },
     "cupones": {
       "titulo": "Cupones",
@@ -123,23 +103,23 @@ window.CARTA = {
     },
     "arma": {
       "titulo": "Arma tu",
-      "destacado": "roll"
+      "destacado": "pedido"
     },
     "pasos": {
       "titulo": "Haz tu pedido",
       "destacado": "en 3 pasos.",
       "lista": [
         {
-          "titulo": "Elige o arma",
-          "texto": "Escoge tu tabla, rolls premium o gohan, o arma tu roll como más te guste."
+          "titulo": "Elige lo tuyo",
+          "texto": "Combos, sándwiches, completos, papas, chorrillanas, jugos y más. Súmalo todo al carro."
         },
         {
-          "titulo": "Retiro o delivery",
-          "texto": "Retira en Sergio Peralta 758 o pide delivery: Ovalle $2.500, extremo norte $3.000 y extremo sur $4.000."
+          "titulo": "Retiras en el local",
+          "texto": "Te esperamos en José Joaquín Latorre, frente a pasaje Verona, La Serena. Abierto todos los días de 09:30 a 00:30."
         },
         {
           "titulo": "Envía por WhatsApp",
-          "texto": "Elige cómo pagas al retirar o al recibir y envía tu pedido: llega directo a nuestro WhatsApp."
+          "texto": "Elige cómo pagas al retirar y envía tu pedido: llega directo a nuestro WhatsApp."
         }
       ]
     },
@@ -153,567 +133,1208 @@ window.CARTA = {
   },
   "secciones": [
     {
-      "nombre": "Tablas",
+      "nombre": "Combos",
       "categorias": [
         {
-          "id": "tablas",
-          "nombre": "Tablas",
-          "nota": "Individuales y familiares. Se permiten como máximo 2 modificaciones en las tablas. Cada modificación tiene costo adicional.",
+          "id": "combos",
+          "nombre": "Combos",
           "productos": [
             {
-              "id": "tabla-20",
-              "nombre": "Tabla 20 piezas",
-              "precio": 9990,
-              "foto": "img/carta/tabla-20.webp",
-              "detalle": "Tempura: camarón, queso crema y cebollín.\nPalta: kanikama, queso crema y palmito.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "combo-1",
+              "nombre": "Combo 1",
+              "precio": 4500,
+              "foto": "img/carta/combo-1.webp",
+              "detalle": "Pan con salchicha sureña, tomate, palta y salsas a elección. Incluye papas fritas naturales y bebida de 250 ml."
             },
             {
-              "id": "tabla-40",
-              "nombre": "Tabla 40 piezas",
-              "precio": 18990,
-              "foto": "img/carta/tabla-40.webp",
-              "detalle": "Sésamo: camarón, pepino y palta.\nPanko: pollo, queso crema y cebollín.\nQueso: champiñón, palta y pimentón.\nPalta: kanikama, queso crema y palmito.",
-              "incluye": "3 salsas (soya o teriyaki)",
+              "id": "combo-2",
+              "nombre": "Combo 2",
+              "precio": 7000,
+              "foto": "img/carta/combo-2.webp",
+              "detalle": "Barros luco (carne de churrasco y queso). Incluye papas fritas naturales y bebida de 250 ml."
+            },
+            {
+              "id": "combo-3",
+              "nombre": "Combo 3",
+              "precio": 7000,
+              "foto": "img/carta/combo-3.webp",
+              "detalle": "8 nuggets de pollo. Incluye papas fritas naturales y bebida de 250 ml."
+            },
+            {
+              "id": "combo-4",
+              "nombre": "Combo 4",
+              "precio": 8000,
+              "foto": "img/carta/combo-4.webp",
+              "detalle": "Hamburguesa italiana. Incluye papas fritas naturales y bebida de 250 ml.",
               "destacado": true
             },
             {
-              "id": "tabla-60",
-              "nombre": "Tabla 60 piezas",
-              "precio": 27990,
-              "foto": "img/carta/tabla-60.webp",
-              "detalle": "Sésamo: camarón, queso crema y pepino.\nQueso: kanikama, palta y pimentón.\nPalta: champiñón, queso crema y aceituna.\nNori: pollo, albahaca y palmito.\nPanko: pollo, palta y aceituna.\nTempura: camarón, queso crema y cebollín.",
-              "incluye": "4 salsas (soya o teriyaki)"
+              "id": "combo-5",
+              "nombre": "Combo 5",
+              "precio": 9500,
+              "detalle": "Cualquier sándwich Kaos (roba choclo, vístima, chamita o calila). Incluye papas fritas naturales y bebida de 250 cc.",
+              "opciones": [
+                "Roba choclo",
+                "Vístima",
+                "Chamita",
+                "Calila"
+              ]
             },
             {
-              "id": "tabla-80",
-              "nombre": "Tabla 80 piezas",
-              "precio": 36990,
-              "foto": "img/carta/tabla-80.webp",
-              "detalle": "Sésamo: camarón, queso crema y pepino.\nQueso: kanikama, palta y pimentón.\nPalta: champiñón, queso crema y aceituna.\nNori: pollo, albahaca y palmito.\nPanko: pollo, palta y aceituna.\nTempura: pollo, queso crema y cebollín.\nCiboulette: choclito cóctel, palta y queso crema.\nHosomaki panko: camarón y queso crema.",
-              "incluye": "5 salsas (soya o teriyaki)"
-            }
-          ]
-        },
-        {
-          "id": "tablas-especiales",
-          "nombre": "Tablas especiales",
-          "nota": "Se permiten como máximo 2 modificaciones en las tablas. Cada modificación tiene costo adicional.",
-          "productos": [
+              "id": "combo-6",
+              "nombre": "Combo 6",
+              "precio": 9000,
+              "foto": "img/carta/combo-6.webp",
+              "detalle": "Pan de sándwich con carne de churrasco, porotos verdes, tomate, ají verde y salsas a elección. Incluye papas fritas naturales y bebida de 250 ml."
+            },
             {
-              "id": "fusion",
-              "nombre": "Fusión",
-              "precio": 20490,
-              "foto": "img/carta/fusion.webp",
-              "detalle": "Palta: camarón, queso crema y cebollín.\nQueso: pollo, palta y palmito.\nTempura: camarón, queso crema y cebollín.\nPanko: pollo, palta y palmito.\n+ 8 camarones rebosados en panko y 6 gyozas de variedades mixtas.",
-              "nota": "5 piezas por cada envoltura.",
-              "incluye": "3 salsas (soya o teriyaki)",
+              "id": "combo-7",
+              "nombre": "Combo 7",
+              "precio": 8000,
+              "foto": "img/carta/combo-7.webp",
+              "detalle": "Pan de sándwich con carne mechada, palta, tomate y salsas a elección. Incluye papas fritas naturales y bebida de 250 ml."
+            },
+            {
+              "id": "combo-8",
+              "nombre": "Combo 8",
+              "precio": 8500,
+              "foto": "img/carta/combo-8.webp",
+              "detalle": "Pan con hamburguesa o churrasco, tocino, pepinillo, salsa cheddar y mayonesa casera. Incluye papas fritas y bebida de 250 cc.",
+              "opciones": [
+                "Hamburguesa",
+                "Churrasco"
+              ]
+            },
+            {
+              "id": "combo-9",
+              "nombre": "Combo 9",
+              "precio": 19000,
+              "foto": "img/carta/combo-9.webp",
+              "detalle": "Chorrillana para 4 personas (carne, salchicha, longaniza, 4 huevos, cebolla caramelizada y papas fritas). Incluye bebida de 1,5 L.",
               "destacado": true
             },
             {
-              "id": "chicken-lovers",
-              "nombre": "Chicken Lovers",
-              "precio": 20990,
-              "foto": "img/carta/chicken-lovers.webp",
-              "detalle": "Panko: pollo, queso crema y cebollín.\nQueso: pollo, pimentón y palta.\nPalta: pollo, queso crema y palta.\n+ 6 tori balls.",
-              "nota": "36 piezas.",
-              "incluye": "2 salsas (soya o teriyaki) y 1 salsa de pimienta"
-            },
-            {
-              "id": "sake-asian",
-              "nombre": "Sake Asian",
-              "precio": 22990,
-              "foto": "img/carta/sake-asian.webp",
-              "detalle": "Salmón: salmón, queso crema y pepino.\nPalta: salmón, palmito y palta.\nPanko: salmón, queso crema y cebollín.\n+ 6 sake balls.",
-              "nota": "36 piezas.",
-              "incluye": "2 salsas (soya o teriyaki) y 1 salsa de pimienta",
-              "destacado": true
-            }
-          ]
-        },
-        {
-          "id": "tablas-veggie",
-          "nombre": "Tablas veggie",
-          "nota": "Se permiten como máximo 2 modificaciones en las tablas. Cada modificación tiene costo adicional.",
-          "productos": [
-            {
-              "id": "love-veggie",
-              "nombre": "Love Veggie",
-              "precio": 22990,
-              "foto": "img/carta/love-veggie.webp",
-              "detalle": "Ciboulette: palmito, pimentón y palta.\nQueso: palta, pepino y choclito cóctel.\nPanko: champiñón, queso crema y aceitunas.\nNori: pepino, zanahoria y queso crema.\n+ 4 nigiris avocado.",
-              "nota": "44 piezas.",
-              "incluye": "3 salsas (soya o teriyaki)"
-            },
-            {
-              "id": "asian-veggie",
-              "nombre": "Asian Veggie",
-              "precio": 20990,
-              "foto": "img/carta/asian-veggie.webp",
-              "detalle": "Palta: champiñón, queso crema y cebollín.\nSésamo: aceituna, pimentón y pepino.\nTempura: queso, palmito y palta.\n+ 6 seta balls.",
-              "nota": "36 piezas.",
-              "incluye": "2 salsas (soya y teriyaki) y 1 salsa de pimienta"
+              "id": "combo-10",
+              "nombre": "Combo 10",
+              "precio": 8000,
+              "foto": "img/carta/combo-10.webp",
+              "detalle": "Churrasco italiano con papas fritas y bebida de 250 cc."
             }
           ]
         }
       ]
     },
     {
-      "nombre": "Entrantes",
+      "nombre": "Colaciones",
       "categorias": [
         {
-          "id": "entrantes",
-          "nombre": "Entrantes",
+          "id": "colaciones",
+          "nombre": "Colaciones",
           "productos": [
             {
-              "id": "proteinas-rebosadas",
-              "nombre": "Proteínas rebosadas",
-              "precio": 4990,
-              "foto": "img/carta/proteinas.webp",
-              "detalle": "En tempura o panko, a elección.",
-              "opciones": [
-                "Pollo (6 unidades)",
-                "Camarones (8 unidades)",
-                "Salmón (7 unidades)"
-              ],
-              "preciosOpciones": {
-                "Pollo (6 unidades)": 4990,
-                "Camarones (8 unidades)": 5490,
-                "Salmón (7 unidades)": 6290
-              },
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "rebozado",
-                "salsa-incluida"
-              ]
+              "id": "carne-mongoliana",
+              "nombre": "Carne Mongoliana",
+              "precio": 7000,
+              "foto": "img/carta/carne-mongoliana.webp"
             },
             {
-              "id": "nigiris",
-              "nombre": "Nigiris",
-              "precio": 3890,
-              "foto": "img/carta/nigiris.webp",
-              "detalle": "4 unidades.",
-              "opciones": [
-                "Avocado (palta)",
-                "Ebi (camarón)",
-                "Sake (salmón)",
-                "Maguro (atún)",
-                "Tako (pulpo)"
-              ],
-              "preciosOpciones": {
-                "Avocado (palta)": 3890,
-                "Ebi (camarón)": 4490,
-                "Sake (salmón)": 4690,
-                "Maguro (atún)": 4690,
-                "Tako (pulpo)": 6290
-              },
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "salsa-incluida"
-              ]
+              "id": "lomo-saltado",
+              "nombre": "Lomo saltado",
+              "precio": 7000,
+              "foto": "img/carta/lomo-saltado.webp"
             },
             {
-              "id": "gyozas",
-              "nombre": "Gyozas",
-              "precio": 4990,
-              "foto": "img/carta/gyozas.webp",
-              "detalle": "5 unidades, al vapor en soya o fritas.",
+              "id": "lomo-a-lo-pobre",
+              "nombre": "Lomo a lo pobre",
+              "precio": 13000,
+              "foto": "img/carta/lomo-a-lo-pobre.webp",
+              "detalle": "Lomo vetado, cebolla, huevo y papas fritas."
+            },
+            {
+              "id": "pollo-a-la-plancha",
+              "nombre": "Pollo a la plancha",
+              "precio": 6500,
+              "detalle": "Pollo a la plancha con arroz blanco o primavera y agregado de papas fritas naturales."
+            },
+            {
+              "id": "lomo-a-la-plancha",
+              "nombre": "Lomo a la plancha",
+              "precio": 11000,
+              "foto": "img/carta/lomo-a-la-plancha.webp",
+              "detalle": "Lomo a la plancha con arroz y papas fritas."
+            },
+            {
+              "id": "tallarin-saltado",
+              "nombre": "Tallarín saltado",
+              "precio": 7000,
+              "foto": "img/carta/tallarin-saltado.webp",
+              "detalle": "Tallarines salteados. Puedes elegir entre tres proteínas: carne, pollo o cerdo.",
               "opciones": [
+                "Carne",
                 "Pollo",
-                "Camarón",
-                "Cerdo",
-                "Mixtas"
-              ],
-              "personalizar": [
-                "preparacion-gyoza"
+                "Cerdo"
               ]
             },
             {
-              "id": "sashimi",
-              "nombre": "Sashimi",
-              "precio": 6990,
-              "foto": "img/carta/sashimi.webp",
-              "detalle": "Salmón o atún, en 6 o 9 cortes.",
+              "id": "pollo-asado-al-horno",
+              "nombre": "Pollo asado al horno",
+              "precio": 6500,
+              "foto": "img/carta/pollo-asado-al-horno.webp"
+            },
+            {
+              "id": "chapsui-de-carne-o-pollo",
+              "nombre": "Chapsui de carne o pollo",
+              "precio": 7000,
+              "foto": "img/carta/chapsui-de-carne-o-pollo.webp",
+              "detalle": "Chapsui de pollo o carne con arroz chaufa y papas fritas.",
               "opciones": [
-                "Salmón, 6 cortes",
-                "Salmón, 9 cortes",
-                "Atún, 6 cortes",
-                "Atún, 9 cortes"
-              ],
-              "preciosOpciones": {
-                "Salmón, 6 cortes": 6990,
-                "Salmón, 9 cortes": 9800,
-                "Atún, 6 cortes": 6990,
-                "Atún, 9 cortes": 9800
-              },
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "salsa-incluida"
+                "Carne",
+                "Pollo"
               ]
+            },
+            {
+              "id": "pollo-a-la-plancha-con-tallarines-al-pesto",
+              "nombre": "Pollo a la plancha con tallarines al pesto",
+              "precio": 8000,
+              "detalle": "Tallarines al pesto con pollo a la plancha adobado con especias."
             }
           ]
         }
       ]
     },
     {
-      "nombre": "Creación de la casa",
+      "nombre": "Sandwiches",
       "categorias": [
         {
-          "id": "creacion-de-la-casa",
-          "nombre": "Creación de la casa",
+          "id": "ave",
+          "nombre": "Ave",
           "productos": [
             {
-              "id": "cangri-balls",
-              "nombre": "Cangri balls",
-              "precio": 6990,
-              "foto": "img/carta/balls.webp",
-              "detalle": "Base de jaiba, queso mantecoso y especias, rebosadas en panko.",
-              "nota": "5 unidades.",
-              "incluye": "1 salsa blanca"
+              "id": "ave-italiana",
+              "nombre": "Ave italiana",
+              "precio": 6500,
+              "foto": "img/carta/ave-italiana.webp",
+              "detalle": "Pollo, palta y tomate"
             },
             {
-              "id": "sake-balls",
-              "nombre": "Sake balls",
-              "precio": 6490,
-              "foto": "img/carta/balls.webp",
-              "detalle": "Base de salmón, bechamel y especias, rebosadas en panko.",
-              "nota": "6 unidades.",
-              "incluye": "1 salsa de pimienta"
+              "id": "ave-roba-choclo",
+              "nombre": "Ave roba choclo",
+              "precio": 7000,
+              "foto": "img/carta/ave-roba-choclo.webp",
+              "detalle": "Pollo, lechuga, queso, tocino, choclo y champiñón."
             },
             {
-              "id": "seta-balls",
-              "nombre": "Seta balls",
-              "precio": 6990,
-              "foto": "img/carta/balls.webp",
-              "detalle": "Base de champiñón, bechamel y especias, rebosadas en panko.",
-              "nota": "6 unidades.",
-              "incluye": "1 salsa de pimienta"
+              "id": "ave-chamita",
+              "nombre": "Ave chamita",
+              "precio": 7000,
+              "foto": "img/carta/ave-chamita.webp",
+              "detalle": "Pollo, huevo, tocino, lechuga y tomate."
             },
             {
-              "id": "tori-balls",
-              "nombre": "Tori balls",
-              "precio": 6490,
-              "foto": "img/carta/balls.webp",
-              "detalle": "Base de pollo, tocino, bechamel y especias, rebosadas en panko.",
-              "nota": "6 unidades.",
-              "incluye": "1 salsa de pimienta"
+              "id": "ave-vistima",
+              "nombre": "Ave vístima",
+              "precio": 7000,
+              "foto": "img/carta/ave-vistima.webp",
+              "detalle": "Pollo, lechuga, tomate, palta, pepinillo y queso"
+            },
+            {
+              "id": "ave-calila",
+              "nombre": "Ave calila",
+              "precio": 7000,
+              "foto": "img/carta/ave-calila.webp",
+              "detalle": "Pollo, queso, tocino, cebolla y papas hilo"
+            },
+            {
+              "id": "ave-mojojojo",
+              "nombre": "Ave mojojojo",
+              "precio": 8000,
+              "detalle": "Pan de sándwich con pollo, lechuga, tomate, aros de cebolla, tocino y bastones de queso."
             }
           ]
-        }
-      ]
-    },
-    {
-      "nombre": "Rolls premium",
-      "categorias": [
+        },
         {
-          "id": "rolls-premium",
-          "nombre": "Rolls premium",
-          "personalizar": [
-            "ingrediente-extra",
-            "salsa-incluida"
-          ],
+          "id": "mechada",
+          "nombre": "Carne mechada",
           "productos": [
             {
-              "id": "asian-rolls",
-              "nombre": "Asian Rolls",
-              "precio": 9990,
-              "foto": "img/carta/asian-rolls.webp",
-              "detalle": "Camarón, salmón, palta, cebollín y queso crema, envuelto en palta. Cubierto de salsa acevichada y topping de papa hilo camote.",
-              "incluye": "1 salsa (soya o teriyaki)",
+              "id": "mechada-italiana",
+              "nombre": "Mechada italiana",
+              "precio": 7000,
+              "foto": "img/carta/mechada-italiana.webp",
+              "detalle": "Carne mechada, palta y tomate"
+            },
+            {
+              "id": "mechada-roba-choclo",
+              "nombre": "Mechada roba choclo",
+              "precio": 7500,
+              "detalle": "Carne mechada, queso, lechuga, tocino, choclo y champiñón."
+            },
+            {
+              "id": "mechada-chamita",
+              "nombre": "Mechada chamita",
+              "precio": 7500,
+              "foto": "img/carta/mechada-chamita.webp",
+              "detalle": "Carne mechada, huevo, tocino, lechuga y tomate"
+            },
+            {
+              "id": "mechada-vistima",
+              "nombre": "Mechada vístima",
+              "precio": 7500,
+              "detalle": "Carne mechada, lechuga, palta, tomate, pepinillo y queso"
+            },
+            {
+              "id": "mechada-calila",
+              "nombre": "Mechada calila",
+              "precio": 7500,
+              "detalle": "Carne mechada, queso, tocino, cebolla y papas hilo"
+            },
+            {
+              "id": "mechada-mojojojo",
+              "nombre": "Mechada mojojojo",
+              "precio": 8500,
+              "detalle": "Pan de sándwich con carne mechada, lechuga, tomate, aros de cebolla, tocino y bastones de queso."
+            }
+          ]
+        },
+        {
+          "id": "churrasco",
+          "nombre": "Churrasco",
+          "productos": [
+            {
+              "id": "churrasco-italiano",
+              "nombre": "Churrasco italiano",
+              "precio": 6500,
+              "foto": "img/carta/churrasco-italiano.webp",
+              "detalle": "Carne de churrasco, palta y tomate"
+            },
+            {
+              "id": "churrasco-roba-choclo",
+              "nombre": "Churrasco roba choclo",
+              "precio": 7000,
+              "foto": "img/carta/churrasco-roba-choclo.webp",
+              "detalle": "Carne de churrasco, queso, lechuga, tocino, choclo y champiñón."
+            },
+            {
+              "id": "churrasco-chamita",
+              "nombre": "Churrasco chamita",
+              "precio": 7000,
+              "detalle": "Carne de churrasco, huevo, tocino, lechuga y tomate"
+            },
+            {
+              "id": "churrasco-vistima",
+              "nombre": "Churrasco vístima",
+              "precio": 7000,
+              "detalle": "Carne de churrasco, lechuga, tomate, palta, pepinillo y queso"
+            },
+            {
+              "id": "churrasco-calila",
+              "nombre": "Churrasco calila",
+              "precio": 7000,
+              "detalle": "Carne de churrasco, queso, tocino, cebolla y papas hilo"
+            },
+            {
+              "id": "churrasco-barros-luco",
+              "nombre": "Churrasco barros luco",
+              "precio": 5000,
+              "foto": "img/carta/churrasco-barros-luco.webp",
+              "detalle": "Carne de churrasco y queso"
+            },
+            {
+              "id": "churrasco-chacarero",
+              "nombre": "Churrasco chacarero",
+              "precio": 7000,
+              "foto": "img/carta/churrasco-chacarero.webp",
+              "detalle": "Carne de churrasco, porotos verdes, tomate y ají verde."
+            },
+            {
+              "id": "churrasco-mojojojo",
+              "nombre": "Churrasco mojojojo",
+              "precio": 8000,
+              "detalle": "Pan de sándwich con churrasco, lechuga, tomate, aros de cebolla, tocino y bastones de queso."
+            }
+          ]
+        },
+        {
+          "id": "hamburguesa",
+          "nombre": "Hamburguesa",
+          "productos": [
+            {
+              "id": "hamburguesa-italiana",
+              "nombre": "Hamburguesa italiana",
+              "precio": 6500,
+              "detalle": "Hamburguesa, palta y tomate"
+            },
+            {
+              "id": "hamburguesa-roba-choclo",
+              "nombre": "Hamburguesa roba choclo",
+              "precio": 7000,
+              "foto": "img/carta/hamburguesa-roba-choclo.webp",
+              "detalle": "Hamburguesa, queso, lechuga, tocino, choclo y champiñón."
+            },
+            {
+              "id": "hamburguesa-chamita",
+              "nombre": "Hamburguesa chamita",
+              "precio": 7000,
+              "detalle": "Hamburguesa, tocino, huevo, lechuga y tomate"
+            },
+            {
+              "id": "hamburguesa-vistima",
+              "nombre": "Hamburguesa vístima",
+              "precio": 7000,
+              "foto": "img/carta/hamburguesa-vistima.webp",
+              "detalle": "Hamburguesa, lechuga, tomate, palta, pepinillo y queso."
+            },
+            {
+              "id": "hamburguesa-calila",
+              "nombre": "Hamburguesa calila",
+              "precio": 7000,
+              "detalle": "Hamburguesa, cebolla, queso, tocino y papas hilo"
+            },
+            {
+              "id": "hamburguesa-gran-luco",
+              "nombre": "Hamburguesa gran luco",
+              "precio": 8500,
+              "detalle": "Doble hamburguesa, doble queso y papas hilo."
+            },
+            {
+              "id": "terrible-kaos",
+              "nombre": "Terrible Kaos",
+              "precio": 12500,
+              "foto": "img/carta/terrible-kaos.webp",
               "destacado": true
             },
             {
-              "id": "ceviche-rolls",
-              "nombre": "Ceviche Rolls",
-              "precio": 9990,
-              "foto": "img/carta/ceviche-rolls.webp",
-              "detalle": "Camarón furay, palta y queso crema, envuelto en palta, con topping de ceviche de salmón.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "hamburguesa-mojojojo",
+              "nombre": "Hamburguesa mojojojo",
+              "precio": 8500,
+              "detalle": "Hamburguesa casera, lechuga, tomate, aros de cebolla, tocino y bastones de queso."
+            }
+          ]
+        },
+        {
+          "id": "lomito",
+          "nombre": "Lomito",
+          "productos": [
+            {
+              "id": "lomito-italiano",
+              "nombre": "Lomito italiano",
+              "precio": 6500,
+              "detalle": "Carne de lomito, palta y tomate"
             },
             {
-              "id": "criollo-rolls",
-              "nombre": "Criollo Rolls",
-              "precio": 7190,
-              "foto": "img/carta/criollo-rolls.webp",
-              "detalle": "Camarón furay, palta, cebollín y queso crema, envuelto en finas láminas de pollo, frito en tempura. Cubierto de salsa huancaína.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-roba-choclo",
+              "nombre": "Lomito roba choclo",
+              "precio": 7000,
+              "detalle": "Carne de lomito, queso, lechuga, tocino, choclo y champiñón."
             },
             {
-              "id": "cheese-hot",
-              "nombre": "Cheese Hot",
-              "precio": 6490,
-              "foto": "img/carta/cheese-hot.webp",
-              "detalle": "Pollo, champiñón, pimentón y albahaca, envuelto en queso crema y frito en panko.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-chamita",
+              "nombre": "Lomito chamita",
+              "precio": 7000,
+              "detalle": "Carne de lomito, huevo, tocino, lechuga y tomate"
             },
             {
-              "id": "cheese-toasted",
-              "nombre": "Cheese & Toasted",
-              "precio": 6490,
-              "foto": "img/carta/cheese-toasted.webp",
-              "detalle": "Pollo y palta, envuelto en queso crema. Cubierto de salsa unagui con topping de almendras tostadas.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-vistima",
+              "nombre": "Lomito vístima",
+              "precio": 7000,
+              "detalle": "Carne de lomito, lechuga, palta, tomate, pepinillo y queso"
             },
             {
-              "id": "fuji-crunch",
-              "nombre": "Fuji Crunch Rolls",
-              "precio": 8490,
-              "foto": "img/carta/fuji-crunch.webp",
-              "detalle": "Pollo, queso crema y palta, frito en panko. Cubierto de salsa fuji y topping de camarón furay.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-calila",
+              "nombre": "Lomito calila",
+              "precio": 7000,
+              "detalle": "Carne de lomito, queso, tocino, cebolla y papas hilo"
             },
             {
-              "id": "lomo-salteado",
-              "nombre": "Lomo Salteado",
-              "precio": 8490,
-              "foto": "img/carta/lomo-salteado.webp",
-              "detalle": "Carne de lomo salteado, tomate y cebolla morada salteadas, frito en panko. Con topping de papas hilo.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-barros-luco",
+              "nombre": "Lomito barros luco",
+              "precio": 5000,
+              "detalle": "Carne de lomito y queso"
             },
             {
-              "id": "masago-ebi-furay",
-              "nombre": "Masago Ebi Furay",
-              "precio": 6490,
-              "foto": "img/carta/masago-ebi.webp",
-              "detalle": "Camarón furay, palta y queso crema, envuelto en masago.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-chacarero",
+              "nombre": "Lomito chacarero",
+              "precio": 7000,
+              "detalle": "Carne de lomito, porotos verdes, tomate y ají verde."
             },
             {
-              "id": "pulpo-al-olivo",
-              "nombre": "Pulpo al Olivo",
-              "precio": 8490,
-              "foto": "img/carta/pulpo-olivo.webp",
-              "detalle": "Pulpo, cebollín y queso crema, envuelto en palta. Cubierto de salsa al olivo.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "lomito-mojojojo",
+              "nombre": "Lomito mojojojo",
+              "precio": 8000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Completos y As",
+      "categorias": [
+        {
+          "id": "completos",
+          "nombre": "Completos",
+          "productos": [
+            {
+              "id": "italiano",
+              "nombre": "Italiano",
+              "precio": 2500,
+              "foto": "img/carta/italiano.webp",
+              "detalle": "Hot dog con vienesa sureña, palta y tomate."
             },
             {
-              "id": "sake-tartar",
-              "nombre": "Sake Tartar Rolls",
-              "precio": 8490,
-              "foto": "img/carta/sake-tartar.webp",
-              "detalle": "Camarón, palta y queso crema, frito en panko. Con topping de tartar de salmón spicy, con toques de miel y crunch.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "completo",
+              "nombre": "Completo",
+              "precio": 3000,
+              "foto": "img/carta/completo.webp",
+              "detalle": "Hot dog con vienesa sureña, tomate, palta y chucrut."
             },
             {
-              "id": "spicy-rolls",
-              "nombre": "Spicy Rolls",
-              "precio": 7190,
-              "foto": "img/carta/spicy-rolls.webp",
-              "detalle": "Pollo furay, palta y queso crema, frito en panko. Cubierto de salsa spicy y topping de cebollín al hilo.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "dinamico",
+              "nombre": "Dinámico",
+              "precio": 3500,
+              "detalle": "Vienesa sureña, palta, tomate, chucrut y salsa americana."
             },
             {
-              "id": "triple-plaqueta",
-              "nombre": "Triple Plaqueta",
-              "precio": 8490,
-              "foto": "img/carta/triple-plaqueta.webp",
-              "detalle": "Atún, pepino y queso crema, envuelto en palta, camarón y salmón. Cubierto de salsa acevichada.",
-              "incluye": "1 salsa (soya o teriyaki)",
+              "id": "papapleto",
+              "nombre": "Papapleto",
+              "precio": 2500,
+              "foto": "img/carta/papapleto.webp",
+              "detalle": "Papas fritas, palta y tomate."
+            },
+            {
+              "id": "champipleto",
+              "nombre": "Champipleto",
+              "precio": 3500,
+              "detalle": "Champiñón, palta y tomate."
+            }
+          ]
+        },
+        {
+          "id": "as",
+          "nombre": "As",
+          "productos": [
+            {
+              "id": "as-mechada-italiano",
+              "nombre": "As mechada italiano",
+              "precio": 4500,
+              "detalle": "Carne mechada, tomate y palta"
+            },
+            {
+              "id": "as-mechada-completo",
+              "nombre": "As mechada completo",
+              "precio": 4500,
+              "detalle": "Carne mechada, tomate, palta y chucrut"
+            },
+            {
+              "id": "as-churrasco-italiano",
+              "nombre": "As churrasco italiano",
+              "precio": 4500,
+              "detalle": "Carne de churrasco, tomate y palta"
+            },
+            {
+              "id": "as-churrasco-completo",
+              "nombre": "As churrasco completo",
+              "precio": 4500,
+              "detalle": "Carne de churrasco, palta, tomate y chucrut."
+            },
+            {
+              "id": "as-italiano-papas-bebida-mini",
+              "nombre": "As italiano + papas + bebida mini",
+              "precio": 6000
+            },
+            {
+              "id": "as-completo-papas-bebida-mini",
+              "nombre": "As completo + papas + bebida mini",
+              "precio": 6500
+            },
+            {
+              "id": "as-luco",
+              "nombre": "As luco",
+              "precio": 4000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Arma tu...",
+      "categorias": [
+        {
+          "id": "arma-tu",
+          "nombre": "Arma tu...",
+          "productos": [
+            {
+              "id": "arma-tu-sandwich",
+              "nombre": "Arma tu sándwich",
+              "precio": 7500,
+              "detalle": "4 ingredientes y 2 salsas."
+            },
+            {
+              "id": "arma-tu-completo",
+              "nombre": "Arma tu completo",
+              "precio": 5000,
+              "detalle": "4 ingredientes y 2 salsas."
+            },
+            {
+              "id": "arma-tu-as",
+              "nombre": "Arma tu as",
+              "precio": 5500
+            },
+            {
+              "id": "arma-tu-fajita",
+              "nombre": "Arma tu fajita",
+              "precio": 7000,
+              "detalle": "4 ingredientes y 2 salsas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Papas fritas",
+      "categorias": [
+        {
+          "id": "papas-fritas",
+          "nombre": "Papas fritas",
+          "productos": [
+            {
+              "id": "papas-fritas-medianas",
+              "nombre": "Papas fritas medianas",
+              "precio": 3500
+            },
+            {
+              "id": "papas-fritas-grandes",
+              "nombre": "Papas fritas grandes",
+              "precio": 4500
+            },
+            {
+              "id": "salchipapas-medianas",
+              "nombre": "Salchipapas medianas",
+              "precio": 4000,
+              "foto": "img/carta/salchipapas-medianas.webp"
+            },
+            {
+              "id": "salchipapas-grandes",
+              "nombre": "Salchipapas grandes",
+              "precio": 5000,
+              "foto": "img/carta/salchipapas-grandes.webp"
+            },
+            {
+              "id": "papas-cheddar-con-tocino-medianas",
+              "nombre": "Papas cheddar con tocino medianas",
+              "precio": 4500,
+              "foto": "img/carta/papas-cheddar-con-tocino-medianas.webp",
               "destacado": true
             },
             {
-              "id": "umami-rolls",
-              "nombre": "Umami Rolls",
-              "precio": 8490,
-              "foto": "img/carta/umami-rolls.webp",
-              "detalle": "Salmón, cebollín y queso crema, envuelto en atún. Cubierto de salsa umami.",
-              "incluye": "1 salsa (soya o teriyaki)"
+              "id": "papas-cheddar-con-tocino-grandes",
+              "nombre": "Papas cheddar con tocino grandes",
+              "precio": 6000
+            },
+            {
+              "id": "papas-con-champinon-choclo-y-salsa-grandes",
+              "nombre": "Papas con champiñón, choclo y salsa grandes",
+              "precio": 6000,
+              "detalle": "Papas fritas naturales, champiñones naturales, choclo y salsa de ciboulette."
+            },
+            {
+              "id": "papas-con-champinon-choclo-y-salsa-medianas",
+              "nombre": "Papas con champiñón, choclo y salsa medianas",
+              "precio": 4500,
+              "foto": "img/carta/papas-con-champinon-choclo-y-salsa-medianas.webp",
+              "detalle": "Papas fritas naturales, champiñones naturales, choclo y salsa de ciboulette."
+            },
+            {
+              "id": "papas-fritas-chicas",
+              "nombre": "Papas fritas chicas",
+              "precio": 2000
             }
           ]
         }
       ]
     },
     {
-      "nombre": "Gohan y sushiburger",
+      "nombre": "Chorrillanas",
       "categorias": [
         {
-          "id": "gohan-sushiburger",
-          "nombre": "Gohan y sushiburger",
+          "id": "chorrillanas",
+          "nombre": "Chorrillanas",
           "productos": [
             {
-              "id": "gohan",
-              "nombre": "Gohan",
-              "precio": 7990,
-              "foto": "img/carta/gohan.webp",
-              "detalle": "Escoge 2 ingredientes base (rebosados o fríos) y 3 ingredientes secundarios.",
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "base-2",
-                "preparacion-base",
-                "secundarios-3",
-                "ingrediente-extra",
-                "salsa-incluida"
-              ],
-              "destacado": true
+              "id": "chorrillana-2-personas",
+              "nombre": "Chorrillana 2 personas",
+              "precio": 12000,
+              "foto": "img/carta/chorrillana-2-personas.webp",
+              "detalle": "Papas fritas, longaniza, vienesa, cebolla, churrasco y huevo."
             },
             {
-              "id": "sushi-burger",
-              "nombre": "Sushi burger",
-              "precio": 8900,
-              "foto": "img/carta/sushiburger.webp",
-              "detalle": "Escoge 2 ingredientes base (rebosados o fríos) y 3 ingredientes secundarios.",
-              "incluye": "2 salsas (soya o teriyaki)",
-              "personalizar": [
-                "base-2",
-                "preparacion-base",
-                "secundarios-3",
-                "ingrediente-extra"
-              ]
+              "id": "chorrillana-4-personas",
+              "nombre": "Chorrillana 4 personas",
+              "precio": 17000,
+              "detalle": "Papas fritas, longaniza, vienesa, cebolla, churrasco y huevo."
+            },
+            {
+              "id": "chorrillana-6-personas",
+              "nombre": "Chorrillana 6 personas",
+              "precio": 25000,
+              "foto": "img/carta/chorrillana-2-personas.webp",
+              "detalle": "Papas fritas, longaniza, vienesa, cebolla, churrasco y huevo."
             }
           ]
         }
       ]
     },
     {
-      "nombre": "Arma tu roll",
+      "nombre": "Para picar",
       "categorias": [
         {
-          "id": "arma-tu-roll",
-          "nombre": "Arma tu roll",
+          "id": "hand-roll",
+          "nombre": "Hand roll",
           "productos": [
             {
-              "id": "roll-con-arroz",
-              "nombre": "Arma tu roll con arroz",
-              "precio": 5490,
-              "foto": "img/carta/arma-roll.webp",
-              "detalle": "1 envoltura + 1 ingrediente base + 2 ingredientes secundarios.",
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "ar-envoltura",
-                "ar-base",
-                "rebosar",
-                "ar-secundarios-2",
-                "ingrediente-extra",
-                "sin-nori",
-                "salsa-incluida"
-              ]
+              "id": "hand-roll-de-pollo",
+              "nombre": "Hand roll de pollo",
+              "precio": 3500,
+              "foto": "img/carta/hand-roll-de-pollo.webp",
+              "detalle": "Hand roll de pollo, queso crema y cebollín en panko."
             },
             {
-              "id": "roll-sin-arroz",
-              "nombre": "Arma tu roll sin arroz",
-              "precio": 6790,
-              "foto": "img/carta/sin-arroz.webp",
-              "detalle": "1 envoltura + 1 ingrediente base + 4 ingredientes secundarios.",
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "sa-envoltura",
-                "ar-base",
-                "rebosar",
-                "sa-secundarios-4",
-                "ingrediente-extra",
-                "salsa-incluida"
-              ]
-            },
-            {
-              "id": "hosomaki",
-              "nombre": "Hosomaki",
-              "precio": 4290,
-              "detalle": "Envuelto en nori + 1 ingrediente base + 1 ingrediente secundario.",
-              "incluye": "1 salsa (soya o teriyaki)",
-              "personalizar": [
-                "hoso-base",
-                "rebosar",
-                "hoso-secundario",
-                "ingrediente-extra",
-                "salsa-incluida"
-              ]
+              "id": "hand-roll-de-camaron",
+              "nombre": "Hand roll de camarón",
+              "precio": 3500,
+              "foto": "img/carta/hand-roll-de-camaron.webp",
+              "detalle": "Hand roll de camarón, queso crema y cebollín en panko."
             }
           ]
-        }
-      ]
-    },
-    {
-      "nombre": "Extras",
-      "categorias": [
+        },
         {
-          "id": "salsas",
-          "nombre": "Salsas y otros",
+          "id": "empanadas",
+          "nombre": "Empanadas",
           "productos": [
             {
-              "id": "acevichada",
-              "nombre": "Salsa acevichada",
-              "precio": 900
+              "id": "empanada-de-queso",
+              "nombre": "Empanada de queso",
+              "precio": 2500
             },
             {
-              "id": "fuji",
-              "nombre": "Salsa fuji",
-              "precio": 900
+              "id": "empanada-de-camaron-y-queso",
+              "nombre": "Empanada de camarón y queso",
+              "precio": 3500
             },
             {
-              "id": "olivo",
-              "nombre": "Salsa al olivo",
-              "precio": 900
+              "id": "empanada-de-pollo-y-queso",
+              "nombre": "Empanada de pollo y queso",
+              "precio": 3000
             },
             {
-              "id": "soya-teriyaki",
-              "nombre": "Soya o teriyaki",
-              "precio": 790,
+              "id": "empanada-de-mechada-y-queso",
+              "nombre": "Empanada de mechada y queso",
+              "precio": 3500
+            },
+            {
+              "id": "mini-empanadas-gyozas",
+              "nombre": "Mini empanadas gyozas",
+              "precio": 3000,
+              "detalle": "12 mini empanaditas rellenas de verduras, con salsa de soya o teriyaki.",
               "opciones": [
-                "Soya",
-                "Teriyaki"
-              ]
-            },
-            {
-              "id": "blanca-pimienta",
-              "nombre": "Salsa blanca o de pimienta",
-              "precio": 990,
-              "opciones": [
-                "Salsa blanca",
-                "Salsa de pimienta"
-              ]
-            },
-            {
-              "id": "spicy",
-              "nombre": "Salsa spicy",
-              "precio": 900
-            },
-            {
-              "id": "huancaina",
-              "nombre": "Salsa huancaína",
-              "precio": 900
-            },
-            {
-              "id": "umami",
-              "nombre": "Salsa umami",
-              "precio": 900
-            },
-            {
-              "id": "jengibre-wasabi",
-              "nombre": "Jengibre o wasabi",
-              "precio": 790,
-              "opciones": [
-                "Jengibre",
-                "Wasabi"
+                "Salsa de soya",
+                "Salsa teriyaki"
               ]
             }
           ]
         },
         {
-          "id": "bebestibles",
-          "nombre": "Bebestibles",
+          "id": "ensaladas",
+          "nombre": "Ensaladas",
           "productos": [
             {
-              "id": "bebida-lata",
-              "nombre": "Bebida 220 ml",
-              "precio": 1000,
-              "foto": "img/carta/bebidas.webp",
+              "id": "ensalada-kaos",
+              "nombre": "Ensalada Kaos",
+              "precio": 6000,
+              "foto": "img/carta/ensalada-kaos.webp"
+            },
+            {
+              "id": "ensalada-cesar",
+              "nombre": "Ensalada césar",
+              "precio": 5000,
+              "detalle": "Lechuga, pollo a la plancha, crutones, queso parmesano y salsa césar o vinagreta.",
               "opciones": [
-                "Coca-Cola",
-                "Sprite",
-                "Fanta"
+                "Salsa césar",
+                "Vinagreta"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "agregados",
+          "nombre": "Agregados",
+          "productos": [
+            {
+              "id": "arrollados-primavera-5-unidades",
+              "nombre": "Arrollados primavera (5 unidades)",
+              "precio": 3000,
+              "detalle": "5 arrollados primavera con salsa de soya o teriyaki.",
+              "opciones": [
+                "Salsa de soya",
+                "Salsa teriyaki"
               ]
             },
             {
-              "id": "bebida-grande",
-              "nombre": "Bebida 1,5 litros",
-              "precio": 2990,
-              "foto": "img/carta/bebidas.webp",
-              "opciones": [
-                "Coca-Cola",
-                "Coca-Cola Zero",
-                "Sprite",
-                "Fanta"
-              ]
+              "id": "arrollados-de-jamon-y-queso-5-unidades",
+              "nombre": "Arrollados de jamón y queso (5 unidades)",
+              "precio": 3500,
+              "detalle": "5 arrollados de jamón y queso."
+            },
+            {
+              "id": "bastones-de-queso-6-unidades",
+              "nombre": "Bastones de queso (6 unidades)",
+              "precio": 3500,
+              "detalle": "6 bastones de queso."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Promos con lata",
+      "categorias": [
+        {
+          "id": "promos-lata",
+          "nombre": "Promociones con lata",
+          "productos": [
+            {
+              "id": "as-mechada-completo-bebida-en-lata",
+              "nombre": "As mechada completo + bebida en lata",
+              "precio": 6500
+            },
+            {
+              "id": "as-churrasco-italiano-bebida-en-lata",
+              "nombre": "As churrasco italiano + bebida en lata",
+              "precio": 6500
+            },
+            {
+              "id": "as-churrasco-completo-bebida-en-lata",
+              "nombre": "As churrasco completo + bebida en lata",
+              "precio": 6500
+            },
+            {
+              "id": "completo-bebida-en-lata",
+              "nombre": "Completo + bebida en lata",
+              "precio": 5000
+            },
+            {
+              "id": "italiano-bebida-en-lata",
+              "nombre": "Italiano + bebida en lata",
+              "precio": 4500
+            },
+            {
+              "id": "italiano-papas-bebida-en-lata",
+              "nombre": "Italiano + papas + bebida en lata",
+              "precio": 6500
+            },
+            {
+              "id": "completo-papas-bebida-en-lata",
+              "nombre": "Completo + papas + bebida en lata",
+              "precio": 6500
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Bebidas",
+      "categorias": [
+        {
+          "id": "bebidas-agua",
+          "nombre": "Agua",
+          "productos": [
+            {
+              "id": "agua-con-gas",
+              "nombre": "Agua con gas",
+              "precio": 1500,
+              "foto": "img/carta/agua-con-gas.webp"
+            },
+            {
+              "id": "agua-sin-gas",
+              "nombre": "Agua sin gas",
+              "precio": 1500,
+              "foto": "img/carta/agua-sin-gas.webp"
+            }
+          ]
+        },
+        {
+          "id": "bebidas-grandes",
+          "nombre": "Grandes",
+          "productos": [
+            {
+              "id": "coca-cola-1-5-l",
+              "nombre": "Coca-Cola 1,5 L",
+              "precio": 3000
+            },
+            {
+              "id": "pepsi-2-l",
+              "nombre": "Pepsi 2 L",
+              "precio": 3000
+            },
+            {
+              "id": "kem-pina-2-l",
+              "nombre": "Kem Piña 2 L",
+              "precio": 3000
+            },
+            {
+              "id": "limon-soda-2-l",
+              "nombre": "Limón Soda 2 L",
+              "precio": 3000
+            }
+          ]
+        },
+        {
+          "id": "bebidas-lata",
+          "nombre": "Lata",
+          "productos": [
+            {
+              "id": "kem-350-ml",
+              "nombre": "Kem 350 ml",
+              "precio": 1500
+            },
+            {
+              "id": "limon-soda-350-ml",
+              "nombre": "Limón Soda 350 ml",
+              "precio": 1500
+            },
+            {
+              "id": "pepsi-350-ml",
+              "nombre": "Pepsi 350 ml",
+              "precio": 1500
+            }
+          ]
+        },
+        {
+          "id": "bebidas-mini",
+          "nombre": "Mini",
+          "productos": [
+            {
+              "id": "kem-250-ml",
+              "nombre": "Kem 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "limon-soda-250-ml",
+              "nombre": "Limón Soda 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "pepsi-250-ml",
+              "nombre": "Pepsi 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "bilz-250-ml",
+              "nombre": "Bilz 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "coca-cola-250-ml",
+              "nombre": "Coca-Cola 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "fanta-express",
+              "nombre": "Fanta express",
+              "precio": 1000
+            },
+            {
+              "id": "coca-cola-zero-250-ml",
+              "nombre": "Coca-Cola Zero 250 ml",
+              "precio": 1000
+            },
+            {
+              "id": "fanta-220-ml",
+              "nombre": "Fanta 220 ml",
+              "precio": 1000
+            },
+            {
+              "id": "coca-cola-express",
+              "nombre": "Coca-Cola express",
+              "precio": 1000
+            },
+            {
+              "id": "sprite-express",
+              "nombre": "Sprite express",
+              "precio": 1000
+            },
+            {
+              "id": "sprite-220-ml",
+              "nombre": "Sprite 220 ml",
+              "precio": 1000
+            }
+          ]
+        },
+        {
+          "id": "te-cafe",
+          "nombre": "Té o café",
+          "productos": [
+            {
+              "id": "te",
+              "nombre": "Té",
+              "precio": 1000
+            },
+            {
+              "id": "cafe",
+              "nombre": "Café",
+              "precio": 1000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Jugos y batidos",
+      "categorias": [
+        {
+          "id": "jugos-naturales",
+          "nombre": "Jugos naturales",
+          "productos": [
+            {
+              "id": "jugo-natural-de-pina",
+              "nombre": "Jugo natural de piña",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-maracuya",
+              "nombre": "Jugo natural de maracuyá",
+              "precio": 3500
+            },
+            {
+              "id": "jugo-natural-de-frambuesa",
+              "nombre": "Jugo natural de frambuesa",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-melon",
+              "nombre": "Jugo natural de melón",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-frutilla",
+              "nombre": "Jugo natural de frutilla",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-mango",
+              "nombre": "Jugo natural de mango",
+              "precio": 3000,
+              "foto": "img/carta/jugo-natural-de-mango.webp"
+            },
+            {
+              "id": "jugo-natural-de-papaya",
+              "nombre": "Jugo natural de papaya",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-kiwi",
+              "nombre": "Jugo natural de kiwi",
+              "precio": 3000
+            },
+            {
+              "id": "limonada",
+              "nombre": "Limonada",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-manzana",
+              "nombre": "Jugo natural de manzana",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-mora",
+              "nombre": "Jugo natural de mora",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-damasco",
+              "nombre": "Jugo natural de damasco",
+              "precio": 3000
+            },
+            {
+              "id": "jugo-natural-de-ciruela",
+              "nombre": "Jugo natural de ciruela",
+              "precio": 3000
+            }
+          ]
+        },
+        {
+          "id": "jugos-combinaciones",
+          "nombre": "Combinaciones",
+          "productos": [
+            {
+              "id": "limon-menta-y-jengibre",
+              "nombre": "Limón, menta y jengibre",
+              "precio": 3500
+            },
+            {
+              "id": "jugo-de-berries",
+              "nombre": "Jugo de berries",
+              "precio": 3500
+            }
+          ]
+        },
+        {
+          "id": "batidos",
+          "nombre": "Batidos",
+          "productos": [
+            {
+              "id": "leche-con-sandia",
+              "nombre": "Leche con sandía",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-pina",
+              "nombre": "Leche con piña",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-chirimoya",
+              "nombre": "Leche con chirimoya",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-maracuya",
+              "nombre": "Leche con maracuyá",
+              "precio": 4000
+            },
+            {
+              "id": "leche-con-frambuesa",
+              "nombre": "Leche con frambuesa",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-melon",
+              "nombre": "Leche con melón",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-frutilla",
+              "nombre": "Leche con frutilla",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-arandano",
+              "nombre": "Leche con arándano",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-mango",
+              "nombre": "Leche con mango",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-naranja",
+              "nombre": "Leche con naranja",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-durazno",
+              "nombre": "Leche con durazno",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-cereza",
+              "nombre": "Leche con cereza",
+              "precio": 3500
+            },
+            {
+              "id": "leche-con-platano",
+              "nombre": "Leche con plátano",
+              "precio": 3500
+            }
+          ]
+        },
+        {
+          "id": "milkshakes",
+          "nombre": "Milk shake",
+          "productos": [
+            {
+              "id": "milkshake-de-maracuya",
+              "nombre": "Milkshake de maracuyá",
+              "precio": 4500
+            },
+            {
+              "id": "milkshake-de-frambuesa",
+              "nombre": "Milkshake de frambuesa",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-melon",
+              "nombre": "Milkshake de melón",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-frutilla",
+              "nombre": "Milkshake de frutilla",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-arandano",
+              "nombre": "Milkshake de arándano",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-mango",
+              "nombre": "Milkshake de mango",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-pina",
+              "nombre": "Milkshake de piña",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-oreo",
+              "nombre": "Milkshake de Oreo",
+              "precio": 4000
+            },
+            {
+              "id": "milkshake-de-berries",
+              "nombre": "Milkshake de berries",
+              "precio": 4500
+            }
+          ]
+        },
+        {
+          "id": "cafe-helado",
+          "nombre": "Café helado",
+          "productos": [
+            {
+              "id": "cafe-helado",
+              "nombre": "Café helado",
+              "precio": 4000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Waffles y postres",
+      "categorias": [
+        {
+          "id": "waffles",
+          "nombre": "Waffles y postres",
+          "productos": [
+            {
+              "id": "arma-tu-waffle",
+              "nombre": "Arma tu waffle",
+              "precio": 4500,
+              "detalle": "Un topping, una salsa y una fruta, que puede ser plátano o frutilla."
+            },
+            {
+              "id": "waffle-kaos",
+              "nombre": "Waffle Kaos",
+              "precio": 8000
+            },
+            {
+              "id": "trozo-de-sandia",
+              "nombre": "Trozo de sandía",
+              "precio": 1000
             }
           ]
         }
@@ -721,701 +1342,5 @@ window.CARTA = {
     }
   ],
   "cupones": [],
-  "personalizacion": [
-    {
-      "id": "salsa-incluida",
-      "nombre": "Salsa incluida",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "soya",
-          "nombre": "Soya",
-          "precio": 0
-        },
-        {
-          "id": "teriyaki",
-          "nombre": "Teriyaki",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "rebozado",
-      "nombre": "Rebosado",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "tempura",
-          "nombre": "Tempura",
-          "precio": 0
-        },
-        {
-          "id": "panko",
-          "nombre": "Panko",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "preparacion-gyoza",
-      "nombre": "Preparación",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "vapor",
-          "nombre": "Al vapor en soya",
-          "precio": 0
-        },
-        {
-          "id": "fritas",
-          "nombre": "Fritas",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "base-2",
-      "nombre": "Ingredientes base",
-      "tipo": "elegir",
-      "min": 2,
-      "max": 2,
-      "opciones": [
-        {
-          "id": "camaron",
-          "nombre": "Camarón",
-          "precio": 0
-        },
-        {
-          "id": "salmon",
-          "nombre": "Salmón",
-          "precio": 0
-        },
-        {
-          "id": "kanikama",
-          "nombre": "Kanikama",
-          "precio": 0
-        },
-        {
-          "id": "champinon",
-          "nombre": "Champiñón",
-          "precio": 0
-        },
-        {
-          "id": "pollo",
-          "nombre": "Pollo",
-          "precio": 0
-        },
-        {
-          "id": "atun",
-          "nombre": "Atún",
-          "precio": 0
-        },
-        {
-          "id": "lomo-salteado",
-          "nombre": "Lomo salteado",
-          "precio": 2200
-        },
-        {
-          "id": "pulpo",
-          "nombre": "Pulpo",
-          "precio": 3290
-        }
-      ]
-    },
-    {
-      "id": "preparacion-base",
-      "nombre": "La base, ¿rebosada o fría?",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "rebosado",
-          "nombre": "Rebosado",
-          "precio": 0
-        },
-        {
-          "id": "frio",
-          "nombre": "Frío",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "secundarios-3",
-      "nombre": "Ingredientes secundarios",
-      "tipo": "elegir",
-      "min": 3,
-      "max": 3,
-      "opciones": [
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "palmito",
-          "nombre": "Palmito",
-          "precio": 0
-        },
-        {
-          "id": "cebollin",
-          "nombre": "Cebollín",
-          "precio": 0
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 0
-        },
-        {
-          "id": "aji-verde",
-          "nombre": "Ají verde",
-          "precio": 0
-        },
-        {
-          "id": "pepino",
-          "nombre": "Pepino",
-          "precio": 0
-        },
-        {
-          "id": "pimenton",
-          "nombre": "Pimentón",
-          "precio": 0
-        },
-        {
-          "id": "aceitunas",
-          "nombre": "Aceitunas",
-          "precio": 0
-        },
-        {
-          "id": "albahaca",
-          "nombre": "Albahaca",
-          "precio": 0
-        },
-        {
-          "id": "choclito",
-          "nombre": "Choclito cóctel",
-          "precio": 0
-        },
-        {
-          "id": "zanahoria",
-          "nombre": "Zanahoria",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "ar-envoltura",
-      "nombre": "Envoltura",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "sesamo",
-          "nombre": "Sésamo",
-          "precio": 0
-        },
-        {
-          "id": "nori",
-          "nombre": "Nori",
-          "precio": 0
-        },
-        {
-          "id": "panko",
-          "nombre": "Panko",
-          "precio": 0
-        },
-        {
-          "id": "tempura",
-          "nombre": "Tempura",
-          "precio": 0
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 0
-        },
-        {
-          "id": "masago",
-          "nombre": "Masago",
-          "precio": 1500
-        },
-        {
-          "id": "salmon",
-          "nombre": "Salmón",
-          "precio": 2500
-        },
-        {
-          "id": "atun",
-          "nombre": "Atún",
-          "precio": 2500
-        }
-      ]
-    },
-    {
-      "id": "ar-base",
-      "nombre": "Ingrediente base",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "kanikama",
-          "nombre": "Kanikama",
-          "precio": 0
-        },
-        {
-          "id": "champinon",
-          "nombre": "Champiñón",
-          "precio": 0
-        },
-        {
-          "id": "atun",
-          "nombre": "Atún",
-          "precio": 0
-        },
-        {
-          "id": "pollo",
-          "nombre": "Pollo",
-          "precio": 0
-        },
-        {
-          "id": "camaron",
-          "nombre": "Camarón",
-          "precio": 0
-        },
-        {
-          "id": "salmon",
-          "nombre": "Salmón",
-          "precio": 0
-        },
-        {
-          "id": "lomo-salteado",
-          "nombre": "Lomo salteado",
-          "precio": 2200
-        },
-        {
-          "id": "pulpo",
-          "nombre": "Pulpo",
-          "precio": 3290
-        }
-      ]
-    },
-    {
-      "id": "ar-secundarios-2",
-      "nombre": "Ingredientes secundarios",
-      "tipo": "elegir",
-      "min": 2,
-      "max": 2,
-      "opciones": [
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "palmito",
-          "nombre": "Palmito",
-          "precio": 0
-        },
-        {
-          "id": "pepino",
-          "nombre": "Pepino",
-          "precio": 0
-        },
-        {
-          "id": "pimenton",
-          "nombre": "Pimentón",
-          "precio": 0
-        },
-        {
-          "id": "aceitunas",
-          "nombre": "Aceitunas",
-          "precio": 0
-        },
-        {
-          "id": "cebollin",
-          "nombre": "Cebollín",
-          "precio": 0
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 0
-        },
-        {
-          "id": "aji-verde",
-          "nombre": "Ají verde",
-          "precio": 0
-        },
-        {
-          "id": "albahaca",
-          "nombre": "Albahaca",
-          "precio": 0
-        },
-        {
-          "id": "choclito",
-          "nombre": "Choclito",
-          "precio": 0
-        },
-        {
-          "id": "zanahoria",
-          "nombre": "Zanahoria",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "sin-nori",
-      "nombre": "Sin nori",
-      "tipo": "extra",
-      "min": 0,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "sin-nori",
-          "nombre": "Roll sin nori",
-          "precio": 1000
-        }
-      ]
-    },
-    {
-      "id": "hoso-base",
-      "nombre": "Ingrediente base",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "kanikama",
-          "nombre": "Kanikama",
-          "precio": 0
-        },
-        {
-          "id": "champinon",
-          "nombre": "Champiñón",
-          "precio": 0
-        },
-        {
-          "id": "atun",
-          "nombre": "Atún",
-          "precio": 0
-        },
-        {
-          "id": "pollo",
-          "nombre": "Pollo",
-          "precio": 0
-        },
-        {
-          "id": "camaron",
-          "nombre": "Camarón",
-          "precio": 0
-        },
-        {
-          "id": "salmon",
-          "nombre": "Salmón",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "hoso-secundario",
-      "nombre": "Ingrediente secundario",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "palmito",
-          "nombre": "Palmito",
-          "precio": 0
-        },
-        {
-          "id": "pepino",
-          "nombre": "Pepino",
-          "precio": 0
-        },
-        {
-          "id": "pimenton",
-          "nombre": "Pimentón",
-          "precio": 0
-        },
-        {
-          "id": "aceitunas",
-          "nombre": "Aceitunas",
-          "precio": 0
-        },
-        {
-          "id": "cebollin",
-          "nombre": "Cebollín",
-          "precio": 0
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 0
-        },
-        {
-          "id": "aji-verde",
-          "nombre": "Ají verde",
-          "precio": 0
-        },
-        {
-          "id": "albahaca",
-          "nombre": "Albahaca",
-          "precio": 0
-        },
-        {
-          "id": "choclito",
-          "nombre": "Choclito",
-          "precio": 0
-        },
-        {
-          "id": "zanahoria",
-          "nombre": "Zanahoria",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "sa-envoltura",
-      "nombre": "Envoltura",
-      "tipo": "elegir",
-      "min": 1,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "nori",
-          "nombre": "Nori",
-          "precio": 0
-        },
-        {
-          "id": "panko",
-          "nombre": "Panko",
-          "precio": 0
-        },
-        {
-          "id": "tempura",
-          "nombre": "Tempura",
-          "precio": 0
-        },
-        {
-          "id": "salmon",
-          "nombre": "Salmón",
-          "precio": 2500
-        },
-        {
-          "id": "atun",
-          "nombre": "Atún",
-          "precio": 2500
-        }
-      ]
-    },
-    {
-      "id": "sa-secundarios-4",
-      "nombre": "Ingredientes secundarios",
-      "tipo": "elegir",
-      "min": 4,
-      "max": 4,
-      "opciones": [
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 0
-        },
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 0
-        },
-        {
-          "id": "palmito",
-          "nombre": "Palmito",
-          "precio": 0
-        },
-        {
-          "id": "pepino",
-          "nombre": "Pepino",
-          "precio": 0
-        },
-        {
-          "id": "pimenton",
-          "nombre": "Pimentón",
-          "precio": 0
-        },
-        {
-          "id": "aceitunas",
-          "nombre": "Aceitunas",
-          "precio": 0
-        },
-        {
-          "id": "cebollin",
-          "nombre": "Cebollín",
-          "precio": 0
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 0
-        },
-        {
-          "id": "aji-verde",
-          "nombre": "Ají verde",
-          "precio": 0
-        },
-        {
-          "id": "albahaca",
-          "nombre": "Albahaca",
-          "precio": 0
-        },
-        {
-          "id": "choclito",
-          "nombre": "Choclito",
-          "precio": 0
-        },
-        {
-          "id": "zanahoria",
-          "nombre": "Zanahoria",
-          "precio": 0
-        }
-      ]
-    },
-    {
-      "id": "ingrediente-extra",
-      "nombre": "Ingrediente extra",
-      "tipo": "extra",
-      "min": 0,
-      "max": 3,
-      "opciones": [
-        {
-          "id": "queso-crema",
-          "nombre": "Queso crema",
-          "precio": 990
-        },
-        {
-          "id": "palta",
-          "nombre": "Palta",
-          "precio": 990
-        },
-        {
-          "id": "palmito",
-          "nombre": "Palmito",
-          "precio": 990
-        },
-        {
-          "id": "pepino",
-          "nombre": "Pepino",
-          "precio": 990
-        },
-        {
-          "id": "pimenton",
-          "nombre": "Pimentón",
-          "precio": 990
-        },
-        {
-          "id": "aceitunas",
-          "nombre": "Aceitunas",
-          "precio": 990
-        },
-        {
-          "id": "cebollin",
-          "nombre": "Cebollín",
-          "precio": 990
-        },
-        {
-          "id": "ciboulette",
-          "nombre": "Ciboulette",
-          "precio": 990
-        },
-        {
-          "id": "aji-verde",
-          "nombre": "Ají verde",
-          "precio": 990
-        },
-        {
-          "id": "albahaca",
-          "nombre": "Albahaca",
-          "precio": 990
-        },
-        {
-          "id": "choclito",
-          "nombre": "Choclito",
-          "precio": 990
-        },
-        {
-          "id": "zanahoria",
-          "nombre": "Zanahoria",
-          "precio": 990
-        }
-      ]
-    },
-    {
-      "id": "rebosar",
-      "nombre": "Rebosar el ingrediente base",
-      "tipo": "extra",
-      "min": 0,
-      "max": 1,
-      "opciones": [
-        {
-          "id": "tempura",
-          "nombre": "Rebosado en tempura",
-          "precio": 990
-        },
-        {
-          "id": "panko",
-          "nombre": "Rebosado en panko",
-          "precio": 990
-        }
-      ]
-    }
-  ],
-  "ingredientes": {}
+  "personalizacion": []
 };

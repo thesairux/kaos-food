@@ -49,11 +49,11 @@
     pedir: { t: "🧭 Ayúdame a pedir", a: "pedir" },
     carta: { t: "📖 Ver la carta", a: "carta" },
     top: { t: "🔥 Lo más pedido", q: "Recomiéndame algo" },
-    arma: { t: "🍱 Arma tu roll", q: "¿Cómo armo mi roll?" },
+    arma: { t: "🥪 Arma lo tuyo", q: "Arma tu sándwich" },
     ingredientes: { t: "🥢 Ingredientes", q: "¿Qué ingredientes hay?" },
-    veggie: { t: "🥑 Veggie", q: "Opciones veggie" },
+    papas: { t: "🍟 Papas fritas", q: "papas fritas" },
     barato: { t: "💸 Algo económico", q: "Algo barato" },
-    entrantes: { t: "🥟 Entrantes", q: "entrantes" },
+    entrantes: { t: "🥟 Para picar", q: "Para picar" },
     bebidas: { t: "🥤 Bebidas", q: "bebidas" },
     salsas: { t: "🥫 Salsas extra", q: "salsas" },
     pedido: { t: "🛍️ Mi pedido", a: "pedido" },
@@ -69,9 +69,9 @@
     menu: { t: "☰ Más opciones", a: "menu" },
     reiniciar: { t: "🔄 Empezar de nuevo", a: "reiniciar" }
   };
-  var INICIO = [OP.pedir, OP.top, OP.carta, OP.delivery, OP.horario, OP.menu];
-  var MENU = [OP.pedir, OP.carta, OP.top, OP.arma, OP.veggie, OP.barato, OP.entrantes, OP.bebidas, OP.pedido,
-    OP.delivery, OP.horario, OP.pagos, OP.ubicacion, OP.cupones, OP.como, OP.demora, OP.humano, OP.reiniciar];
+  var INICIO = [OP.pedir, OP.top, OP.carta, OP.ubicacion, OP.horario, OP.menu];
+  var MENU = [OP.pedir, OP.carta, OP.top, OP.arma, OP.papas, OP.barato, OP.entrantes, OP.bebidas, OP.pedido,
+    OP.horario, OP.pagos, OP.ubicacion, OP.cupones, OP.como, OP.demora, OP.humano, OP.reiniciar];
 
   /* ---------- la ventana ---------- */
   var raiz = document.createElement("div");
@@ -79,16 +79,16 @@
   raiz.innerHTML =
     '<div class="asis-saludo" data-asis-saludo hidden>' +
       '<button class="asis-saludo-x" type="button" data-asis-saludo-x aria-label="Cerrar saludo">' + icono("cerrar") + "</button>" +
-      '<button class="asis-saludo-txt" type="button" data-asis-abrir><b>¡Hola! 👋</b> ¿Te ayudo a elegir tu sushi?</button>' +
+      '<button class="asis-saludo-txt" type="button" data-asis-abrir><b>¡Hola! 👋</b> ¿Te ayudo con tu pedido?</button>' +
     "</div>" +
     '<button class="asis-boton" type="button" data-asis-abrir aria-expanded="false" aria-controls="asis-panel">' +
-      '<img src="img/logo-asian.webp" width="600" height="600" alt="">' +
+      '<img src="img/logo-kaos.webp" width="600" height="600" alt="">' +
       '<span class="asis-boton-txt">¿Te ayudo?</span>' +
       '<span class="asis-boton-ico">' + icono("chat") + "</span>" +
     "</button>" +
     '<section class="asis-panel" id="asis-panel" role="dialog" aria-label="Asistente de ' + esc(nombreCorto()) + '" hidden>' +
       '<header class="asis-cab">' +
-        '<img src="img/logo-asian.webp" width="600" height="600" alt="">' +
+        '<img src="img/logo-kaos.webp" width="600" height="600" alt="">' +
         '<div class="asis-cab-txt"><b>' + esc(nombreCorto()) + '</b><small data-asis-estado></small></div>' +
         '<button class="asis-x" type="button" data-asis-cerrar aria-label="Cerrar asistente">' + icono("cerrar") + "</button>" +
       "</header>" +
@@ -136,7 +136,7 @@
 
   function bienvenida() {
     var e = P.estado();
-    var txt = "¡Hola! Soy el asistente de **" + nombreCorto() + "** 🍣\nTe ayudo a elegir, te cuento precios, horario y delivery, y te paso los productos para que los agregues a tu pedido.";
+    var txt = "¡Hola! Soy el asistente de **" + nombreCorto() + "** 🍔\nTe ayudo a elegir, te cuento precios y horario, y te paso los productos para que los agregues a tu pedido.";
     if (!e.sinHorario && !e.abierto) txt += "\n\nAhora estamos cerrados" + (e.texto ? ": " + e.texto.charAt(0).toLowerCase() + e.texto.slice(1) : "") + ". Igual puedes mirar la carta.";
     txt += "\n\n¿Qué se te antoja hoy? Elige una opción o escríbeme 👇";
     mensajes.push({ role: "assistant", content: txt, inicio: true, opciones: INICIO });
@@ -157,7 +157,7 @@
     var p = x.p;
     var foto = P.foto(p);
     return '<div class="asis-prod">' +
-      (foto ? '<img src="' + esc(foto) + '" alt="" loading="lazy">' : '<img class="asis-prod-logo" src="img/logo-asian.webp" alt="">') +
+      (foto ? '<img src="' + esc(foto) + '" alt="" loading="lazy">' : '<img class="asis-prod-logo" src="img/logo-kaos.webp" alt="">') +
       '<div class="asis-prod-txt"><b>' + esc(p.nombre) + "</b><span>" + P.precio(p) + "</span></div>" +
       P.boton(p) + "</div>";
   }
@@ -304,31 +304,25 @@
   function deSeccion(i) { return disponibles(P.productos()).filter(function (x) { return x.sec === C.secciones[i]; }); }
   function opSeccion(re, etiqueta) { var i = seccion(re); return i < 0 ? null : { t: etiqueta, a: "sec:" + i }; }
   function sinNulos(a) { return a.filter(Boolean); }
-  var GUSTOS = { camaron: "🍤 Camarón", pollo: "🍗 Pollo", salmon: "🐟 Salmón", veggie: "🥑 Veggie", todo: "🤷 De todo un poco" };
+  var GUSTOS = { pollo: "🍗 Pollo", carne: "🥩 Carne", completo: "🌭 Completos", papas: "🍟 Papas fritas", todo: "🤷 De todo un poco" };
+  /* Qué productos pesca cada gusto, buscando en el nombre, el detalle y la categoría. */
+  var PALABRAS = {
+    pollo: /pollo|\bave\b|nugget/,
+    carne: /carne|churrasco|mechada|lomito|\blomo\b|hamburguesa|chorrillana|barros luco/,
+    completo: /completo|italiano|hot dog|vienesa|\bas\b|pleto/,
+    papas: /papa|salchipapa/,
+    todo: /./
+  };
 
+  /* Recomienda según cuántos son y qué les gusta: para grupos parte por lo que rinde (combos y chorrillanas). */
   function recomendarPara(n, gusto) {
-    var todos = disponibles(P.productos());
-    var meta = n * 12;
-    var esVeg = function (x) { return /veg/.test(t(x.cat.nombre + " " + x.p.nombre)); };
-    var gusta = function (x) {
-      if (gusto === "todo") return !esVeg(x);
-      if (gusto === "veggie") return esVeg(x) || /arma/.test(t(x.sec.nombre));
-      return t(x.p.nombre + " " + (x.p.detalle || "")).indexOf(gusto) >= 0;
-    };
-    var lista;
-    if (n <= 1) {
-      lista = todos.filter(function (x) { return !esExtra(x) && !/entrant/.test(t(x.sec.nombre)) && (piezas(x) === 0 || piezas(x) <= 20) && gusta(x); });
-    } else {
-      lista = todos.filter(function (x) { return piezas(x) >= 20 && /tabla/.test(t(x.sec.nombre)) && gusta(x); })
-        .sort(function (a, b) { return Math.abs(piezas(a) - meta) - Math.abs(piezas(b) - meta); });
-      if (!lista.length) {
-        lista = todos.filter(function (x) { return piezas(x) >= 20 && /tabla/.test(t(x.sec.nombre)); })
-          .sort(function (a, b) { return Math.abs(piezas(a) - meta) - Math.abs(piezas(b) - meta); });
-      }
-      // si hay pocas tablas con ese gusto, se completa con rolls que lo tengan
-      if (lista.length < 3) {
-        lista = lista.concat(todos.filter(function (x) { return lista.indexOf(x) < 0 && piezas(x) === 0 && /roll|creacion/.test(t(x.sec.nombre)) && gusta(x); }));
-      }
+    var re = PALABRAS[gusto] || PALABRAS.todo;
+    var lista = disponibles(P.productos()).filter(function (x) {
+      return !esExtra(x) && re.test(t(x.p.nombre + " " + (x.p.detalle || "") + " " + x.cat.nombre));
+    });
+    if (n > 2) {
+      var rinde = lista.filter(function (x) { return /combo|chorrillana/.test(t(x.sec.nombre + " " + x.p.nombre)); });
+      lista = rinde.concat(lista.filter(function (x) { return rinde.indexOf(x) < 0; }));
     }
     return lista;
   }
@@ -353,9 +347,9 @@
         var cats = (sec.categorias || []).filter(function (c) { return c.nota; }).map(function (c) { return c.nota; });
         return { texto: "**" + sec.nombre + "**" + (lista.length > 6 ? " (te muestro 6 de " + lista.length + ")" : "") + ":" + (cats.length ? "\n" + cats[0] : "") + avisoCerrado(),
           productos: ids(lista, 6), ir: lista.length > 6 ? i : null,
-          opciones: sinNulos([OP.carta, i === seccion(/entrant/) ? opSeccion(/extra/, "🥤 Bebidas y salsas") : opSeccion(/entrant/, "🥟 Entrantes"), OP.pedido]) };
+          opciones: sinNulos([OP.carta, i === seccion(/picar/) ? opSeccion(/bebida/, "🥤 Bebidas") : opSeccion(/picar/, "🥟 Para picar"), OP.pedido]) };
       case "pedir":
-        return { texto: "¡Vamos! Te ayudo a armar tu pedido en 3 pasos 🍣\n\n**1.** ¿Para cuántas personas es?",
+        return { texto: "¡Vamos! Te ayudo a armar tu pedido en 3 pasos 🍔\n\n**1.** ¿Para cuántas personas es?",
           opciones: [{ t: "🙋 Solo para mí", a: "n:1" }, { t: "👫 2 personas", a: "n:2" }, { t: "👨‍👩‍👧 3 o 4", a: "n:4" }, { t: "👨‍👩‍👧‍👦 5 o 6", a: "n:6" }, { t: "🎉 7 o más", a: "n:8" }] };
       case "n":
         var n = +partes[1];
@@ -365,20 +359,19 @@
         var cuantos = +partes[1], gusto = partes[2];
         var recs = recomendarPara(cuantos, gusto);
         var txt = cuantos <= 1 ? "Para ti solo, con " + GUSTOS[gusto].replace(/^\S+\s/, "").toLowerCase() + ", te recomiendo:" :
-          "Para " + (cuantos >= 8 ? "7 o más" : cuantos === 4 ? "3 o 4" : cuantos === 6 ? "5 o 6" : cuantos) + " personas calculamos unas **" + (cuantos * 12) + " piezas**. Te recomiendo:";
-        if (cuantos >= 8) txt += "\n\nPara grupos grandes puedes sumar dos tablas o agregar entrantes.";
-        if (cuantos > 1 && recs.length && piezas(recs[0]) < cuantos * 12 - 8) txt += "\n\nSuma una tabla y un roll, o agrega entrantes para completar.";
+          "Para " + (cuantos >= 8 ? "7 o más" : cuantos === 4 ? "3 o 4" : cuantos === 6 ? "5 o 6" : cuantos) + " personas te recomiendo:";
+        if (cuantos >= 8) txt += "\n\nPara grupos grandes conviene una chorrillana para compartir y sumar papas.";
         txt += avisoCerrado() + "\n\n**3.** Toca **Agregar** en lo que te guste. Después puedes sumar algo más o ver tu pedido para enviarlo.";
         return { texto: txt, productos: ids(recs, 3),
-          opciones: sinNulos([opSeccion(/entrant/, "🥟 Sumar entrantes"), opSeccion(/extra/, "🥤 Bebidas y salsas"), OP.pedido, { t: "🔁 Ver otras opciones", a: "pedir" }]) };
+          opciones: sinNulos([opSeccion(/picar/, "🥟 Sumar para picar"), opSeccion(/bebida/, "🥤 Bebidas"), OP.pedido, { t: "🔁 Ver otras opciones", a: "pedir" }]) };
       case "pedido":
         var lineas = P.lineasPedido();
         if (!lineas.length) {
           return { texto: "Tu pedido está vacío por ahora 🛍️ ¿Te ayudo a elegir?", opciones: [OP.pedir, OP.top, OP.carta] };
         }
         return { texto: "Esto llevas en tu pedido:\n" + lineas.map(function (l) { return "- " + l.cant + " × " + l.nombre + " — " + P.plata(l.precio); }).join("\n") +
-          "\n\nTotal: **" + P.plata(P.total()) + "** (sin delivery). Abre tu pedido para elegir retiro o delivery y enviarlo por WhatsApp.",
-          pedido: true, opciones: sinNulos([opSeccion(/entrant/, "🥟 Sumar entrantes"), opSeccion(/extra/, "🥤 Bebidas y salsas"), OP.delivery]) };
+          "\n\nTotal: **" + P.plata(P.total()) + "** (sin delivery). Abre tu pedido y envíalo por WhatsApp.",
+          pedido: true, opciones: sinNulos([opSeccion(/picar/, "🥟 Sumar para picar"), opSeccion(/bebida/, "🥤 Bebidas"), OP.pedir]) };
     }
     return responderLocal(a);
   }
@@ -418,11 +411,11 @@
     if (/horari|abre|abiert|cierra|atiend|hora |a que hora|que hora|abren|domingo|feriado/.test(q + " ")) {
       var h = P.horario();
       return { texto: [textoEstado(), h ? "Nuestro horario es: " + h.replace(/ · /g, "\n- ").replace(/^/, "\n- ") : "Escríbenos por WhatsApp para confirmar el horario."].filter(Boolean).join("\n"),
-        opciones: [OP.delivery, OP.ubicacion, OP.pedir] };
+        opciones: [OP.ubicacion, OP.horario, OP.pedir] };
     }
     if (/demora|tarda|cuanto (se )?(demor|tard)|tiempo de (entrega|espera)|minutos|cuando llega|rapido/.test(q)) {
       return { texto: "El tiempo depende de cuántos pedidos haya y de tu sector ⏱️ El local te lo confirma por WhatsApp al responder tu pedido. Si estás apurado, pregunta antes de pedir:",
-        wsp: "Hola, ¿cuánto se están demorando los pedidos ahora?", opciones: [OP.delivery, OP.pedir] };
+        wsp: "Hola, ¿cuánto se están demorando los pedidos ahora?", opciones: [OP.ubicacion, OP.pedir] };
     }
     if (/deliver|despach|envio|enviar a|reparto|domicilio|llevan|a casa|sector/.test(q)) {
       var s = N.sectoresDelivery || [];
@@ -432,6 +425,11 @@
         }).join("\n") + "\n\nEliges tu sector al enviar el pedido. También puedes retirar gratis en " + (N.direccion || "el local") + ".",
           opciones: [OP.demora, OP.pagos, OP.pedir] };
       }
+      if (N.soloRetiro === true) {
+        return { texto: "Por aquí los pedidos son para **retirar en el local** 🛍️ Te esperamos en " + (N.direccion || "el local") +
+          (N.ciudad ? ", " + N.ciudad : "") + ".\n\nSi repartimos a domicilio por alguna app, pregúntanos por WhatsApp.",
+          opciones: [OP.ubicacion, OP.horario, OP.pedir] };
+      }
       return { texto: "Consulta el delivery por WhatsApp y te contamos al tiro.", wsp: true };
     }
     if (/pag|transfer|efectivo|tarjeta|debito|credito|edenred|junaeb|cuenta rut/.test(q)) {
@@ -439,7 +437,7 @@
       if (pr.length || pd.length) {
         return { texto: (pr.join() === pd.join() ? "Puedes pagar con " + listaY(pr) + ", al retirar o al recibir." :
           [pr.length ? "Al retirar: " + listaY(pr) + "." : "", pd.length ? "Con delivery, al recibir: " + listaY(pd) + "." : ""].filter(Boolean).join("\n")) +
-          "\nNo hay pago online: lo eliges al enviar tu pedido por WhatsApp.", opciones: [OP.delivery, OP.como, OP.pedir] };
+          "\nNo hay pago online: lo eliges al enviar tu pedido por WhatsApp.", opciones: [OP.como, OP.ubicacion, OP.pedir] };
       }
     }
     if (/boleta|factura/.test(q)) {
@@ -447,10 +445,10 @@
     }
     if (/donde|direcc|ubica|ubicad|retir|local |mapa|como llego/.test(q + " ") && N.direccion) {
       return { texto: "Estamos en **" + [N.direccion, N.ciudad].filter(Boolean).join(", ") + "** 📍\nPuedes retirar ahí tu pedido." + (N.mapa ? "\nMapa: " + N.mapa : ""),
-        opciones: [OP.horario, OP.delivery, OP.pedir] };
+        opciones: [OP.horario, OP.ubicacion, OP.pedir] };
     }
     if (/reserv|mesa|comer (ahi|alla|en el local)|salon|para servir/.test(q)) {
-      return { texto: "Eso mejor consúltalo directo con el local por WhatsApp 🙌 Desde aquí puedes pedir para retiro o delivery.", wsp: true, opciones: [OP.ubicacion, OP.pedir] };
+      return { texto: "Eso mejor consúltalo directo con el local por WhatsApp 🙌 Desde aquí puedes armar tu pedido para retirar.", wsp: true, opciones: [OP.ubicacion, OP.pedir] };
     }
     if (/cupon|descuento|codigo|promocion/.test(q) && !/promo(s)? del|tabla/.test(q)) {
       var cup = (C.cupones || []).filter(function (c) { return c && c.activo !== false && c.visible !== false; });
@@ -461,8 +459,8 @@
       return { texto: "¡Claro! Escríbenos directo por WhatsApp" + (N.whatsappVisible ? " al **" + N.whatsappVisible + "**" : "") + " y te atiende alguien del local 🙌", wsp: true };
     }
     if (/como (pido|compro|hago|funciona)|hacer (un|el) pedido|pedido por/.test(q)) {
-      return { texto: "Es fácil:\n- Toca **Agregar** en lo que quieras (aquí mismo o en la carta).\n- Abre **Mi pedido**, elige retiro o delivery y cómo pagas.\n- Toca **Enviar pedido por WhatsApp** y el local te confirma el total.",
-        opciones: [OP.pedir, OP.pagos, OP.delivery] };
+      return { texto: "Es fácil:\n- Toca **Agregar** en lo que quieras (aquí mismo o en la carta).\n- Abre **Mi pedido** y elige cómo pagas.\n- Toca **Enviar pedido por WhatsApp** y el local te confirma el total.",
+        opciones: [OP.pedir, OP.pagos, OP.ubicacion] };
     }
     if (/modific|cambiar|cambio|sacar|quitar|sin (palta|queso|cebollin|pepino|sesamo|nori)|reemplaz/.test(q)) {
       var notaMod = ((C.secciones[seccion(/tabla/)] || { categorias: [] }).categorias[0] || {}).nota || "";
@@ -474,12 +472,12 @@
       var env = opcionesGrupo(/^ar-envoltura$/), base = opcionesGrupo(/^ar-base$/), sec2 = opcionesGrupo(/^ar-secundarios/);
       if (base.length) {
         return { texto: "Para armar tu roll eliges:\n- **Envoltura**: " + env.join(", ") + "\n- **Ingrediente base**: " + base.join(", ") + "\n- **Secundarios**: " + sec2.join(", ") +
-          "\n\nLa base se puede rebosar en tempura o panko (+" + P.plata(990) + ").", productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.veggie, OP.pedido] };
+          "\n\nLa base se puede rebosar en tempura o panko (+" + P.plata(990) + ").", productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.papas, OP.pedido] };
       }
     }
     if (/arma(r)? (tu|mi|un|el|mis)? ?roll|arma tu|a mi gusto|personaliz|hosomaki|sin arroz/.test(q) && iArma >= 0) {
       return { texto: "Puedes armar tu roll como más te guste 🍱\n- **Con arroz**: 1 envoltura + 1 base + 2 secundarios.\n- **Sin arroz**: 1 envoltura + 1 base + 4 secundarios.\n- **Hosomaki**: nori + 1 base + 1 secundario.\n\nToca **Elegir** y vas escogiendo cada ingrediente." + avisoCerrado(),
-        productos: ids(deSeccion(iArma), 3), opciones: [OP.ingredientes, OP.veggie, OP.pedido] };
+        productos: ids(deSeccion(iArma), 3), opciones: [OP.ingredientes, OP.papas, OP.pedido] };
     }
     if (/veg|vegetar|sin carne|sin pescado|sin proteina/.test(q)) {
       var veg = todos.filter(function (x) { return /veg|avocado|seta/.test(t(x.p.nombre + " " + x.cat.nombre)); });
@@ -491,11 +489,11 @@
     }
     if (/picant|spicy|aji|wasabi/.test(q)) {
       var pic = todos.filter(function (x) { return /spicy|picant|aji|wasabi/.test(t(x.p.nombre + " " + (x.p.detalle || ""))); });
-      return { texto: pic.length ? "¿Te gusta el picante? 🌶️ Mira estas opciones:" : "No tenemos platos picantes como tal, pero puedes agregar salsa spicy, ají verde o wasabi 🌶️", productos: ids(pic, 4), opciones: [OP.salsas, OP.pedir] };
+      return { texto: pic.length ? "¿Te gusta el picante? 🌶️ Mira estas opciones:" : "No tenemos platos picantes como tal, pero puedes agregar salsa spicy, ají verde o wasabi 🌶️", productos: ids(pic, 4), opciones: sinNulos([opSeccion(/salsa/, "🥫 Salsas extra"), OP.pedir]) };
     }
     if (/bebid|bebest|jugo|coca|gaseosa|agua|tomar/.test(q)) {
       var beb = deCategoria(/bebest|bebida/);
-      if (beb.length) return { texto: "Para acompañar 🥤", productos: ids(beb, 4), opciones: [OP.salsas, OP.pedido] };
+      if (beb.length) return { texto: "Para acompañar 🥤", productos: ids(beb, 4), opciones: sinNulos([opSeccion(/salsa/, "🥫 Salsas extra"), OP.pedido]) };
     }
     if (/salsa|soya|teriyaki|jengibre|acevichad/.test(q)) {
       var sal = deCategoria(/salsa/);
@@ -513,18 +511,29 @@
     if (/recomiend|recomienda|sugier|que (me )?(pido|pedimos|como)|no se que|popular|mas vendid|destac|promo|oferta|antoj|elegir|mejor|rico/.test(q)) {
       var dest = todos.filter(function (x) { return x.p.destacado; });
       return { texto: "¿Te tinca alguna de estas? Son de lo más pedido 🔥" + avisoCerrado() + "\n\nSi me dices para cuántas personas o qué te gusta, te ayudo a elegir.",
-        productos: ids(dest.length ? dest : todos, 4), opciones: [OP.pedir, OP.veggie, OP.barato] };
+        productos: ids(dest.length ? dest : todos, 4), opciones: [OP.pedir, OP.papas, OP.barato] };
     }
     if (/^(hola|buenas|buenos|holi|hey|wena|alo|ola)\b/.test(q) && q.length < 25) {
       return { texto: "¡Hola! 😊 ¿Qué se te antoja? Elige una opción o escríbeme lo que buscas.", opciones: INICIO };
     }
     if (/gracias|vale|ok|bacan|perfecto|genial|listo|chao|adios/.test(q) && q.length < 30) {
-      return P.cantidad() ? { texto: "¡De nada! Cuando estés listo, abre tu pedido y envíalo por WhatsApp 🍣", pedido: true } :
-        { texto: "¡De nada! Aquí estoy si necesitas algo más 🍣" };
+      return P.cantidad() ? { texto: "¡De nada! Cuando estés listo, abre tu pedido y envíalo por WhatsApp 🍔", pedido: true } :
+        { texto: "¡De nada! Aquí estoy si necesitas algo más 🍔" };
     }
     var hallados = buscar(texto);
     if (hallados.length) {
       return { texto: (hallados.length === 1 ? "Encontré esto:" : "Mira lo que encontré:") + avisoCerrado(), productos: ids(hallados, 4) };
+    }
+    /* ¿Preguntó por una sección entera ("para picar", "bebidas", "combos")? Se la mostramos. */
+    for (var si = 0; si < C.secciones.length; si++) {
+      var nsec = t(C.secciones[si].nombre).replace(/\.+$/, "");
+      if (nsec.length > 3 && q.indexOf(nsec) >= 0) {
+        var dels = deSeccion(si);
+        if (dels.length) {
+          return { texto: "Esto tenemos en **" + C.secciones[si].nombre + "**:" + avisoCerrado(),
+            productos: ids(dels, 4), ir: dels.length > 4 ? si : null, opciones: [OP.carta, OP.pedido] };
+        }
+      }
     }
     var agotado = P.productos().filter(function (x) {
       return x.p.disponible === false && t(x.p.nombre).split(/\s+/).some(function (w) { return w.length > 3 && q.indexOf(w) >= 0; });
