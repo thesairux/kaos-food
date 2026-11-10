@@ -567,7 +567,8 @@
     if (!b) return;
     if (b.hasAttribute("data-asis-abrir")) { if (panel.hidden) abrirChat(); else cerrarChat(); }
     else if (b.hasAttribute("data-asis-cerrar")) cerrarChat();
-    else if (b.hasAttribute("data-asis-op")) usarOp(b.getAttribute("data-asis-op"), b.textContent);
+    // un botón de solo ícono (el ☰) no tiene texto: su etiqueta es la del lector de pantalla
+    else if (b.hasAttribute("data-asis-op")) usarOp(b.getAttribute("data-asis-op"), b.textContent.trim() || b.getAttribute("aria-label") || "");
     // «Ver … en la carta» y «Ver mi pedido»: el chat se cierra en el celular para que se vea
     else if ((b.hasAttribute("data-asis-ir") || b.hasAttribute("data-abrir-pedido")) && window.matchMedia("(max-width: 640px)").matches) cerrarChat();
   });

@@ -169,6 +169,13 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   const veg = await m.$$eval('[data-asis-cuerpo] .asis-prod', x => x.map(y => y.innerText.split('\n')[0].trim()));
   ok(veg.length > 0 && !veg.some(n => /carne|churrasco|mechada|lomit|pollo|hamburgues|vienesa|tocino|chorrillana/i.test(n)),
     'lo que ofrece como vegetariano no trae carne: ' + veg.join(', '));
+  // el ☰ es de solo ícono: su etiqueta sale del aria-label, si no el mensaje iba vacío y no pasaba nada
+  const antesMenu = await m.$$eval('[data-asis-cuerpo] > *', x => x.length);
+  await m.locator('.asis-menu').click(); await m.waitForTimeout(900);
+  const opcionesMenu = await m.$$eval('[data-asis-cuerpo] > *:last-child [data-asis-op]', x => x.length);
+  ok(await m.$$eval('[data-asis-cuerpo] > *', x => x.length) > antesMenu && opcionesMenu >= 15,
+    'el botón ☰ abre el menú del chat, con sus ' + opcionesMenu + ' opciones');
+
   await m.fill('[data-asis-texto]', '¿cómo armo mi sándwich?'); await m.press('[data-asis-texto]', 'Enter'); await m.waitForTimeout(900);
   const arma = await m.$$eval('[data-asis-cuerpo] > *:last-child', x => x[0].innerText);
   ok(/Proteína: Carne mechada, Pollo/.test(arma) && /Ingredientes: Lechuga/.test(arma) && /Salsas: Salsa BBQ/.test(arma),
