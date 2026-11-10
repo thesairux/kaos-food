@@ -679,24 +679,44 @@ window.CARTA = {
               "id": "arma-tu-sandwich",
               "nombre": "Arma tu sándwich",
               "precio": 7500,
-              "detalle": "4 ingredientes y 2 salsas."
+              "detalle": "Elige tu proteína, hasta 4 ingredientes y hasta 2 salsas.",
+              "personalizar": [
+                "arma-proteina",
+                "arma-ingredientes",
+                "arma-salsas"
+              ]
             },
             {
               "id": "arma-tu-completo",
               "nombre": "Arma tu completo",
               "precio": 5000,
-              "detalle": "4 ingredientes y 2 salsas."
+              "detalle": "Elige hasta 4 ingredientes y hasta 2 salsas.",
+              "personalizar": [
+                "arma-ingredientes",
+                "arma-salsas"
+              ]
             },
             {
               "id": "arma-tu-as",
               "nombre": "Arma tu as",
-              "precio": 5500
+              "precio": 5500,
+              "detalle": "Elige tu proteína, hasta 4 ingredientes y hasta 2 salsas.",
+              "personalizar": [
+                "arma-proteina-as",
+                "arma-ingredientes",
+                "arma-salsas"
+              ]
             },
             {
               "id": "arma-tu-fajita",
               "nombre": "Arma tu fajita",
               "precio": 7000,
-              "detalle": "4 ingredientes y 2 salsas."
+              "detalle": "Elige tu proteína, hasta 4 ingredientes y hasta 2 salsas.",
+              "personalizar": [
+                "arma-proteina",
+                "arma-ingredientes",
+                "arma-salsas"
+              ]
             }
           ]
         }
@@ -1355,5 +1375,207 @@ window.CARTA = {
     }
   ],
   "cupones": [],
-  "personalizacion": []
+  "personalizacion": [
+    {
+      "id": "arma-proteina",
+      "nombre": "Proteína",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 1,
+      "opciones": [
+        {
+          "id": "carne-mechada",
+          "nombre": "Carne mechada",
+          "precio": 0
+        },
+        {
+          "id": "pollo",
+          "nombre": "Pollo",
+          "precio": 0
+        },
+        {
+          "id": "churrasco",
+          "nombre": "Churrasco",
+          "precio": 0
+        },
+        {
+          "id": "hamburguesa",
+          "nombre": "Hamburguesa",
+          "precio": 0
+        },
+        {
+          "id": "lomito",
+          "nombre": "Lomito",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "arma-proteina-as",
+      "nombre": "Proteína",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 1,
+      "opciones": [
+        {
+          "id": "carne-mechada",
+          "nombre": "Carne mechada",
+          "precio": 0
+        },
+        {
+          "id": "churrasco",
+          "nombre": "Churrasco",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "arma-ingredientes",
+      "nombre": "Ingredientes",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 4,
+      "opciones": [
+        {
+          "id": "lechuga",
+          "nombre": "Lechuga",
+          "precio": 0
+        },
+        {
+          "id": "palta",
+          "nombre": "Palta",
+          "precio": 0
+        },
+        {
+          "id": "tocino",
+          "nombre": "Tocino",
+          "precio": 0
+        },
+        {
+          "id": "cebolla",
+          "nombre": "Cebolla",
+          "precio": 0
+        },
+        {
+          "id": "queso",
+          "nombre": "Queso",
+          "precio": 0
+        },
+        {
+          "id": "champinon",
+          "nombre": "Champiñón",
+          "precio": 0
+        },
+        {
+          "id": "huevo",
+          "nombre": "Huevo",
+          "precio": 0
+        },
+        {
+          "id": "tomate",
+          "nombre": "Tomate",
+          "precio": 0
+        },
+        {
+          "id": "pepinillo",
+          "nombre": "Pepinillo",
+          "precio": 0
+        },
+        {
+          "id": "porotos-verdes",
+          "nombre": "Porotos verdes",
+          "precio": 0
+        },
+        {
+          "id": "chucrut",
+          "nombre": "Chucrut",
+          "precio": 0
+        },
+        {
+          "id": "salsa-americana",
+          "nombre": "Salsa americana",
+          "precio": 0
+        },
+        {
+          "id": "choclo",
+          "nombre": "Choclo",
+          "precio": 0
+        },
+        {
+          "id": "queso-cheddar",
+          "nombre": "Queso cheddar",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "arma-salsas",
+      "nombre": "Salsas",
+      "tipo": "elegir",
+      "min": 0,
+      "max": 2,
+      "opciones": [
+        {
+          "id": "salsa-bbq",
+          "nombre": "Salsa BBQ",
+          "precio": 0
+        },
+        {
+          "id": "salsa-cheddar",
+          "nombre": "Salsa cheddar",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-aceituna",
+          "nombre": "Salsa de aceituna",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-ajo",
+          "nombre": "Salsa de ajo",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-ciboulette",
+          "nombre": "Salsa de ciboulette",
+          "precio": 0
+        },
+        {
+          "id": "salsa-verde",
+          "nombre": "Salsa verde",
+          "precio": 0
+        },
+        {
+          "id": "ketchup",
+          "nombre": "Ketchup",
+          "precio": 0
+        },
+        {
+          "id": "mostaza",
+          "nombre": "Mostaza",
+          "precio": 0
+        },
+        {
+          "id": "aji",
+          "nombre": "Ají",
+          "precio": 0
+        },
+        {
+          "id": "mayo-casera",
+          "nombre": "Mayo casera",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-merken",
+          "nombre": "Salsa de merkén",
+          "precio": 0
+        },
+        {
+          "id": "mayo-normal",
+          "nombre": "Mayo normal",
+          "precio": 0
+        }
+      ]
+    }
+  ]
 };

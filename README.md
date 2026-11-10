@@ -6,7 +6,8 @@ destacadas, carta con buscador y fotos, asistente que responde con la carta, y e
 WhatsApp para retirar en el local.
 
 La carta es la del menú online del local en PDF (58 páginas): 165 productos en 12 secciones — combos, colaciones,
-sándwiches (ave, carne mechada, churrasco, hamburguesa y lomito), completos y as, «arma tu…», papas fritas,
+sándwiches (ave, carne mechada, churrasco, hamburguesa y lomito), completos y as, «arma tu…» (con sus
+proteínas, ingredientes y salsas a elección), papas fritas,
 chorrillanas, para picar (hand roll, empanadas, ensaladas y agregados), promos con lata, bebidas, jugos y
 batidos, y waffles y postres. Las 44 fotos salen del mismo PDF.
 
@@ -95,9 +96,17 @@ logo redondo del local.
   ningún producto. No se cargó. Los dos hand rolls sí están, en «Para picar».
 - **Fotos**: 45 de los 165 productos tienen foto (son las que traía el menú). Los demás se muestran en lista o
   con el logo. Las chorrillanas de 2 y 6 personas comparten foto, porque en el menú es la misma.
-- **«Arma tu…»**: los cuatro dicen «4 ingredientes y 2 salsas», pero el menú no lista cuáles. Por ahora el
-  cliente los escribe en la nota del producto. Con la lista se pueden dejar como opciones para elegir
-  (`personalizacion` en `carta.js`, o «Opciones para elegir» en el panel).
+- **«Arma tu…»**: cargados con sus opciones, de los cuatro PDF del flujo de pedido del local. El cliente
+  elige en la ficha del producto y todo va en el mensaje de WhatsApp. Ninguna opción cuesta extra:
+  - **Proteína** (elige 1): carne mechada, pollo, churrasco, hamburguesa y lomito. El *as* solo lleva carne
+    mechada o churrasco; el *completo* no lleva este paso.
+  - **Ingredientes** (de 1 a 4): lechuga, palta, tocino, cebolla, queso, champiñón, huevo, tomate, pepinillo,
+    porotos verdes, chucrut, salsa americana, choclo y queso cheddar.
+  - **Salsas** (hasta 2, opcional): BBQ, cheddar, de aceituna, de ajo, de ciboulette, verde, ketchup, mostaza,
+    ají, mayo casera, de merkén y mayo normal.
+
+  Se editan en el panel, en «Opciones para elegir», y desde ahí también se puede marcar un ingrediente como
+  agotado sin tocar el resto de la carta.
 
 ## Dirección y pruebas
 

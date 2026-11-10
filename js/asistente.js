@@ -302,6 +302,22 @@
   function deSeccion(i) { return disponibles(P.productos()).filter(function (x) { return x.sec === C.secciones[i]; }); }
   function opSeccion(re, etiqueta) { var i = seccion(re); return i < 0 ? null : { t: etiqueta, a: "sec:" + i }; }
   function sinNulos(a) { return a.filter(Boolean); }
+  /* Las opciones de los grupos que usan esos productos: proteínas, ingredientes, salsas… */
+  function gruposDe(xs) {
+    var vistos = {}, orden = [];
+    xs.forEach(function (x) {
+      ((x.p.personalizar || x.cat.personalizar) || []).forEach(function (id) {
+        var g = (C.personalizacion || []).filter(function (k) { return k.id === id; })[0];
+        if (!g || vistos[g.nombre]) return;
+        var ops = (g.opciones || []).filter(function (o) { return o.disponible !== false; })
+          .map(function (o) { return o.nombre + (o.precio ? " (+" + P.plata(o.precio) + ")" : ""); });
+        if (!ops.length) return;
+        vistos[g.nombre] = true;
+        orden.push("- **" + g.nombre + "**: " + ops.join(", "));
+      });
+    });
+    return orden.length ? "\n\nPuedes elegir entre:\n" + orden.join("\n") : "";
+  }
   var GUSTOS = { pollo: "🍗 Pollo", carne: "🥩 Carne", completo: "🌭 Completos", papas: "🍟 Papas fritas", todo: "🤷 De todo un poco" };
   /* Qué productos pesca cada gusto, buscando en el nombre, el detalle y la categoría. */
   var PALABRAS = {
@@ -459,7 +475,7 @@
         (iArma >= 0 ? "\n\nY si lo quieres totalmente a tu gusto, ármalo tú:" : ""),
         productos: iArma >= 0 ? ids(deSeccion(iArma), 3) : [], opciones: [OP.pedir, OP.carta] };
     }
-    if (/ingredient|que (lleva|trae)n?|de que (es|son)/.test(q)) {
+    if (/ingredient|que (lleva|trae)n?|de que (es|son)/.test(q) && !/\barm[oae]/.test(q)) {
       /* Lo que lleva cada cosa está en el detalle de la carta: se busca por el nombre que escribió. */
       var conDetalle = buscar(texto).filter(function (x) { return x.p.detalle; });
       if (conDetalle.length) {
@@ -467,12 +483,13 @@
           productos: ids(conDetalle, 3), opciones: [OP.carta, OP.pedido] };
       }
     }
-    if (/arma(r)? (tu|mi|un|el|mis)?|a mi gusto|personaliz/.test(q) && iArma >= 0) {
-      /* Lo que se puede armar sale de la carta misma (nombre y detalle de cada producto). */
+    if (/\barm(o|a|ar|amos|arme)\b|arma tu|a mi gusto|personaliz/.test(q) && iArma >= 0) {
+      /* Lo que se puede armar y con qué sale de la carta misma: productos y grupos de personalización. */
       var armables = deSeccion(iArma);
       return { texto: "Puedes armarlo como más te guste 👌\n" + armables.map(function (x) {
           return "- **" + x.p.nombre + "**" + (x.p.detalle ? ": " + x.p.detalle.replace(/\.$/, "") : "") + " — " + P.plata(x.p.precio);
-        }).join("\n") + "\n\nToca **Agregar** y escribe en la nota lo que quieres que lleve." + avisoCerrado(),
+        }).join("\n") +
+        gruposDe(armables) + "\n\nToca **Agregar** y vas eligiendo cada cosa." + avisoCerrado(),
         productos: ids(armables, 4), opciones: [OP.carta, OP.pedido] };
     }
     if (/veg|vegetar|sin carne|sin pescado|sin proteina/.test(q)) {

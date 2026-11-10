@@ -20,6 +20,7 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   const p = await ctx.newPage(); vigilar(p, 'cliente');
   const sec = async n => { await p.click('[data-seccion="' + (await p.$$eval('[data-secciones] .pildora', (x, n) => x.findIndex(y => y.textContent === n), n)) + '"]'); await p.waitForTimeout(250); };
   const abrirProd = async n => { await p.locator('.tarjeta, .fila', { has: p.locator('.fila-nombre', { hasText: new RegExp('^' + n.replace(/[()&+]/g, '\\$&') + '$') }) }).first().locator('button').last().click(); await p.waitForTimeout(250); };
+  const marcar = async (g, v) => { await p.locator(`[data-ficha] [data-grupo="${g}"][value="${v}"]`).check({ force: true }); await p.waitForTimeout(80); };
   const botonFicha = async () => (await p.locator('[data-confirmar]').innerText()).trim().replace(/\s+/g, ' ');
   const confirmar = async () => { await p.click('[data-confirmar]'); await p.waitForTimeout(250); ok(!(await p.locator('[data-ficha][open]').count()), 'se agrega al pedido'); };
   const abrirPedido = async () => { await p.locator('.boton-pedido').click(); await p.waitForTimeout(400); };
@@ -60,6 +61,19 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   await sec('Sandwiches');
   await abrirProd('Churrasco italiano');
   if (await p.locator('[data-ficha][open]').count()) await confirmar();
+  await sec('Arma tu...');
+  await abrirProd('Arma tu sándwich');
+  const grupos = await p.$$eval('[data-ficha] .grupo', x => x.map(g => (g.querySelector('.grupo-ayuda, .ayuda, small') || {}).innerText + ' × ' + g.querySelectorAll('input').length));
+  ok(grupos.join(' | ') === 'Elige 1 × 5 | Elige de 1 a 4 × 14 | Opcional, hasta 2 × 12',
+    'pide proteína (1 de 5), ingredientes (1 a 4 de 14) y salsas (hasta 2 de 12): ' + grupos.join(' | '));
+  ok(await botonFicha() === 'Elige proteína', 'sin proteína no deja agregar: ' + await botonFicha());
+  await marcar('arma-proteina', 'churrasco');
+  for (const v of ['lechuga', 'palta', 'tomate', 'queso']) await marcar('arma-ingredientes', v);
+  ok(await p.locator('[data-ficha] [data-grupo="arma-ingredientes"][value="tocino"]').isDisabled(), 'no deja un quinto ingrediente');
+  await marcar('arma-salsas', 'mayo-casera'); await marcar('arma-salsas', 'ketchup');
+  ok(await p.locator('[data-ficha] [data-grupo="arma-salsas"][value="mostaza"]').isDisabled(), 'ni una tercera salsa');
+  ok(await botonFicha() === 'Agregar por $7.500', 'lo que se elige no cuesta extra: ' + await botonFicha());
+  await confirmar();
   await sec('Bebidas');
   const bebidas = await p.$$eval('[data-lista] .fila-nombre, [data-lista] .tarjeta-nombre', x => x.map(y => y.textContent));
   ok(bebidas.length > 0, 'las bebidas se listan (' + bebidas.length + ')');
@@ -74,13 +88,17 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok((await p.locator('.retiro-info').innerText()).includes('José Joaquín Latorre'), 'el retiro muestra José Joaquín Latorre');
   ok(await pagos() === 'Efectivo, Transferencia', 'pagos: ' + await pagos());
   await p.locator('input[name="pago"][value="Efectivo"]').check({ force: true }); await p.waitForTimeout(150);
-  ok(/Subtotal referencial\s*\$19\.500/.test(await p.locator('[data-pedido-pie]').innerText()), 'subtotal referencial $19.500 (4.500 + 8.500 + 6.500)');
+  ok(/Subtotal referencial\s*\$27\.000/.test(await p.locator('[data-pedido-pie]').innerText()), 'subtotal referencial $27.000 (4.500 + 8.500 + 6.500 + 7.500)');
   const e = await enlace();
   ok(e.numero === '56934829829', 'el enlace va al WhatsApp del local (+56 9 3482 9829)');
   ok(e.texto.includes('Nombre: Ana') && e.texto.includes('Modalidad: Retiro en el local (José Joaquín Latorre, frente a pasaje Verona)') && e.texto.includes('Pago: Efectivo al retirar'),
     'el mensaje trae nombre, retiro y pago');
   ok(e.texto.includes('1 × Combo 1') && e.texto.includes('Combo 8') && e.texto.includes('Opción: Churrasco') && e.texto.includes('Churrasco italiano'),
     'el mensaje trae cada producto y la opción elegida');
+  ok(e.texto.includes('Proteína: Churrasco')
+    && e.texto.includes('Ingredientes: Lechuga, Palta, Tomate, Queso')
+    && e.texto.includes('Salsas: Mayo casera, Ketchup'),
+    'y lo que se armó, grupo por grupo');
   await p.screenshot({ path: require('path').join(require('os').tmpdir(), 'kaos-pedido.png') });
 
   console.log('4) Solo retiro: la página no ofrece delivery');
@@ -141,6 +159,10 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   const veg = await m.$$eval('[data-asis-cuerpo] .asis-prod', x => x.map(y => y.innerText.split('\n')[0].trim()));
   ok(veg.length > 0 && !veg.some(n => /carne|churrasco|mechada|lomit|pollo|hamburgues|vienesa|tocino|chorrillana/i.test(n)),
     'lo que ofrece como vegetariano no trae carne: ' + veg.join(', '));
+  await m.fill('[data-asis-texto]', '¿cómo armo mi sándwich?'); await m.press('[data-asis-texto]', 'Enter'); await m.waitForTimeout(900);
+  const arma = await m.$$eval('[data-asis-cuerpo] > *:last-child', x => x[0].innerText);
+  ok(/Proteína: Carne mechada, Pollo/.test(arma) && /Ingredientes: Lechuga/.test(arma) && /Salsas: Salsa BBQ/.test(arma),
+    'el chat lista las proteínas, los ingredientes y las salsas del «Arma tu…»');
   await m.fill('[data-asis-texto]', '¿hacen delivery?'); await m.press('[data-asis-texto]', 'Enter'); await m.waitForTimeout(900);
   const appsChat = await m.$$eval('[data-asis-cuerpo] > *:last-child a', x => x.map(a => a.innerText.trim() + '|' + a.href));
   ok(appsChat.length === 2 && appsChat[0].startsWith('Uber Eats|https://') && appsChat[1].startsWith('PedidosYa|https://'),
