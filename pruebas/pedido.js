@@ -74,6 +74,20 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok(await p.locator('[data-ficha] [data-grupo="arma-salsas"][value="mostaza"]').isDisabled(), 'ni una tercera salsa');
   ok(await botonFicha() === 'Agregar por $7.500', 'lo que se elige no cuesta extra: ' + await botonFicha());
   await confirmar();
+  // el waffle pide salsa, topping y fruta: los tres obligatorios. Se revisa y se cierra sin agregar.
+  await sec('Waffles y postres');
+  await abrirProd('Arma tu waffle');
+  const gw = await p.$$eval('[data-ficha] .grupo', x => x.map(g => (g.querySelector('.grupo-ayuda, .ayuda, small') || {}).innerText + ' × ' + g.querySelectorAll('input').length));
+  ok(gw.join(' | ') === 'Elige 1 × 6 | Elige 1 × 7 | Elige 1 × 2',
+    'el waffle pide una salsa (de 6), un topping (de 7) y una fruta (de 2): ' + gw.join(' | '));
+  await marcar('waffle-salsa', 'nutella');
+  await marcar('waffle-topping', 'oreo');
+  ok(await botonFicha() === 'Elige fruta', 'sin fruta no deja agregar: ' + await botonFicha());
+  await marcar('waffle-fruta', 'platano');
+  ok(await botonFicha() === 'Agregar por $4.500', 'con los tres, queda listo: ' + await botonFicha());
+  await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+  ok(!(await p.locator('[data-ficha][open]').count()), 'se cierra sin agregarlo');
+
   await sec('Bebidas');
   const bebidas = await p.$$eval('[data-lista] .fila-nombre, [data-lista] .tarjeta-nombre', x => x.map(y => y.textContent));
   ok(bebidas.length > 0, 'las bebidas se listan (' + bebidas.length + ')');

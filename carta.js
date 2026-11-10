@@ -1357,7 +1357,12 @@ window.CARTA = {
               "id": "arma-tu-waffle",
               "nombre": "Arma tu waffle",
               "precio": 4500,
-              "detalle": "Un topping, una salsa y una fruta, que puede ser plátano o frutilla."
+              "detalle": "Elige una salsa, un topping y una fruta.",
+              "personalizar": [
+                "waffle-salsa",
+                "waffle-topping",
+                "waffle-fruta"
+              ]
             },
             {
               "id": "waffle-kaos",
@@ -1573,6 +1578,108 @@ window.CARTA = {
         {
           "id": "mayo-normal",
           "nombre": "Mayo normal",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "waffle-salsa",
+      "nombre": "Salsa",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 1,
+      "opciones": [
+        {
+          "id": "salsa-de-chocolate",
+          "nombre": "Salsa de chocolate",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-frutilla",
+          "nombre": "Salsa de frutilla",
+          "precio": 0
+        },
+        {
+          "id": "manjar",
+          "nombre": "Manjar",
+          "precio": 0
+        },
+        {
+          "id": "leche-condensada",
+          "nombre": "Leche condensada",
+          "precio": 0
+        },
+        {
+          "id": "salsa-de-frambuesa",
+          "nombre": "Salsa de frambuesa",
+          "precio": 0
+        },
+        {
+          "id": "nutella",
+          "nombre": "Nutella",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "waffle-topping",
+      "nombre": "Topping",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 1,
+      "opciones": [
+        {
+          "id": "chubi",
+          "nombre": "Chubi",
+          "precio": 0
+        },
+        {
+          "id": "oreo",
+          "nombre": "Oreo",
+          "precio": 0
+        },
+        {
+          "id": "marshmallows",
+          "nombre": "Marshmallows",
+          "precio": 0
+        },
+        {
+          "id": "costa-rama",
+          "nombre": "Costa Rama",
+          "precio": 0
+        },
+        {
+          "id": "coco-rallado",
+          "nombre": "Coco rallado",
+          "precio": 0
+        },
+        {
+          "id": "roll-s",
+          "nombre": "Roll's",
+          "precio": 0
+        },
+        {
+          "id": "cubanito",
+          "nombre": "Cubanito",
+          "precio": 0
+        }
+      ]
+    },
+    {
+      "id": "waffle-fruta",
+      "nombre": "Fruta",
+      "tipo": "elegir",
+      "min": 1,
+      "max": 1,
+      "opciones": [
+        {
+          "id": "frutilla",
+          "nombre": "Frutilla",
+          "precio": 0
+        },
+        {
+          "id": "platano",
+          "nombre": "Plátano",
           "precio": 0
         }
       ]

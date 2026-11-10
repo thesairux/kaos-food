@@ -105,6 +105,10 @@ logo redondo del local.
   - **Salsas** (hasta 2, opcional): BBQ, cheddar, de aceituna, de ajo, de ciboulette, verde, ketchup, mostaza,
     ají, mayo casera, de merkén y mayo normal.
 
+  El **arma tu waffle** usa sus propios grupos, los tres obligatorios: una **salsa** (chocolate, frutilla,
+  manjar, leche condensada, frambuesa o Nutella), un **topping** (Chubi, Oreo, marshmallows, Costa Rama, coco
+  rallado, Roll's o cubanito) y una **fruta** (frutilla o plátano).
+
   Se editan en el panel, en «Opciones para elegir», y desde ahí también se puede marcar un ingrediente como
   agotado sin tocar el resto de la carta.
 
