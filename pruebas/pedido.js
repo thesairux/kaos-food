@@ -47,6 +47,12 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok(Math.abs(cab - nav) <= 2, '«Ver la carta» deja las secciones justo bajo la cabecera (' + cab + ' y ' + nav + ')');
   const fotos = await p.$$eval('.tarjeta-foto img', x => x.filter(i => i.complete && i.naturalWidth > 0).length);
   ok(fotos > 0, 'las fotos cargan (' + fotos + ' en la primera sección)');
+  // el destello de los títulos, arriba y al final
+  const destellos = await p.$$eval('.brillo--vivo', x => x.map(e => e.innerText.trim().replace(/\s+/g, ' ')
+    + '|' + getComputedStyle(e).animationName));
+  ok(destellos.length === 2 && destellos.every(d => d.endsWith('|brillo')),
+    'el destello corre en el título de la portada y en el del final: ' + destellos.join(' · '));
+
   // «agregar a pantalla de inicio»: el manifest y sus íconos
   const man = await p.locator('link[rel="manifest"]').getAttribute('href');
   const rman = await p.request.get(new URL(man, BASE).href);
