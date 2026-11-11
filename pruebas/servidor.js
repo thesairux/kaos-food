@@ -62,7 +62,7 @@ function d1() {
   return { prepare: sql => new Consulta(sql), batch: async l => { const r = []; for (const c of l) r.push(await c.run()); return r; }, _db: db };
 }
 
-const tipos = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".ico": "image/x-icon", ".json": "application/json" };
+const tipos = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".ico": "image/x-icon", ".json": "application/json", ".webmanifest": "application/manifest+json; charset=utf-8" };
 function archivo(pathname) {
   let ruta;
   try { ruta = decodeURIComponent(pathname); } catch (e) { return null; }

@@ -47,6 +47,18 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
   ok(Math.abs(cab - nav) <= 2, '«Ver la carta» deja las secciones justo bajo la cabecera (' + cab + ' y ' + nav + ')');
   const fotos = await p.$$eval('.tarjeta-foto img', x => x.filter(i => i.complete && i.naturalWidth > 0).length);
   ok(fotos > 0, 'las fotos cargan (' + fotos + ' en la primera sección)');
+  // «agregar a pantalla de inicio»: el manifest y sus íconos
+  const man = await p.locator('link[rel="manifest"]').getAttribute('href');
+  const rman = await p.request.get(new URL(man, BASE).href);
+  ok(rman.ok(), 'el manifest responde: ' + rman.status());
+  const mj = await rman.json();
+  ok(mj.name === 'Kaos Food' && mj.display === 'standalone' && mj.icons.length === 3
+    && mj.icons.some(i => i.purpose === 'maskable'),
+    'el manifest trae nombre, modo app y sus 3 íconos (uno maskable)');
+  for (const ic of mj.icons) {
+    const r = await p.request.get(new URL(ic.src, BASE).href);
+    ok(r.ok(), 'el ícono ' + ic.src + ' existe (' + r.status() + ')');
+  }
 
   console.log('2) Se arma el pedido');
   await sec('Combos');
@@ -154,6 +166,15 @@ const ok = (c, m) => { if (!c) throw new Error('FALLÓ: ' + m); console.log('  �
     && /Instagram @kaos_food .*instagram\.com\/kaos_food\//.test(redes[1])
     && /Facebook .*facebook\.com\/100090883010536\//.test(redes[2]),
     'el pie tiene WhatsApp, Instagram y Facebook: ' + redes.join(' · '));
+
+  // una sola foto en la categoría obliga a mostrarlas todas en tarjetas, con el logo en las que no tienen
+  for (const [seccion, categoria] of [['Jugos y batidos', 'Jugos naturales'], ['Promos con lata', 'Promociones con lata']]) {
+    await sec(seccion);
+    const bloque = p.locator('[data-lista] .bloque', { has: p.locator('h3', { hasText: new RegExp('^' + categoria + '$', 'i') }) }).first();
+    const caja = await bloque.count() ? bloque : p.locator('[data-lista]');
+    ok(await caja.locator('.tarjeta').count() === 0 && await caja.locator('.fila').count() > 0,
+      categoria + ' se muestra en lista, sin tarjetas con el logo');
+  }
 
   console.log('6) Fuera de horario');
   const c2 = await b.newContext({ viewport: { width: 1280, height: 900 }, timezoneId: 'America/Santiago' });

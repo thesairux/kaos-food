@@ -1155,8 +1155,7 @@ window.CARTA = {
             {
               "id": "jugo-natural-de-mango",
               "nombre": "Jugo natural de mango",
-              "precio": 3000,
-              "foto": "img/carta/jugo-natural-de-mango.webp"
+              "precio": 3000
             },
             {
               "id": "jugo-natural-de-papaya",

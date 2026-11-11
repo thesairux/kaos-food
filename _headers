@@ -8,6 +8,10 @@
 /admin.html
   X-Robots-Tag: noindex, nofollow
 
+/site.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
+
 /img/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 

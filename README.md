@@ -66,8 +66,12 @@ las cuentas (`privado/`), las pruebas, las herramientas y este README no se publ
 (la carta sin caché y el panel fuera de Google). Cloudflare sirve `/admin` desde `admin.html` solo.
 
 Antes de publicar, revisa en `carta.js` → `negocio` el WhatsApp, la dirección, el mapa, las redes y los datos de
-transferencia. El logo (`img/logo-kaos.webp`), `favicon.ico`, `img/icono-192.png` e `img/icono-180.png` salen del
-logo redondo del local.
+transferencia. El logo (`img/logo-kaos.webp`), `favicon.ico` y los íconos (`img/icono-180.png`,
+`img/icono-192.png`, `img/icono-512.png` y `img/icono-512-maskable.png`) salen del logo del local.
+
+`site.webmanifest` es lo que permite **«agregar a pantalla de inicio»**: el cliente deja la carta como una app
+en su celular, con el logo y sin la barra del navegador. Ahí van el nombre, los colores y los íconos; el
+`maskable` es el que el celular recorta en círculo, por eso lleva el logo más chico y centrado.
 
 ## Pendiente de confirmar con el local
 
@@ -94,8 +98,12 @@ logo redondo del local.
   (rellenas de verduras, con salsa de soya o teriyaki).
 - **Sushi**: el menú tiene una sección «Sushi» con los títulos «Rolls premium» y «Promoción 30 cortes», pero sin
   ningún producto. No se cargó. Los dos hand rolls sí están, en «Para picar».
-- **Fotos**: 45 de los 165 productos tienen foto (son las que traía el menú). Los demás se muestran en lista o
-  con el logo. Las chorrillanas de 2 y 6 personas comparten foto, porque en el menú es la misma.
+- **Fotos**: 44 de los 165 productos tienen foto (son las que traía el menú). Las chorrillanas de 2 y 6
+  personas comparten foto, porque en el menú es la misma.
+  Una categoría se muestra en **tarjetas** si al menos un producto tiene foto, y los que no la tienen salen
+  con el logo. Por eso a «Jugos naturales» se le sacó su única foto (la del mango): con una sola entre trece,
+  quedaban doce tarjetas con el logo. Sin ninguna, la categoría se ve como **lista** compacta. Si más adelante
+  hay fotos de los jugos, se suben todas juntas (en `carta.js` está anotado en `SIN_FOTO`, en las herramientas).
 - **«Arma tu…»**: cargados con sus opciones, de los cuatro PDF del flujo de pedido del local. El cliente
   elige en la ficha del producto y todo va en el mensaje de WhatsApp. Ninguna opción cuesta extra:
   - **Proteína** (elige 1): carne mechada, pollo, churrasco, hamburguesa y lomito. El *as* solo lleva carne
